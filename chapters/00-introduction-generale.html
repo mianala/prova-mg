@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>General Introduction and Position of the Problem — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; General Introduction</div>
+    <h1 class="title">General Introduction and <em>Position of the Problem</em></h1>
+    <p class="standfirst">The present introduction situates the work, defines its terms, surveys the state of knowledge in compact form, articulates the research problem and its underlying questions, states the hypotheses and the central objective, describes the methodology in outline, anticipates the expected results, and ends with the plan of the four chapters that follow.</p>
+  </header>
+
+  <section>
+    <div class="part-label">Opening</div>
+    <h2 class="part">Hook: speech as the missing modality</h2>
+    <p>For the more than twenty&#8209;five million speakers of Malagasy, the spoken language remains the medium of nearly every consequential daily exchange &mdash; in the household, in the marketplace, in the place of worship, in the courthouse, in the hospital, in the field. And yet, when those same speakers approach the digital tools that now mediate education, public administration, journalism, and commerce, they are systematically asked to type, in a register that may not be their own, in an orthography that may not match their dialect, on devices whose interfaces almost always presuppose a high&#8209;resource language. Speech, the natural modality, is the missing modality.</p>
+    <p>Automatic Speech Recognition (ASR), the engineering discipline whose object is the transcription of an acoustic signal into text, has known three successive technical revolutions since the late 1980s. None of them has delivered, for Malagasy, an instrument whose Word Error Rate would make it usable in any of the practical settings just enumerated. The present thesis takes that gap as its starting point and asks under what conditions the gap may be closed without requiring resources that a low&#8209;resource setting, by definition, cannot mobilize.</p>
+    <div class="callout">
+      <span class="tag">Stake</span>
+      The stake of the present work is not merely the production of a transcription system but the demonstration that a probabilistically principled framework can extract, from heterogeneous evidence, the quality that no single model, dataset, or technique provides on its own.
+    </div>
+  </section>
+
+  <section>
+    <div class="part-label">Section 0.1</div>
+    <h2 class="part">Definition of key terms</h2>
+    <p>In order to delimit precisely the object of the present study, several terms used recurrently in what follows are defined here. The definitions are operational rather than theoretical; the corresponding theoretical content is developed in Chapter I.</p>
+
+    <h3>0.1.1 Automatic Speech Recognition</h3>
+    <p>By <em>Automatic Speech Recognition</em> is meant the family of computational procedures that take as input an acoustic signal &mdash; typically a digitized waveform sampled at sixteen kilohertz &mdash; and return as output a sequence of orthographic tokens (characters, sub&#8209;words, or words) intended to correspond to what a competent human listener would transcribe. The quality of an ASR system is measured, throughout the present work, by the <em>Word Error Rate</em> and the <em>Character Error Rate</em>, complemented for diagnostic purposes by paired bootstrap and Wilcoxon significance tests, by the Expected Calibration Error, and by per&#8209;dialect equity measures.</p>
+
+    <h3>0.1.2 Low-resource language</h3>
+    <p>A <em>low&#8209;resource</em> language is here understood to mean any language for which the available transcribed audio is at least one order of magnitude below the volume on which high&#8209;resource ASR systems are routinely trained, and for which the available unlabeled audio is heterogeneous, dialectally fragmented, and partially licensed. Malagasy, with fewer than five hundred publicly released hours of supervised audio at the moment of writing, falls unambiguously within this category.</p>
+
+    <h3>0.1.3 Foundation model</h3>
+    <p>A <em>foundation model</em> denotes, in the present text, a pre&#8209;trained neural network of substantial size (typically several hundred million parameters or more), released with weights, trained on a corpus that spans dozens to hundreds of languages, and intended to be adapted by fine&#8209;tuning or by inference&#8209;time conditioning. Three such models are central to the present methodology: Whisper&#8209;large&#8209;v3, MMS, and Wav2Vec2&#8209;BERT.</p>
+
+    <h3>0.1.4 Probabilistic routing</h3>
+    <p>By <em>probabilistic routing</em> is meant the operation that takes as input several approximate posterior distributions over transcripts &mdash; one per foundation model &mdash; together with their disagreement structure, and returns a categorical decision regarding the use of the segment: train&#8209;time inclusion, deferral to human review, reservation, or rejection. Routing is distinguished from averaging: averaging is appropriate when posteriors are mutually calibrated, which empirically is not the case for heterogeneous foundation models on a low&#8209;resource language.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Section 0.2</div>
+    <h2 class="part">Context and state of knowledge</h2>
+    <p>Two intersecting threads of context bear on the present work. The first is the linguistic and sociolinguistic situation of Malagasy. The second is the recent history of ASR for low&#8209;resource languages.</p>
+
+    <h3>0.2.1 The linguistic situation of Malagasy</h3>
+    <p>Malagasy is the easternmost member of the Austronesian family, sharing typological structure &mdash; agglutinative morphology, verb&#8209;initial word order, predicate&#8209;focused syntax &mdash; with Indonesian, Malay, Cebuano, and Tagalog. The standard orthography, codified in the nineteenth century, is based on the Merina dialect. The country, however, hosts at least eighteen recognized dialect groups, several of which (Betsimisaraka, Sakalava, Antandroy, Antaisaka) diverge substantially from the standard at the phonological, morphological, and lexical levels. The diglossia between standard Merina and French, the latter retained as a co&#8209;official language of administration and higher education, produces a pervasive code&#8209;switching that any realistic ASR system must accommodate.</p>
+
+    <h3>0.2.2 The recent state of ASR for low-resource languages</h3>
+    <p>Three lines of work have transformed the prospects of low&#8209;resource ASR over the past decade. First, large&#8209;scale self&#8209;supervised pre&#8209;training (Wav2Vec 2.0, HuBERT, WavLM) demonstrated that universal acoustic representations could be learned from unlabeled audio. Second, cross&#8209;lingual self&#8209;supervision (XLS&#8209;R, MMS, Wav2Vec2&#8209;BERT) extended that property to hundreds of languages simultaneously, with explicit coverage of low&#8209;resource members. Third, weak supervision at web scale (Whisper) demonstrated that imperfectly paired audio&#8209;text data could substitute for clean transcripts at the cost of additional volume. Each of these lines nominally covers Malagasy. None of them, taken alone, delivers a deployable system.</p>
+
+    <h3>0.2.3 The unresolved core</h3>
+    <p>Beyond these three lines, four methodological questions remain open at the moment of writing. They are: (i) the principled probabilistic integration of multiple heterogeneous foundation models; (ii) the injection of typological priors drawn from a known language family; (iii) the formal treatment of iterative pseudo&#8209;labeling under non&#8209;collapse conditions; (iv) the unification of dialect, register, and code&#8209;switching as latent variables. The present thesis takes those four questions as the scaffolding of its methodological contribution.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Section 0.3</div>
+    <h2 class="part">Interest of the topic</h2>
+    <p>The interest of the topic operates on three planes that the present introduction takes care to distinguish.</p>
+
+    <h3>0.3.1 Scientific interest</h3>
+    <p>The scientific interest of the topic is that it forces a confrontation between the empiricism of contemporary deep learning and the inferential rigour of classical probabilistic modeling. The proposed framework re&#8209;reads pseudo&#8209;labeling, ensemble methods, and confidence calibration in a variational&#8209;Bayesian idiom that yields explicit convergence and non&#8209;collapse conditions; that re&#8209;reading, if it succeeds, contributes to the methodology of low&#8209;resource ASR irrespective of the specific language on which it is instantiated.</p>
+
+    <h3>0.3.2 Technological interest</h3>
+    <p>The technological interest is the production of a working transcription pipeline whose components are released under open licenses, accompanied by datasheets and model cards, and validated against frozen, dialect&#8209;stratified test sets. Such a release lowers the entry cost for further research and applied work in the same setting.</p>
+
+    <h3>0.3.3 Societal interest</h3>
+    <p>The societal interest is that a robust ASR system for Malagasy &mdash; understood as one that maintains usable performance across the principal dialects rather than only on the standard variety &mdash; enables a range of public&#8209;interest applications: educational support, accessibility services for visually impaired or low&#8209;literacy users, administrative transcription, journalistic indexing, and preservation of intangible oral heritage. The present work treats <em>dialect equity</em> as an explicit evaluation dimension precisely so that the societal claim can be tested rather than merely asserted.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Section 0.4</div>
+    <h2 class="part">Research problem and research questions</h2>
+    <p>The general research problem of the present thesis may be stated as follows. <em>Under what conditions, and with what methodological apparatus, can the existing foundation models for multilingual speech recognition be combined with the available licensed Malagasy audio so as to yield a deployable ASR system whose performance is competitive on the standard variety, equitable across dialects, calibrated in its confidences, and reproducible from public artifacts?</em></p>
+    <p>That general problem decomposes into four ordered research questions, which structure the four chapters of the manuscript.</p>
+    <ul class="plain">
+      <li><strong>Q1.</strong> What probabilistic and neural foundations are available, and what is the structure of their formal relations? (Chapter I.)</li>
+      <li><strong>Q2.</strong> How have those foundations been extended to multilingual and low&#8209;resource settings, and what methodological problems remain open? (Chapter II.)</li>
+      <li><strong>Q3.</strong> How may those open problems be addressed in a unified framework that admits formal analysis and integrates with a license&#8209;first data substrate? (Chapter III.)</li>
+      <li><strong>Q4.</strong> How is the resulting framework validated, what does the available evidence allow one to claim, and what limitations condition the interpretation of the expected results? (Chapter IV.)</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="part-label">Section 0.5</div>
+    <h2 class="part">Hypotheses</h2>
+    <p>Five working hypotheses are stated at the outset and tested by the validation procedure of Chapter IV.</p>
+    <ul class="plain">
+      <li><strong>H1 (heterogeneity).</strong> The disagreement structure of three heterogeneous foundation models on Malagasy carries information that is not recoverable from any single posterior.</li>
+      <li><strong>H2 (typology).</strong> A phonotactic and morphotactic prior trained on the Austronesian family constrains decoding hypotheses in regions of the space that a Malagasy&#8209;only language model cannot constrain.</li>
+      <li><strong>H3 (constrained EM).</strong> Iterative pseudo&#8209;labeling subject to a confidence floor, a KL drift bound, an agreement constraint, and a typological consistency constraint converges to a stationary point without the collapse observed in the unconstrained version.</li>
+      <li><strong>H4 (latent variables).</strong> Treating dialect, register, and code&#8209;switching as latent variables in a single graphical model improves performance on under&#8209;represented dialects and on code&#8209;switched speech without degrading the majority dialect.</li>
+      <li><strong>H5 (calibration).</strong> A post&#8209;hoc calibration head trained on a small supervised set generalizes to the larger, distributionally shifted unlabeled pool with substantially lower Expected Calibration Error than uncalibrated confidences.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="part-label">Section 0.6</div>
+    <h2 class="part">Objective</h2>
+    <p>The general objective of the present thesis is to formulate, instantiate, and validate <em>PROVA&#8209;MG</em> &mdash; Probabilistic Routing Of Variational Alignments for Malagasy &mdash; a unified probabilistic framework for low&#8209;resource ASR comprising five interlocking components, and to demonstrate, on three independent, frozen, dialect&#8209;stratified test sets, that the framework outperforms every subset of its components and every published baseline.</p>
+    <p>That general objective decomposes into the following specific objectives:</p>
+    <ul class="plain">
+      <li>Construct a license&#8209;first, dialect&#8209;balanced Malagasy speech corpus, with provenance metadata, datasheets, and a persistent DOI.</li>
+      <li>Implement the routing function of Component 3.1 and demonstrate, by ablation, that routing outperforms averaging and voting.</li>
+      <li>Implement and evaluate the typological prior of Component 3.2, reporting the result whether positive or negative.</li>
+      <li>Implement the constrained variational EM of Component 3.3, derive its convergence and non&#8209;collapse conditions, and verify them empirically.</li>
+      <li>Implement the latent&#8209;variable decomposition of Component 3.4 and verify, by stratified evaluation, that it improves dialect equity.</li>
+      <li>Implement the calibration head of Component 3.5 and verify its generalization across the distribution shift between the supervised and the unlabeled set.</li>
+      <li>Release the corpus, the models, the code, and the reproducibility bundles under open licenses.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="part-label">Section 0.7</div>
+    <h2 class="part">Methodology in outline</h2>
+    <p>The methodology of the present thesis is empirically oriented but formally constrained. Its outline is as follows.</p>
+    <p>The data substrate is constructed through a nine&#8209;stage license&#8209;first pipeline that produces a Tier&#8209;A gold supervised set, a Tier&#8209;B silver set, a Tier&#8209;C licensed unlabeled set, and a Tier&#8209;D restricted set, each accompanied by provenance and licensing metadata. Three foundation models &mdash; Whisper&#8209;large&#8209;v3, MMS, and Wav2Vec2&#8209;BERT &mdash; are retained as distinct posteriors over the transcript; their disagreement structure is used as the input to a learned routing function trained on the supervised set. An Austronesian typological prior is trained on Indonesian, Malay, Cebuano, and Tagalog text and integrated into decoding through a calibrated mixture. Iterative pseudo&#8209;labeling is formalized as a constrained variational EM procedure whose E&#8209;step minimizes the Kullback&#8209;Leibler divergence between the variational posterior and the model posterior subject to four explicit constraints, and whose M&#8209;step maximizes the expected complete&#8209;data log&#8209;likelihood. Dialect, register, and code&#8209;switching are treated as latent variables in a single graphical model that admits joint approximate inference. A post&#8209;hoc calibration head, trained on the supervised set with features drawn from model entropy, three&#8209;way agreement, typological likelihood, segment duration, voice&#8209;activity confidence, and dialect&#8209;posterior entropy, produces the confidences consumed by every downstream constraint.</p>
+    <p>The validation procedure is structured as eight phases, each terminated by a measurable gate, as detailed in Chapter IV.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Section 0.8</div>
+    <h2 class="part">Expected results</h2>
+    <p>The expected results are organized along four axes. On the axis of headline performance, the integrated PROVA&#8209;MG system is expected to reduce WER on FLEURS&#8209;MG, CV&#8209;MG, and the in&#8209;domain test set by a margin that paired bootstrap and Wilcoxon tests confirm to be statistically significant relative to every baseline. On the axis of dialect equity, performance on Betsimisaraka, Sakalava, and Antandroy is expected to improve without degradation of Merina. On the axis of calibration, the Expected Calibration Error of the calibrated confidence is expected to be substantially lower than that of the raw confidence, with the calibrator trained on the supervised set generalizing to the unlabeled distribution. On the axis of methodological robustness, each constraint of the variational EM is expected to contribute a measurable share of the total gain, and the unconstrained loop is expected to demonstrably collapse where the constrained loop does not.</p>
+    <div class="callout">
+      <span class="tag">Caveat</span>
+      The above expectations are working hypotheses to be confirmed or refuted by the validation procedure of Chapter IV. A negative result on any single component is recorded as such and reported in the manuscript and in the corresponding paper.
+    </div>
+  </section>
+
+  <section>
+    <div class="part-label">Section 0.9</div>
+    <h2 class="part">Plan of the thesis</h2>
+    <p>The remainder of the thesis is organized in four chapters, each opened by a brief introduction, structured around two main parts (themselves divided into three subsections), and closed by a chapter conclusion. A general conclusion, a bibliography, eight appendices, the candidate information sheet, and the French and English abstracts complete the manuscript.</p>
+    <ul class="plain">
+      <li><strong>Chapter I &mdash; Foundations of speech recognition.</strong> The four paradigms (classical HMM&#8209;GMM, hybrid DNN&#8209;HMM, end&#8209;to&#8209;end neural, self&#8209;supervised representation) are reviewed in compact form together with the mathematics that connects them.</li>
+      <li><strong>Chapter II &mdash; Low&#8209;resource and multilingual ASR.</strong> The methods that extend the four paradigms to multilingual and low&#8209;resource settings are surveyed, the data substrate of the present work is described, and the open methodological problems are identified.</li>
+      <li><strong>Chapter III &mdash; The PROVA&#8209;MG methodology.</strong> The five components of the framework are derived, their algorithmic implementation is specified, their complexity is analysed, and their integration with the data substrate is described.</li>
+      <li><strong>Chapter IV &mdash; Application, results and discussion.</strong> The prototype implementation, the planned experimental matrix, the expected results in placeholder form, the discussion of limitations and threats to validity, and the perspectives of further work are presented.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a href="../front-matter/figures-tables.html"><span class="dir">&larr; Previous</span><span class="ctitle">List of Figures and Tables</span></a>
+    <a class="next" href="01-sota-foundations.html"><span class="dir">Next &rarr;</span><span class="ctitle">Chapter I &mdash; Foundations</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    General introduction &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>

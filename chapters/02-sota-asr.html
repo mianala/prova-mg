@@ -2,7 +2,7 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>2. State of the art (II): low-resource and multilingual ASR — PROVA-MG</title>
+<title>Chapter II: Low-Resource and Multilingual ASR — PROVA-MG</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -13,60 +13,123 @@
   <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
 
   <header class="masthead">
-    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter 2 of 4</div>
-    <h1 class="title">State of the art (II): <em>low&#8209;resource and multilingual ASR</em></h1>
-    <p class="standfirst">This chapter surveys the methods that extend the general ASR paradigms to low&#8209;resource and multilingual settings, then identifies the open methodological problems that the present work addresses.</p>
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter II of IV</div>
+    <h1 class="title">Chapter II: <em>Low&#8209;Resource and Multilingual ASR</em></h1>
+    <p class="standfirst">The present chapter surveys the methods that extend the four paradigms of Chapter I to multilingual and low&#8209;resource settings, describes the data substrate of the present work, identifies the open methodological problems, and prepares the methodological contribution of Chapter III.</p>
   </header>
+
+  <section>
+    <div class="part-label">Chapter Introduction</div>
+    <h2 class="part">Why the four paradigms do not close the gap</h2>
+    <p>The four paradigms reviewed in Chapter I are, in spite of their successive refinements, predominantly designed for and evaluated on high&#8209;resource languages. When transferred to a low&#8209;resource language such as Malagasy, each of them exhibits a characteristic failure mode. Classical and hybrid systems require pronunciation dictionaries and decision trees whose construction is costly. Attention&#8209;based end&#8209;to&#8209;end systems are too data&#8209;hungry to converge on the few hundred hours of supervised Malagasy currently available. Self&#8209;supervised representations close part of the gap by reducing the supervision requirement at fine&#8209;tuning time, but no single self&#8209;supervised model, fine&#8209;tuned on Malagasy alone, has been reported to attain the WER thresholds required by deployment.</p>
+    <p>The methods reviewed in the present chapter address that gap from three angles: by sharing representation across languages (cross&#8209;lingual self&#8209;supervision and weak supervision), by adapting large models efficiently (LoRA, adapters, prompts), and by exploiting unlabeled data through pseudo&#8209;labeling. The chapter then describes the data substrate of the present thesis, lists the foundation models retained, and concludes by enumerating the open methodological problems that motivate the framework of Chapter III.</p>
+  </section>
 
   <section id="p2a">
     <div class="part-label">Part Two &mdash; A</div>
-    <h2 class="part">Multilingual and low&#8209;resource methods</h2>
-    <p>The four paradigms reviewed in Chapter 1 do not by themselves close the gap between high&#8209;resource and low&#8209;resource languages. The following six families of methods address that gap; Malagasy is nominally covered by most of them, yet zero&#8209;shot performance remains poor.</p>
+    <h2 class="part">II.1 Cross&#8209;lingual and multilingual methods</h2>
+    <p>The first part of the chapter addresses the three families of methods that produce a single model usable across many languages.</p>
 
-    <h3>2.1 Cross&#8209;lingual self&#8209;supervised representations</h3>
-    <p>XLSR&#8209;53 and XLS&#8209;R (Babu et al., 2022, 436 000 h, 128 languages), MMS (Pratap et al., 2023, more than 1 100 languages), and Wav2Vec2&#8209;BERT (Seamless Communication, 2024, approximately 4.5 M h, 143 languages) produce universal acoustic representations. Although Malagasy is included in all of them, the published zero&#8209;shot word error rate (WER) remains high.</p>
+    <h3>II.1.1 Cross-lingual self-supervised representations</h3>
+    <p>The earliest cross&#8209;lingual self&#8209;supervised model, XLSR&#8209;53 (Conneau et al. 2020), extended Wav2Vec 2.0 to a multilingual setting by joint pre&#8209;training on 53 languages drawn from CommonVoice, BABEL, and MLS. XLS&#8209;R (Babu et al. 2022) scaled the same recipe to 128 languages and 436 000 hours of unlabeled audio, and is the standard reference for cross&#8209;lingual self&#8209;supervised speech models at the time of writing. MMS (Pratap et al. 2023, Meta AI) further scaled to more than 1 100 languages, primarily through the alignment of religious text recordings (the New Testament corpus) supplemented by other licensed sources. Wav2Vec2&#8209;BERT (Seamless Communication 2024) combines a Wav2Vec 2.0 encoder pre&#8209;trained on roughly 4.5 million hours with a BERT&#8209;style masked language modelling head trained jointly on text, producing a model that doubles as a speech encoder and as a phonetic representation extractor.</p>
+    <p>All four of these models nominally cover Malagasy. Their zero&#8209;shot WER on FLEURS&#8209;MG is, however, high &mdash; typically far above the threshold of usability &mdash; and varies substantially across the dialects represented in the test set.</p>
 
-    <h3>2.2 Large&#8209;scale weak supervision</h3>
-    <p>Whisper (Radford et al., 2023) was trained on 680 000 h of audio paired with weakly supervised web transcripts. USM, Canary, OWSM, and OLMoASR are variants and open reimplementations. Whisper&#8209;large&#8209;v3 currently produces the strongest open zero&#8209;shot transcripts for Malagasy and is therefore used as a first&#8209;pass teacher in the present pipeline.</p>
+    <h3>II.1.2 Large-scale weak supervision: Whisper and its variants</h3>
+    <p>Whisper (Radford et al. 2023) takes a different approach. Instead of self&#8209;supervised pre&#8209;training followed by supervised fine&#8209;tuning, it trains a single encoder&#8209;decoder on 680 000 hours of audio paired with weakly supervised transcripts collected from the open web. The training objective is straightforward cross&#8209;entropy on the paired data, with special tokens that distinguish languages, tasks (transcription, translation), and conditions (no&#8209;speech, timestamp).</p>
+    <p>USM (Universal Speech Model, Zhang et al. 2023, Google), Canary (NVIDIA), OWSM (Open Whisper&#8209;style Speech Model, ESPnet community), and OLMoASR are subsequent variants or open reimplementations. Whisper&#8209;large&#8209;v3 currently produces the strongest open zero&#8209;shot transcripts for Malagasy and is therefore used as the first&#8209;pass teacher in the pipeline of the present work.</p>
 
-    <h3>2.3 Parameter&#8209;efficient adaptation</h3>
-    <p>LoRA, adapters, BitFit, and prompt tuning specialize large encoders by training a small fraction of parameters. For low&#8209;resource ASR these methods reduce both the GPU budget and the risk of overfitting on small supervised sets.</p>
-
-    <h3>2.4 Semi&#8209;supervised learning and pseudo&#8209;labeling</h3>
-    <p>slimIPL, Kaizen, and Noisy Student Training share a common procedure: a seed model is trained, it transcribes a large unlabeled set, the resulting pseudo&#8209;labels are filtered by confidence, and the model is retrained on the union. Variations concern the filtering criterion, the teacher&#8209;update rule, and the prevention of collapse. The procedure works empirically but its conditions of success are not formally characterized in the literature.</p>
-
-    <h3>2.5 Speech&#8209;LLM integration</h3>
-    <p>Recent systems feed speech to a large language model either as discrete tokens or through a learned projection (SALMONN, Qwen&#8209;Audio). For high&#8209;resource languages, quality rivals dedicated ASR; for low&#8209;resource languages, performance is limited by the text&#8209;side coverage of the underlying LLM.</p>
-
-    <h3>2.6 Data construction and licensing</h3>
-    <p>License&#8209;first data construction, segment&#8209;level traceability, datasheets, and reproducibility have become a research contribution in their own right. They constitute the data substrate of the present work but do not, by themselves, constitute a modeling methodology.</p>
+    <h3>II.1.3 Speech-LLMs and unified models</h3>
+    <p>Recent systems feed speech to a large language model either as discrete tokens or through a learned projection (SALMONN, Qwen&#8209;Audio, Phi&#8209;4&#8209;Multimodal). For high&#8209;resource languages, quality rivals that of dedicated ASR. For low&#8209;resource languages, performance is bounded above by the text&#8209;side coverage of the underlying LLM; for Malagasy in particular, the text coverage of contemporary LLMs is uneven and the resulting transcripts exhibit characteristic hallucinations on low&#8209;frequency lexical items. The present work does not place speech&#8209;LLMs on the load&#8209;bearing path of the methodology, but considers them as candidates for a future comparison.</p>
   </section>
 
   <section id="p2b">
     <div class="part-label">Part Two &mdash; B</div>
-    <h2 class="part">Open methodological problems</h2>
-    <p>Several methods are well established at thesis scale: continued self&#8209;supervised pre&#8209;training for a single low&#8209;resource language, pseudo&#8209;labeling with confidence filtering, LoRA and adapter cross&#8209;lingual fine&#8209;tuning, dialect&#8209;conditioned adapters, and code&#8209;switched ASR. Applying any of these to Malagasy would be linguistically informative but would not constitute a methodological contribution.</p>
-    <p>The following problems, by contrast, remain open at thesis scale and structure the methodology proposed in Chapter 3:</p>
+    <h2 class="part">II.2 Adaptation, pseudo&#8209;labeling, and license&#8209;first data</h2>
+    <p>The second part of the chapter addresses the three families of methods that adapt or supplement a pre&#8209;trained model with target&#8209;language resources, and presents the data substrate constructed for the present thesis.</p>
+
+    <h3>II.2.1 Parameter-efficient adaptation: LoRA, adapters, prompts</h3>
+    <p>Full fine&#8209;tuning of a foundation model with several hundred million parameters on a few hundred hours of Malagasy audio is computationally expensive and risks over&#8209;fitting. Parameter&#8209;efficient adaptation methods address both concerns. <em>Low&#8209;Rank Adaptation</em> (LoRA, Hu et al. 2022) inserts a trainable low&#8209;rank update <em>&Delta;W = B A</em> alongside the frozen weight matrix <em>W</em>:</p>
+    <div class="formula">y = W x + B A x</div>
+    <p>where <em>A</em> and <em>B</em> have rank <em>r</em> much smaller than the model dimension. <em>Adapter</em> layers (Houlsby et al. 2019) insert small bottleneck residual modules after each Transformer sub&#8209;layer. <em>BitFit</em> trains only the biases. <em>Prompt tuning</em> learns soft prefixes prepended to the input. For low&#8209;resource ASR these methods reduce both GPU cost and over&#8209;fitting risk, and they admit composition: language&#8209;specific LoRA adapters can be combined with dialect&#8209;specific adapters, which is the route taken in Component 3.4 of Chapter III.</p>
+
+    <h3>II.2.2 Semi-supervised learning, pseudo-labeling, and self-training</h3>
+    <p>Iterative pseudo&#8209;labeling (ITP) and its variants &mdash; slimIPL (Likhomanenko et al. 2021), Kaizen (Manohar et al. 2021), Noisy Student (Park et al. 2020) &mdash; share a common procedure. A seed model is trained on the supervised set, transcribes the unlabeled pool, filters the resulting pseudo&#8209;labels by confidence, and is retrained on the union of supervised and filtered pseudo&#8209;labeled data. Variations concern the filtering criterion (raw confidence, posterior entropy, agreement between augmented versions), the teacher&#8209;update rule (replacement at each iteration, exponential moving average, fixed teacher), and the prevention of collapse (confidence thresholds, KL drift bounds, noise injection on the student).</p>
+    <p>The procedure works empirically &mdash; consistent gains of several WER points have been reported on Common Voice languages &mdash; but its conditions of success are not formally characterized in the literature. The present thesis re&#8209;formalizes iterative pseudo&#8209;labeling as a constrained variational EM procedure in Chapter III (Component 3.3) with explicit non&#8209;collapse conditions.</p>
+
+    <h3>II.2.3 Data construction, licensing, and reproducibility</h3>
+    <p>License&#8209;first data construction has become a research contribution in its own right. The present work constructs its data substrate through a nine&#8209;stage pipeline whose outputs are partitioned into four tiers.</p>
     <ul class="plain">
-      <li>The principled probabilistic integration of multiple <strong>heterogeneous</strong> foundation models, treated as distinct posteriors and exploiting their disagreement structure as a routing signal.</li>
-      <li>The injection of <strong>typological priors</strong> from a known language family as Bayesian priors that constrain the decoding hypothesis space.</li>
-      <li>The formal treatment of iterative pseudo&#8209;labeling as a <strong>constrained variational EM</strong> procedure with explicit non&#8209;collapse conditions and convergence analysis.</li>
-      <li>The unification of dialect, register, and code&#8209;switching as <strong>latent variables</strong> in a single graphical model with explicit conditional independence structure.</li>
+      <li><strong>Tier A</strong> &mdash; gold supervised: professionally transcribed audio with double annotation, dialect and register labels, and a permissive license. Target volume: 200&ndash;400 hours.</li>
+      <li><strong>Tier B</strong> &mdash; silver supervised: machine&#8209;assisted transcription verified by a single annotator. Target volume: 600&ndash;1 000 hours.</li>
+      <li><strong>Tier C</strong> &mdash; licensed unlabeled: audio collected under licenses that permit derivative model training, without transcripts. Target volume: 10 000&ndash;30 000 hours.</li>
+      <li><strong>Tier D</strong> &mdash; restricted: data whose license requires explicit, per&#8209;use authorization. Used only with explicit consent.</li>
     </ul>
+
+    <p>Each stage of the pipeline produces machine&#8209;readable manifests, persistent identifiers for each segment, and provenance metadata sufficient to reconstruct the corpus from public sources. Datasheets, model cards, and a Zenodo&#8209;archived DOI accompany every release. The data substrate is treated, in the methodology of Chapter III, as a fixed input rather than as a degree of freedom of the modeling procedure.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Reference tables</div>
+    <h2 class="part">Foundation models and evaluation datasets</h2>
+    <p>The following two tables summarize, respectively, the foundation models retained as teachers in the methodology of Chapter III and the evaluation datasets used in the experimental matrix of Chapter IV.</p>
+
+    <h3>Table II.1 &mdash; Foundation models considered</h3>
+    <table>
+      <thead><tr><th>Model</th><th>Languages</th><th>Hours pre-training</th><th>License</th><th>Role in PROVA-MG</th></tr></thead>
+      <tbody>
+        <tr><td>Whisper-large-v3</td><td>99 (weak)</td><td>~680 000</td><td>MIT</td><td>Teacher 1 (weak supervision)</td></tr>
+        <tr><td>MMS</td><td>1 100+</td><td>religious + general</td><td>CC-BY-NC 4.0</td><td>Teacher 2 (very wide coverage)</td></tr>
+        <tr><td>Wav2Vec2-BERT</td><td>143</td><td>~4 500 000</td><td>permissive</td><td>Teacher 3 (self-supervised)</td></tr>
+        <tr><td>XLS-R-1B</td><td>128</td><td>~436 000</td><td>Apache 2.0</td><td>Reference baseline</td></tr>
+        <tr><td>HuBERT-large</td><td>1 (English) + multilingual variants</td><td>~60 000</td><td>permissive</td><td>Auxiliary baseline</td></tr>
+        <tr><td>OWSM-v3.1</td><td>151</td><td>~180 000</td><td>CC-BY 4.0</td><td>Open Whisper-style reference</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Table II.2 &mdash; Evaluation datasets</h3>
+    <table>
+      <thead><tr><th>Dataset</th><th>Hours (MG)</th><th>Speakers</th><th>Dialects</th><th>License</th></tr></thead>
+      <tbody>
+        <tr><td>FLEURS-MG</td><td>~10 read</td><td>~10</td><td>Standard Merina</td><td>CC-BY 4.0</td></tr>
+        <tr><td>Common Voice-MG</td><td>~20 (validated)</td><td>~200</td><td>Mostly Merina</td><td>CC0 1.0</td></tr>
+        <tr><td>In-domain (this work)</td><td>~40 spontaneous + read</td><td>~120</td><td>Merina, Betsimisaraka, Sakalava, Antandroy</td><td>CC-BY 4.0 (Tier A subset)</td></tr>
+        <tr><td>Code-switched eval</td><td>~5</td><td>~30</td><td>Merina-French</td><td>CC-BY 4.0 (Tier A subset)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="part-label">Open problems</div>
+    <h2 class="part">II.3 The four open methodological problems</h2>
+    <p>Several problems are well established at thesis scale and would not, in themselves, constitute a methodological contribution: continued self&#8209;supervised pre&#8209;training for a single low&#8209;resource language; pseudo&#8209;labeling with simple confidence filtering; LoRA cross&#8209;lingual fine&#8209;tuning; dialect&#8209;conditioned adapters; code&#8209;switched ASR with a language&#8209;identification head. Applying any of these to Malagasy would be linguistically informative but methodologically incremental.</p>
+    <p>The following four problems, by contrast, remain open at thesis scale and structure the methodology of Chapter III.</p>
+    <ul class="plain">
+      <li><strong>P1.</strong> The principled probabilistic integration of multiple <em>heterogeneous</em> foundation models, treated as distinct posteriors and exploiting their disagreement structure as a routing signal rather than as noise to be averaged away.</li>
+      <li><strong>P2.</strong> The injection of <em>typological priors</em> from a known language family as Bayesian priors that constrain the decoding hypothesis space where a target&#8209;language&#8209;only language model cannot.</li>
+      <li><strong>P3.</strong> The formal treatment of <em>iterative pseudo&#8209;labeling</em> as a constrained variational EM procedure with explicit non&#8209;collapse conditions and a convergence analysis under stated simplifying assumptions.</li>
+      <li><strong>P4.</strong> The unification of <em>dialect</em>, <em>register</em>, and <em>code&#8209;switching</em> as latent variables in a single graphical model with explicit conditional independence structure and a joint approximate inference procedure.</li>
+    </ul>
+    <p>To these four problems is added a transversal requirement, <em>P5</em>, that the confidences consumed by every downstream constraint be calibrated and that the calibration generalize from a small supervised set to a larger, distributionally shifted unlabeled set.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Chapter Conclusion</div>
+    <h2 class="part">Conclusion of Chapter II</h2>
+    <p>The present chapter has surveyed the cross&#8209;lingual, weakly supervised, and adaptation methods that extend the four paradigms of Chapter I to low&#8209;resource and multilingual settings; it has described the license&#8209;first data substrate retained for the empirical instantiation on Malagasy; and it has identified the four open methodological problems &mdash; heterogeneous co&#8209;inference, typological priors, constrained variational EM, latent&#8209;variable decomposition &mdash; together with the transversal calibration requirement. The methodology of Chapter III is structured around exactly those five concerns. The empirical validation of Chapter IV will test, for each of them, whether the proposed solution delivers a measurable and statistically significant improvement, and will report the result whether positive or negative.</p>
     <div class="callout">
       <span class="tag">Transition</span>
-      These four problems, taken together and instantiated on a single under&#8209;resourced language with a corpus constructed under a license&#8209;first regime, define the scope of the methodology developed in the next chapter.
+      The state of the art now being delimited and the data substrate fixed, the next chapter develops the PROVA&#8209;MG framework: its theoretical formulation as a latent&#8209;variable probabilistic system, its five interlocking components, and its integration with the data pipeline described above.
     </div>
   </section>
 
   <nav class="pager">
-    <a href="01-sota-foundations.html"><span class="dir">&larr; Previous</span><span class="ctitle">State of the art (I): foundations</span></a>
-    <a class="next" href="03-methodology.html"><span class="dir">Next &rarr;</span><span class="ctitle">Methodology: the PROVA&#8209;MG framework</span></a>
+    <a href="01-sota-foundations.html"><span class="dir">&larr; Previous</span><span class="ctitle">Chapter I &mdash; Foundations</span></a>
+    <a class="next" href="03-methodology.html"><span class="dir">Next &rarr;</span><span class="ctitle">Chapter III &mdash; PROVA-MG Methodology</span></a>
   </nav>
 
   <footer>
     PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
-    Chapter 2 of 4 &middot; Doctoral School 3D, University of Toamasina.
+    Chapter II of IV &middot; Doctoral School 3D, University of Toamasina.
   </footer>
 
 </div>
