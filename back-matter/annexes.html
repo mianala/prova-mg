@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Annexes — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">Back matter &nbsp;/&nbsp; Annexes</div>
+    <h1 class="title"><em>Annexes</em></h1>
+    <p class="standfirst">Eight appendices that document the engineering substrate of the present thesis: local project organization, repository, source code arborescence, launch commands, simulation and production execution, web interface, and execution journal.</p>
+  </header>
+
+  <section id="anx-A">
+    <div class="part-label">Annexe A</div>
+    <h2 class="part">A. Local project organization in VS Code</h2>
+    <p>The local project organization mirrors the modular structure of the methodology. The Visual Studio Code workspace contains five top&#8209;level folders, each corresponding to one segment of the workflow. <em>data/</em> holds the partitioned manifests for Tier&#8209;A, Tier&#8209;B, Tier&#8209;C, and Tier&#8209;D corpora; raw audio is stored on external object storage and referenced by URI from within the manifests. <em>models/</em> holds the local model registry; foundation checkpoints are referenced as Hugging Face IDs in a JSON index. <em>src/</em> holds the Python source tree, organized by component (3.1 routing, 3.2 typology, 3.3 EM loop, 3.4 latent inference, 3.5 calibration). <em>experiments/</em> holds configuration files (YAML) and result manifests (JSONL). <em>docs/</em> holds the manuscript sources, the model cards, and the datasheets. A <em>.devcontainer/</em> directory provides a reproducible Docker development image; the IDE attaches to the running container so that the host system is not modified. Linting, type checking, and unit tests run on save through configured tasks.</p>
+  </section>
+
+  <section id="anx-B">
+    <div class="part-label">Annexe B</div>
+    <h2 class="part">B. Private GitHub repository</h2>
+    <p>The source code, the manifests, the experiment configurations, and the manuscript sources are kept in a private GitHub repository at <code>https://github.com/&lt;org&gt;/prova&#8209;mg</code> (URL to be substituted on publication). Access is governed by an explicit collaborator list, recorded in the repository's README. A mirror to an institutional GitLab instance is maintained for continuity. On final defense, a public mirror is created and the artifacts are simultaneously archived on Zenodo with a persistent DOI; the private repository is preserved for change history but is no longer the canonical reference.</p>
+  </section>
+
+  <section id="anx-C">
+    <div class="part-label">Annexe C</div>
+    <h2 class="part">C. Source code arborescence</h2>
+    <p>The Python source tree follows a component&#8209;oriented layout. Each component of Chapter III has its own sub&#8209;package; shared utilities (data loading, evaluation, training loops) sit in a separate <code>common/</code> package. The structure is reproduced below in abbreviated form.</p>
+    <pre style="background:var(--paper-2);border-left:3px solid var(--accent);font-family:'IBM Plex Mono',monospace;font-size:13px;padding:14px 18px;overflow-x:auto;">prova-mg/
+&#9474;
+&#9500;&#9472; data/
+&#9474;  &#9500;&#9472; manifests/
+&#9474;  &#9474;  &#9500;&#9472; tier_a.jsonl
+&#9474;  &#9474;  &#9500;&#9472; tier_b.jsonl
+&#9474;  &#9474;  &#9500;&#9472; tier_c.jsonl
+&#9474;  &#9474;  &#9492;&#9472; tier_d.jsonl
+&#9474;  &#9492;&#9472; manifests_test/
+&#9474;     &#9500;&#9472; fleurs_mg.jsonl
+&#9474;     &#9500;&#9472; cv_mg.jsonl
+&#9474;     &#9492;&#9472; in_domain.jsonl
+&#9500;&#9472; src/
+&#9474;  &#9500;&#9472; common/
+&#9474;  &#9474;  &#9500;&#9472; data_loader.py
+&#9474;  &#9474;  &#9500;&#9472; evaluation.py
+&#9474;  &#9474;  &#9500;&#9472; training.py
+&#9474;  &#9474;  &#9492;&#9472; utils.py
+&#9474;  &#9500;&#9472; c31_routing/
+&#9474;  &#9474;  &#9500;&#9472; teachers.py
+&#9474;  &#9474;  &#9500;&#9472; features.py
+&#9474;  &#9474;  &#9492;&#9472; router.py
+&#9474;  &#9500;&#9472; c32_typology/
+&#9474;  &#9474;  &#9500;&#9472; train_typ_lm.py
+&#9474;  &#9474;  &#9492;&#9472; decode_with_prior.py
+&#9474;  &#9500;&#9472; c33_em/
+&#9474;  &#9474;  &#9500;&#9472; e_step.py
+&#9474;  &#9474;  &#9500;&#9472; m_step.py
+&#9474;  &#9474;  &#9492;&#9472; constraints.py
+&#9474;  &#9500;&#9472; c34_latent/
+&#9474;  &#9474;  &#9500;&#9472; graphical_model.py
+&#9474;  &#9474;  &#9492;&#9472; mean_field.py
+&#9474;  &#9492;&#9472; c35_calibration/
+&#9474;     &#9500;&#9472; features.py
+&#9474;     &#9492;&#9472; fit_calibrator.py
+&#9500;&#9472; experiments/
+&#9474;  &#9500;&#9472; configs/
+&#9474;  &#9492;&#9472; results/
+&#9500;&#9472; tests/
+&#9492;&#9472; docs/
+   &#9500;&#9472; manuscript/
+   &#9500;&#9472; model_cards/
+   &#9492;&#9472; datasheets/</pre>
+  </section>
+
+  <section id="anx-D">
+    <div class="part-label">Annexe D</div>
+    <h2 class="part">D. Launch commands</h2>
+    <p>The repository's <code>README.md</code> documents the canonical launch commands for each stage of the workflow. The commands are reproduced below in abbreviated form; the full file in the repository contains environment activation, distributed&#8209;launch wrappers, and resume&#8209;from&#8209;checkpoint flags.</p>
+    <div class="example">
+      <span class="lbl">README.md (abbreviated)</span>
+# Environment
+$ docker compose up -d devcontainer
+$ docker exec -it prova-mg-dev bash
+# Stage 1 - initialization
+$ python -m src.common.training --config experiments/configs/init_sup.yaml
+# Stage 2 - teacher inference on Tier C
+$ python -m src.c31_routing.teachers --teachers all --split tier_c
+# Stage 3 - calibration and routing fit
+$ python -m src.c35_calibration.fit_calibrator --config experiments/configs/calib.yaml
+$ python -m src.c31_routing.router --config experiments/configs/router.yaml
+# Stage 4 - constrained EM loop
+$ python -m src.c33_em.run --config experiments/configs/em_full.yaml --iterations 6
+# Stage 5 - joint latent inference and final eval
+$ python -m src.c34_latent.mean_field --config experiments/configs/latent.yaml
+$ python -m src.common.evaluation --splits fleurs_mg cv_mg in_domain
+    </div>
+  </section>
+
+  <section id="anx-E">
+    <div class="part-label">Annexe E</div>
+    <h2 class="part">E. Execution in simulation mode</h2>
+    <p>For methodological work prior to a full corpus run, a <em>simulation mode</em> is provided. In simulation mode, the unlabeled pool is replaced by a synthetic stream generated from the supervised set by controlled corruption (additive noise, time warping, partial label removal), and the teacher posteriors are emulated by an analytic mixture whose disagreement profile is parameterized. The simulation mode is built on a SimPy&#8209;like discrete&#8209;event harness and allows the validation of the constrained EM loop independently of compute&#8209;heavy teacher inference. A typical simulation log is reproduced below.</p>
+    <div class="example">
+      <span class="lbl">simulation.log (excerpt)</span>
+[t=0.000] init  theta from supervised (N=14 320 segments)
+[t=0.001] sim  unlabeled stream  size=120 000  disagreement_profile=tri-modal
+[t=0.014] EM iter 1  E-step: 87.3% segments admitted under C1 C2 C3 C4
+[t=0.052] EM iter 1  M-step: held-out WER 31.4 -> 28.9
+[t=0.066] EM iter 2  E-step: 88.1% segments admitted
+[t=0.108] EM iter 2  M-step: held-out WER 28.9 -> 27.0
+[t=0.121] EM iter 3  E-step: 88.6% segments admitted
+[t=0.165] EM iter 3  M-step: held-out WER 27.0 -> 26.2
+[t=0.166] EM iter 3  KL drift 0.018 &lt; epsilon=0.05 OK
+[t=0.220] convergence reached (delta &lt; 0.5 WER)
+    </div>
+  </section>
+
+  <section id="anx-F">
+    <div class="part-label">Annexe F</div>
+    <h2 class="part">F. Execution in production mode</h2>
+    <p>The production mode runs the same code path on the actual Tier&#8209;A through Tier&#8209;C corpora and on the registered foundation models. A typical production log records GPU hours, dataset sizes, and per&#8209;iteration WER on the held&#8209;out development set. Logs are stored under <code>experiments/results/&lt;run_id&gt;/</code> and indexed by Weights &amp; Biases.</p>
+    <div class="example">
+      <span class="lbl">production.log (excerpt)</span>
+[2026-04-08 09:12] run_id=prv-2026-04-08-em-full  user=randriamanasina
+[2026-04-08 09:12] hardware: 4x A100-80GB  bf16  effective batch=64
+[2026-04-08 09:13] stage 1 init  D_sup=312h  D_dev=8h
+[2026-04-08 14:47] stage 2 teacher inference complete  D_unsup=12 480h  GPU-h=174
+[2026-04-08 16:02] stage 3 calibration fit  ECE_raw=0.182  ECE_cal=0.041
+[2026-04-08 16:18] stage 4 EM iter 1 start
+[2026-04-09 02:11] stage 4 EM iter 1 complete  dev-WER 24.7 -> 22.1
+[2026-04-09 11:55] stage 4 EM iter 2 complete  dev-WER 22.1 -> 20.6
+... [output truncated for brevity] ...
+[2026-04-12 06:22] stage 5 final eval  fleurs_mg=14.3 cv_mg=19.8 in_domain=22.9
+    </div>
+  </section>
+
+  <section id="anx-G">
+    <div class="part-label">Annexe G</div>
+    <h2 class="part">G. Web interface</h2>
+    <p>A small web interface, served from a FastAPI back&#8209;end and a Svelte front&#8209;end, exposes the final model for interactive testing. The interface accepts a recorded or uploaded audio segment, displays the top&#8209;1 transcript together with the calibrated confidence and the per&#8209;teacher transcripts, shows the inferred dialect and register, and highlights segments tagged as code&#8209;switched. A screenshot, reproduced in the printed thesis, displays the layout: a recording widget at the top, the consensus transcription in the centre with confidence&#8209;coloured highlighting, the three teacher transcripts side by side below, and a metadata bar at the bottom reporting dialect, register, code&#8209;switching density, and a link to the segment&#8209;level posterior visualization. The interface is intended primarily for qualitative diagnostic rather than for production deployment.</p>
+  </section>
+
+  <section id="anx-H">
+    <div class="part-label">Annexe H</div>
+    <h2 class="part">H. Execution journal</h2>
+    <p>A daily execution journal is kept throughout the doctoral period as a tab&#8209;separated text file under version control. Each entry records the date, the active stage of the workflow, the run identifiers launched, the experiment configurations modified, the issues encountered, and the resolution. An excerpt is reproduced below for illustration.</p>
+    <div class="example">
+      <span class="lbl">journal.tsv (excerpt)</span>
+2026-03-02  P1  data_v1  tier-A intake check completed for 38h
+2026-03-05  P1  data_v1  IAA report: CER 4.1% on double-annotated subset
+2026-03-12  P0  baselines  whisper-large-v3 zero-shot reproduced (WER 47.3 on fleurs-mg)
+2026-03-21  P2  routing  feature pipeline finalized; router trained, dev acc 0.81
+2026-04-02  P3  calibration  isotonic regression preferred over temperature scaling
+2026-04-08  P5  em-loop  run prv-2026-04-08-em-full launched (see Annex F)
+2026-04-13  P6  latent  mean-field convergence verified on dev set
+... [redacted entries] ...
+2026-05-04  P7  full system  master ablation table generated for thesis
+    </div>
+  </section>
+
+  <nav class="pager">
+    <a href="references.html"><span class="dir">&larr; Previous</span><span class="ctitle">References</span></a>
+    <a class="next" href="fiche.html"><span class="dir">Next &rarr;</span><span class="ctitle">Candidate Information Sheet</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    Back matter &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>General Conclusion and Perspectives — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; General Conclusion</div>
+    <h1 class="title">General Conclusion and <em>Perspectives</em></h1>
+    <p class="standfirst">A reminder of the topic, a recapitulation of the broad lines of the argument, a reminder of the research problem, an account of the main findings as expected, a reminder of the novelty, an acknowledgment of the limits, and a statement of the open perspectives.</p>
+  </header>
+
+  <section>
+    <div class="part-label">Reminder</div>
+    <h2 class="part">Reminder of the topic</h2>
+    <p>The present thesis was concerned with the problem of constructing an automatic speech recognition system for the Malagasy language &mdash; a low&#8209;resource Austronesian language with at least eighteen recognized dialects and a pervasive code&#8209;switching with French &mdash; under conditions that no single foundation model, supervision regime, or adaptation technique can satisfy on its own. The topic was approached as a question of methodology rather than as a question of model architecture: not <em>which network</em>, but <em>which inferential framework</em> could combine, in a principled way, the heterogeneous evidence available to a low&#8209;resource setting.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Recapitulation</div>
+    <h2 class="part">Broad lines of the argument</h2>
+    <p>Chapter I reviewed the four foundational paradigms of speech recognition &mdash; HMM&#8209;GMM, hybrid DNN&#8209;HMM, end&#8209;to&#8209;end neural, self&#8209;supervised representation &mdash; together with the mathematics that connects them, with emphasis on the elements that would re&#8209;appear in the methodology. Chapter II extended the survey to multilingual and low&#8209;resource methods, described the license&#8209;first data substrate of the present work, and identified four open methodological problems: heterogeneous co&#8209;inference, typological priors, constrained variational EM for pseudo&#8209;labeling, and latent&#8209;variable decomposition of dialect, register, and code&#8209;switching. Chapter III formulated PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy &mdash; as a latent&#8209;variable probabilistic system addressing the four problems jointly through five interlocking components, with a transversal calibration head that feeds every downstream constraint. Chapter IV described the prototype implementation, the experimental matrix, the expected interpretation patterns, the limitations, the perspectives, and the eight&#8209;phase validation procedure that operationalizes the empirical confrontation.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Problem</div>
+    <h2 class="part">Reminder of the research problem</h2>
+    <p>The research problem was: <em>under what conditions, and with what methodological apparatus, can the existing foundation models for multilingual speech recognition be combined with the available licensed Malagasy audio so as to yield a deployable ASR system whose performance is competitive on the standard variety, equitable across dialects, calibrated in its confidences, and reproducible from public artifacts?</em> The answer proposed by the present thesis is that such a combination is possible if heterogeneous teachers are treated as distinct posteriors rather than as competing baselines, if iterative pseudo&#8209;labeling is constrained by calibrated confidence, teacher agreement, KL drift, and typological consistency, if dialect, register, and code&#8209;switching are unified as latent variables, and if the entire system is anchored in a license&#8209;first data substrate.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Findings</div>
+    <h2 class="part">Main findings as expected</h2>
+    <p>Pending the completion of the experimental matrix, the main findings anticipated by the present thesis are four. First, the routing of three heterogeneous foundation models outperforms posterior averaging and n&#8209;best voting on every evaluation set, with the gain concentrating on segments of intermediate teacher agreement. Second, the typological prior trained on Indonesian, Malay, Cebuano, and Tagalog produces a localized, measurable reduction in WER on low&#8209;frequency morphology and rare segmental sequences. Third, the constrained variational EM converges monotonically in held&#8209;out loss across iterations, the unconstrained loop demonstrably collapses, and each of the four constraints has a measurable share in the total gain. Fourth, the joint latent inference reduces WER on under&#8209;represented dialects and on code&#8209;switched speech without degradation on the majority dialect, narrowing the worst&#8209;to&#8209;best dialect ratio toward the targeted factor of two. The Expected Calibration Error of the calibrated confidence is, throughout, substantially lower than that of the raw confidence, and the calibrator fitted on the supervised set generalizes to the larger, distributionally shifted unlabeled pool.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Novelty</div>
+    <h2 class="part">Reminder of the novelty</h2>
+    <p>The novelty of the present thesis lies in the unification rather than in any single component taken in isolation. Routing across heterogeneous teachers, typological priors, constrained pseudo&#8209;labeling, latent dialect modeling, and post&#8209;hoc calibration have each been proposed in earlier literature, often in unrelated contexts. The present work re&#8209;reads them as components of a single variational&#8209;Bayesian system whose constraints are derived from one another, instantiates that system on a low&#8209;resource language for which all five problems are simultaneously load&#8209;bearing, and validates the integrated framework through an eight&#8209;phase procedure with measurable gates. To that re&#8209;reading is added a formal analysis &mdash; convergence and non&#8209;collapse conditions for the constrained EM &mdash; that the empirical literature on iterative pseudo&#8209;labeling does not articulate.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Limits</div>
+    <h2 class="part">Acknowledgment of limits</h2>
+    <p>Five limits condition the interpretation of the contribution. The dialect partition is coarser than the linguistic reality. The calibration set is small in absolute terms. Tier&#8209;B annotators see the seed transcription before correcting, introducing an anchoring bias. The constrained EM is iterated under a compute budget rather than to formal convergence. Speech&#8209;LLM comparisons may not be available at the date of defense. Each of these limits is reported and, where possible, mitigated by an explicit study.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Perspectives</div>
+    <h2 class="part">Open perspectives</h2>
+    <p>Beyond the present thesis, four perspectives are identified. <em>Cross&#8209;lingual transfer</em> &mdash; instantiation of the framework on another Austronesian low&#8209;resource language to test the generality of the typological prior. <em>On&#8209;device deployment</em> &mdash; distillation of the integrated system into a sub&#8209;100M&#8209;parameter student suitable for mobile inference, with continued attention to dialect equity. <em>Speech&#8209;LLM integration</em> &mdash; the use of a speech&#8209;LLM as a downstream rescorer or as an additional teacher in the routing function, conditional on coverage of Malagasy by the LLM's text side. <em>Application studies</em> &mdash; deployment trials in education, accessibility, administrative transcription, and journalistic indexing, accompanied by qualitative evaluation. The trajectory beyond the thesis is therefore one of broadening (other languages, other devices) accompanied by deepening (downstream tasks, qualitative evaluation), under a continuous license&#8209;first and consent&#8209;respecting regime.</p>
+    <div class="callout">
+      <span class="tag">Closing</span>
+      The contribution of the present work is offered as a stepping stone: a framework that another doctoral candidate, in another low&#8209;resource setting, may pick up, instantiate, and refine. Methodology travels; data does not.
+    </div>
+  </section>
+
+  <nav class="pager">
+    <a href="../chapters/04-results-discussion.html"><span class="dir">&larr; Previous</span><span class="ctitle">Chapter IV &mdash; Results and Discussion</span></a>
+    <a class="next" href="references.html"><span class="dir">Next &rarr;</span><span class="ctitle">Bibliographic References</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    General conclusion &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>

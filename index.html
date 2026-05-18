@@ -34,26 +34,73 @@
     <p>The four chapters below carry the argument: the foundational state of the art, the multilingual and low&#8209;resource state of the art together with the open methodological gaps, the PROVA&#8209;MG methodology and its integration with the existing data pipeline, and the validation procedure, expected applications, and limitations.</p>
   </section>
 
-  <!-- ===================== TOC ===================== -->
+  <!-- ===================== FULL TABLE OF CONTENTS ===================== -->
   <nav class="toc">
-    <h2>Contents</h2>
+    <h2>Table of contents &mdash; Front matter</h2>
     <ol>
       <li>
-        <a href="chapters/01-sota-foundations.html">State of the art (I): foundations of speech recognition</a>
-        <span class="sum">Classical HMM&#8209;GMM, hybrid DNN&#8209;HMM, end&#8209;to&#8209;end objectives, and self&#8209;supervised representations.</span>
+        <a href="front-matter/teny-fisaorana.html">Teny Fisaorana</a>
+        <span class="sum">Acknowledgements in Malagasy.</span>
       </li>
       <li>
-        <a href="chapters/02-sota-asr.html">State of the art (II): low&#8209;resource and multilingual ASR</a>
-        <span class="sum">Cross&#8209;lingual SSL, weak supervision, adaptation, pseudo&#8209;labeling, speech&#8209;LLMs, and the open methodological gaps.</span>
+        <a href="front-matter/remerciements.html">Remerciements</a>
+        <span class="sum">Acknowledgements (English).</span>
       </li>
       <li>
-        <a href="chapters/03-methodology.html">Methodology: the PROVA&#8209;MG framework</a>
-        <span class="sum">Five interlocking components &mdash; co&#8209;inference, typological priors, constrained EM, latent decomposition, calibration &mdash; and their integration with the existing pipeline.</span>
+        <a href="front-matter/abbreviations.html">List of Abbreviations and Notations</a>
+        <span class="sum">Acronyms and mathematical notation used throughout the thesis.</span>
       </li>
       <li>
-        <a href="chapters/04-results-discussion.html">Results and discussion</a>
-        <span class="sum">Positioning with respect to prior art, publication plan, ordered validation procedure with measurable gates, and limitations.</span>
+        <a href="front-matter/figures-tables.html">List of Figures and Tables</a>
+        <span class="sum">Indicative inventory of figures and tables.</span>
       </li>
+    </ol>
+  </nav>
+
+  <nav class="toc">
+    <h2>Table of contents &mdash; Body</h2>
+    <ol>
+      <li>
+        <a href="chapters/00-introduction-generale.html">General Introduction and Position of the Problem</a>
+        <span class="sum">Hook, definitions, context, problem statement, hypotheses, objective, methodology, expected results, plan.</span>
+      </li>
+      <li>
+        <a href="chapters/01-sota-foundations.html">Chapter I &mdash; Foundations of Speech Recognition</a>
+        <span class="sum">Classical and hybrid paradigms; neural and self&#8209;supervised paradigms.</span>
+      </li>
+      <li>
+        <a href="chapters/02-sota-asr.html">Chapter II &mdash; Low&#8209;Resource and Multilingual ASR</a>
+        <span class="sum">Cross&#8209;lingual SSL, weak supervision, adaptation, pseudo&#8209;labeling, license&#8209;first data, open problems.</span>
+      </li>
+      <li>
+        <a href="chapters/03-methodology.html">Chapter III &mdash; The PROVA&#8209;MG Methodology</a>
+        <span class="sum">Theoretical formulation, five components with derivations, training protocol.</span>
+      </li>
+      <li>
+        <a href="chapters/04-results-discussion.html">Chapter IV &mdash; Application, Results and Discussion</a>
+        <span class="sum">Prototype, experimental matrix (placeholder), discussion, perspectives, eight&#8209;phase validation.</span>
+      </li>
+      <li>
+        <a href="back-matter/conclusion-generale.html">General Conclusion and Perspectives</a>
+        <span class="sum">Reminder, recap, findings, novelty, limits, open perspectives.</span>
+      </li>
+    </ol>
+  </nav>
+
+  <nav class="toc">
+    <h2>Table of contents &mdash; Back matter</h2>
+    <ol>
+      <li><a href="back-matter/references.html">Bibliographic References</a><span class="sum">Working bibliography in APA style.</span></li>
+      <li><a href="back-matter/annexes.html#anx-A">Annexe A &mdash; Local project organization in VS Code</a></li>
+      <li><a href="back-matter/annexes.html#anx-B">Annexe B &mdash; Private GitHub repository</a></li>
+      <li><a href="back-matter/annexes.html#anx-C">Annexe C &mdash; Source code arborescence</a></li>
+      <li><a href="back-matter/annexes.html#anx-D">Annexe D &mdash; Launch commands</a></li>
+      <li><a href="back-matter/annexes.html#anx-E">Annexe E &mdash; Execution in simulation mode</a></li>
+      <li><a href="back-matter/annexes.html#anx-F">Annexe F &mdash; Execution in production mode</a></li>
+      <li><a href="back-matter/annexes.html#anx-G">Annexe G &mdash; Web interface</a></li>
+      <li><a href="back-matter/annexes.html#anx-H">Annexe H &mdash; Execution journal</a></li>
+      <li><a href="back-matter/fiche.html">Fiche de Renseignements</a><span class="sum">Candidate information sheet.</span></li>
+      <li><a href="back-matter/resume.html">Resume / Abstract / Keywords</a><span class="sum">French resume and English abstract.</span></li>
     </ol>
   </nav>
 
@@ -64,31 +111,45 @@
 
     <div class="chapter-grid">
 
+      <a class="chapter-card" href="chapters/00-introduction-generale.html">
+        <div class="pid">Introduction</div>
+        <div class="ctitle">General Introduction and Position of the Problem</div>
+        <p class="csum">Hook, terms, context, problem statement, hypotheses, objective, methodology, expected results, plan of the thesis.</p>
+        <span class="arrow">Open &rarr;</span>
+      </a>
+
       <a class="chapter-card" href="chapters/01-sota-foundations.html">
-        <div class="pid">Chapter 1</div>
-        <div class="ctitle">State of the art (I): foundations of speech recognition</div>
+        <div class="pid">Chapter I</div>
+        <div class="ctitle">Foundations of speech recognition</div>
         <p class="csum">The four paradigms on which modern ASR is built: HMM&#8209;GMM, hybrid DNN&#8209;HMM, end&#8209;to&#8209;end objectives, and self&#8209;supervised representations.</p>
         <span class="arrow">Open &rarr;</span>
       </a>
 
       <a class="chapter-card" href="chapters/02-sota-asr.html">
-        <div class="pid">Chapter 2</div>
-        <div class="ctitle">State of the art (II): low&#8209;resource and multilingual ASR</div>
+        <div class="pid">Chapter II</div>
+        <div class="ctitle">Low&#8209;resource and multilingual ASR</div>
         <p class="csum">Cross&#8209;lingual self&#8209;supervision, weak supervision, parameter&#8209;efficient adaptation, pseudo&#8209;labeling, speech&#8209;LLMs, and license&#8209;first data, with the open methodological problems identified.</p>
         <span class="arrow">Open &rarr;</span>
       </a>
 
       <a class="chapter-card" href="chapters/03-methodology.html">
-        <div class="pid">Chapter 3</div>
-        <div class="ctitle">Methodology: the PROVA&#8209;MG framework</div>
+        <div class="pid">Chapter III</div>
+        <div class="ctitle">The PROVA&#8209;MG methodology</div>
         <p class="csum">Three teachers as distinct posteriors, an Austronesian prior, constrained variational EM, latent dialect, register and code&#8209;switching, and a calibration head; integration with the existing pipeline.</p>
         <span class="arrow">Open &rarr;</span>
       </a>
 
       <a class="chapter-card" href="chapters/04-results-discussion.html">
-        <div class="pid">Chapter 4</div>
-        <div class="ctitle">Results and discussion</div>
-        <p class="csum">Positioning with respect to prior art, publication plan, eight&#8209;phase validation procedure with measurable gates, and discussion of limitations.</p>
+        <div class="pid">Chapter IV</div>
+        <div class="ctitle">Application, results and discussion</div>
+        <p class="csum">Prototype implementation, experimental matrix (placeholder), discussion, perspectives, positioning with respect to prior art, publication plan, eight&#8209;phase validation.</p>
+        <span class="arrow">Open &rarr;</span>
+      </a>
+
+      <a class="chapter-card" href="back-matter/conclusion-generale.html">
+        <div class="pid">Conclusion</div>
+        <div class="ctitle">General Conclusion and Perspectives</div>
+        <p class="csum">Recapitulation of the argument, main findings as expected, reminder of novelty, limits, and open perspectives for further work.</p>
         <span class="arrow">Open &rarr;</span>
       </a>
 

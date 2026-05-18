@@ -13,10 +13,191 @@
   <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
 
   <header class="masthead">
-    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter 4 of 4</div>
-    <h1 class="title">Results and <em>discussion</em></h1>
-    <p class="standfirst">This chapter situates each component of PROVA&#8209;MG with respect to the closest prior art, presents the planned validation procedure as an ordered sequence of phases with measurable gates, and discusses limitations.</p>
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter IV of IV</div>
+    <h1 class="title">Chapter IV: <em>Application, Results and Discussion</em></h1>
+    <p class="standfirst">The present chapter describes the prototype implementation of PROVA&#8209;MG, presents the experimental matrix in placeholder form pending the experimental run, discusses the expected results and their limitations, situates the framework with respect to the closest prior art, lays out the publication plan, the eight&#8209;phase validation procedure with measurable gates, and the perspectives of further work.</p>
   </header>
+
+  <section>
+    <div class="part-label">Chapter Introduction</div>
+    <h2 class="part">From methodology to evidence</h2>
+    <p>The framework specified in Chapter III is, at the moment of writing, instantiated in a prototype implementation whose components have been brought separately to functional readiness and whose integration is under way. The present chapter is organized in four substantive parts plus the validation plan inherited from earlier drafts. Part IV.1 describes the prototype: software stack, model registry, infrastructure. Part IV.2 lays out the experimental matrix in placeholder form, with full headers and labels so that, on each completed experiment, the corresponding cell is to be filled. Part IV.3 discusses the expected interpretation patterns, limitations beyond the existing list, and threats to validity. Part IV.4 develops the perspectives of further work, deployment, ethics, and dialect equity. The publication plan, the positioning with respect to prior art, and the eight&#8209;phase validation procedure are then preserved in their earlier form.</p>
+  </section>
+
+  <!-- ============== IV.1 Application ============== -->
+  <section id="p4-application">
+    <div class="part-label">Part Four &mdash; A</div>
+    <h2 class="part">IV.1 Application: prototype implementation</h2>
+
+    <h3>IV.1.1 Software stack</h3>
+    <p>The prototype is built in Python 3.11 on top of the PyTorch 2.x runtime. Data loading and tokenization go through the Hugging Face <em>datasets</em> and <em>transformers</em> libraries; foundation model inference uses <em>transformers</em> and, for Whisper, optionally the <em>faster&#8209;whisper</em> port of CTranslate2. Training uses <em>accelerate</em> for distributed orchestration and <em>peft</em> for LoRA adapter management. Evaluation uses <em>jiwer</em> for WER and CER, <em>scipy</em> for paired bootstrap and Wilcoxon tests, and <em>scikit&#8209;learn</em> for calibration (temperature scaling and isotonic regression). Experiment tracking goes through Weights &amp; Biases with offline fallback to a local SQLite store; every run logs the pinned environment hash and the seed.</p>
+
+    <h3>IV.1.2 Model registry</h3>
+    <p>A local model registry &mdash; a versioned directory tree with a JSON index &mdash; holds, for each foundation model and each fine&#8209;tuned variant: the weights (or a pointer to the public checkpoint), the configuration, the tokenizer, the model card, and the training manifest. Three foundation checkpoints are registered as <em>teachers</em>; subsequent fine&#8209;tuned variants are tagged with the upstream commit hash of the configuration and the data manifest version on which they were trained.</p>
+
+    <h3>IV.1.3 Infrastructure</h3>
+    <p>Training and inference run on a small heterogeneous cluster comprising consumer&#8209;grade and server&#8209;grade GPUs (A100&#8209;80GB, A40, RTX&#8209;4090&#8209;class), with mixed&#8209;precision (bf16) where supported and fp16 elsewhere. Long inference passes on the Tier&#8209;C unlabeled pool are sharded across nodes and the resulting n&#8209;best lattices are compressed and stored on shared object storage. A reproducible Docker image, archived with its hash, packages the runtime environment.</p>
+  </section>
+
+  <!-- ============== IV.2 Results placeholders ============== -->
+  <section id="p4-results">
+    <div class="part-label">Part Four &mdash; B</div>
+    <h2 class="part">IV.2 Results (placeholder structure, pending experimental run)</h2>
+    <p>The following tables fix the structure of the experimental matrix. Cells are marked <code>tbd</code> pending the corresponding experimental run; column headers and row labels are the load&#8209;bearing content at the present stage. Significance tests reported in the manuscript will be paired bootstrap and Wilcoxon with Bonferroni correction across the family of comparisons.</p>
+
+    <h3>Table 4.1 &mdash; Headline WER (%)</h3>
+    <table>
+      <thead><tr><th>System</th><th>FLEURS-MG</th><th>CV-MG</th><th>In-domain</th><th>All-avg</th></tr></thead>
+      <tbody>
+        <tr><td>Whisper-large-v3 (zero-shot)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Whisper-large-v3 (fine-tuned)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>MMS (zero-shot)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>MMS (fine-tuned)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Wav2Vec2-BERT (pre-trained)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Wav2Vec2-BERT (fine-tuned)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>XLS-R-1B (fine-tuned)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>PROVA-MG (full)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Table 4.2 &mdash; Component leave-one-out ablation (delta WER vs full)</h3>
+    <table>
+      <thead><tr><th>Configuration</th><th>FLEURS-MG</th><th>CV-MG</th><th>In-domain</th></tr></thead>
+      <tbody>
+        <tr><td>PROVA-MG full</td><td>0.00</td><td>0.00</td><td>0.00</td></tr>
+        <tr><td>&minus; Component 3.1 (co-inference)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>&minus; Component 3.2 (typological prior)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>&minus; Component 3.3 (constrained EM)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>&minus; Component 3.4 (latent decomposition)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>&minus; Component 3.5 (calibration)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Table 4.3 &mdash; Routing vs averaging vs voting (WER %)</h3>
+    <table>
+      <thead><tr><th>Aggregation strategy</th><th>FLEURS-MG</th><th>CV-MG</th><th>In-domain</th></tr></thead>
+      <tbody>
+        <tr><td>Best single teacher (oracle by dataset)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>N-best voting (ROVER-style)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Posterior averaging</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>PROVA-MG routing (Component 3.1)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Table 4.4 &mdash; Typological prior leave-one-language-out (WER %)</h3>
+    <table>
+      <thead><tr><th>Family corpus included in P_typ</th><th>FLEURS-MG</th><th>In-domain</th></tr></thead>
+      <tbody>
+        <tr><td>No prior (Malagasy LM only)</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Malagasy LM + Indonesian</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Malagasy LM + Malay</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Malagasy LM + Cebuano</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Malagasy LM + Tagalog</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Malagasy LM + all four (full P_typ)</td><td>tbd</td><td>tbd</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Table 4.5 &mdash; Constrained EM, leave-one-constraint-out (WER %)</h3>
+    <table>
+      <thead><tr><th>Constraints active</th><th>FLEURS-MG</th><th>In-domain</th><th>Collapse?</th></tr></thead>
+      <tbody>
+        <tr><td>None (unconstrained pseudo-labeling)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>C1 only (confidence floor)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>C1 + C2 (drift bound)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>C1 + C2 + C3 (teacher agreement)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>C1 + C2 + C3 + C4 (full)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Table 4.6 &mdash; Expected Calibration Error before and after calibration</h3>
+    <table>
+      <thead><tr><th>System</th><th>ECE (raw)</th><th>ECE (temp-scaled)</th><th>ECE (isotonic)</th><th>ECE (boosted)</th></tr></thead>
+      <tbody>
+        <tr><td>Whisper-large-v3</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>MMS</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Wav2Vec2-BERT</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>PROVA-MG consensus</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Table 4.7 &mdash; Dialect-stratified WER (%)</h3>
+    <table>
+      <thead><tr><th>System</th><th>Merina</th><th>Betsimisaraka</th><th>Sakalava</th><th>Antandroy</th></tr></thead>
+      <tbody>
+        <tr><td>Whisper-large-v3 (fine-tuned)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>MMS (fine-tuned)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Wav2Vec2-BERT (fine-tuned)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>PROVA-MG (full)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Table 4.8 &mdash; Code-switching density buckets</h3>
+    <table>
+      <thead><tr><th>System</th><th>0% FR</th><th>1-10% FR</th><th>10-25% FR</th><th>&gt;25% FR</th></tr></thead>
+      <tbody>
+        <tr><td>Whisper-large-v3 (fine-tuned)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>PROVA-MG without c-head</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>PROVA-MG (full, with c-head)</td><td>tbd</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Table 4.9 &mdash; Compute cost comparison</h3>
+    <table>
+      <thead><tr><th>System</th><th>GPU-h training</th><th>RTF inference</th><th>Peak VRAM</th></tr></thead>
+      <tbody>
+        <tr><td>Whisper-large-v3 (fine-tuned)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>Wav2Vec2-BERT (fine-tuned)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>PROVA-MG (teacher ensemble at training)</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+        <tr><td>PROVA-MG distilled student</td><td>tbd</td><td>tbd</td><td>tbd</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Figure 4.1 &mdash; Reliability diagram (placeholder description)</h3>
+    <p>The reliability diagram, to be produced after the run of Phase 3, plots, on the horizontal axis, the binned predicted confidence (ten equal&#8209;width bins from 0 to 1) and, on the vertical axis, the observed fraction of correct top&#8209;1 transcripts in each bin. The diagonal corresponds to perfect calibration. Curves are reported for raw confidence, temperature&#8209;scaled, isotonic&#8209;regressed, and boosted&#8209;classifier calibration, on the FLEURS&#8209;MG development set and on a Tier&#8209;C subset to test distribution shift.</p>
+  </section>
+
+  <!-- ============== IV.3 Discussion ============== -->
+  <section id="p4-discussion-ext">
+    <div class="part-label">Part Four &mdash; C</div>
+    <h2 class="part">IV.3 Discussion: expected patterns, limitations, threats to validity</h2>
+
+    <h3>IV.3.1 Expected interpretation patterns</h3>
+    <p>Under the working hypotheses of the General Introduction, four interpretation patterns are anticipated. First, the gain of routing over averaging is expected to concentrate on segments of intermediate teacher agreement: where all three teachers agree, averaging and routing coincide; where teachers disagree strongly, routing should defer to human review rather than commit to a likely&#8209;wrong consensus. Second, the typological prior is expected to act selectively on low&#8209;frequency morphology and on rare segmental sequences, with little effect on high&#8209;frequency lexical items already well covered by the Malagasy language model. Third, the constrained EM is expected to improve held&#8209;out WER monotonically across iterations under the full constraint set, and to exhibit clear divergence under the constraint&#8209;ablated runs. Fourth, the joint latent inference is expected to improve performance on under&#8209;represented dialects (Betsimisaraka, Sakalava, Antandroy) without degradation on Merina, and to handle code&#8209;switched segments better than a single Malagasy&#8209;only system.</p>
+
+    <h3>IV.3.2 Limitations beyond the existing list</h3>
+    <p>Several limitations condition the interpretation of the expected results beyond those listed in Part IV.D below.</p>
+    <ul class="plain">
+      <li><strong>Dialect category granularity.</strong> The four&#8209;way dialect partition (Merina, Betsimisaraka, Sakalava, Antandroy) is a simplification: at least eighteen dialect groups are recognized linguistically, and several of the four groups are themselves internally heterogeneous. The latent variable <em>d</em> is therefore coarser than the linguistic reality.</li>
+      <li><strong>Calibration set size.</strong> The supervised set on which the calibrator is fit is, in absolute terms, small. The distribution&#8209;shift study of Phase 3 is intended to detect calibration breakdown, but it cannot in itself prevent it.</li>
+      <li><strong>Anchoring bias in correction.</strong> Tier&#8209;B annotators see the seed transcription before correcting it, which is known to introduce an anchoring bias toward the seed. A double&#8209;annotation sample is therefore retained on which the bias is measured and reported.</li>
+      <li><strong>Compute&#8209;limited iteration count.</strong> The constrained EM is in principle iterated until convergence; in practice the iteration count is bounded by available compute. A budget of six iterations is planned and reported as a hyperparameter rather than as a converged result.</li>
+      <li><strong>Speech&#8209;LLM comparisons.</strong> Speech&#8209;LLMs are not on the load&#8209;bearing path; a comparison may therefore not be available at the date of defense and is recorded as a future work item.</li>
+    </ul>
+
+    <h3>IV.3.3 Threats to validity</h3>
+    <p>Four threats to validity are identified at the methodological level. <em>Construct validity</em>: WER and CER are imperfect proxies for downstream task quality; a small qualitative evaluation on transcripts intended for accessibility and educational applications is therefore retained. <em>Internal validity</em>: the integration of five interacting components creates a risk of confounding between component effects; the leave&#8209;one&#8209;out ablation of Table 4.2 is designed precisely to bound that risk, complemented by selected leave&#8209;two&#8209;out runs on the components whose interaction is theoretically expected to be largest. <em>External validity</em>: the methodology is instantiated on Malagasy; its transfer to other low&#8209;resource Austronesian languages (Tagalog with its own resource gradient, Cebuano, the languages of eastern Indonesia) is a future work item, not a claim of the present thesis. <em>Conclusion validity</em>: significance tests across the full matrix invite multiple&#8209;comparison inflation; Bonferroni correction is applied to the family of headline comparisons.</p>
+
+    <h3>IV.3.4 Comparison to prior numbers in the literature</h3>
+    <p>Published numbers for Malagasy ASR are sparse and use heterogeneous test sets. Whisper&#8209;large&#8209;v3 zero&#8209;shot WER on FLEURS&#8209;MG has been reported around the high&#8209;forties; MMS fine&#8209;tuned on Common Voice&#8209;MG has been reported in the low&#8209;thirties; XLS&#8209;R fine&#8209;tuned on Common Voice&#8209;MG has appeared in the high&#8209;twenties on the same test set. The thesis targets &mdash; at or below 15% WER on read speech and at or below 25% WER on spontaneous speech &mdash; are therefore ambitious relative to the published state of the art, and their attainment, if confirmed, would constitute a substantive empirical contribution in addition to the methodological one.</p>
+  </section>
+
+  <!-- ============== IV.4 Perspectives ============== -->
+  <section id="p4-perspectives">
+    <div class="part-label">Part Four &mdash; D</div>
+    <h2 class="part">IV.4 Perspectives: future work, deployment, ethics, dialect equity</h2>
+
+    <h3>IV.4.1 Future technical work</h3>
+    <p>Several technical extensions are envisaged beyond the scope of the present thesis. <em>Speech&#8209;LLM integration</em>: a comparison and possibly an integration of the PROVA&#8209;MG output with a speech&#8209;LLM as a downstream rescorer. <em>On&#8209;device deployment</em>: distillation of the integrated framework into a compact (sub&#8209;100M&#8209;parameter) student suitable for inference on mobile hardware. <em>Streaming variant</em>: replacement of the offline encoder by a streaming Conformer with chunked attention, enabling real&#8209;time transcription. <em>Cross&#8209;lingual transfer</em>: instantiation of the framework on another low&#8209;resource Austronesian language to test the generality of the typological prior.</p>
+
+    <h3>IV.4.2 Deployment and applications</h3>
+    <p>A small set of applications is identified as priority deployment targets, conditional on the attainment of the WER thresholds. Educational support tools transcribe classroom audio for review by pupils and teachers, with manual correction as a learning activity. Accessibility services produce captions for live broadcast and recorded media. Administrative transcription accelerates the conversion of public&#8209;hearing audio into searchable text. Journalistic indexing produces searchable transcripts of interview archives. Each application requires a domain&#8209;specific qualitative evaluation and a written consent regime appropriate to the recording setting.</p>
+
+    <h3>IV.4.3 Ethics</h3>
+    <p>Three ethical considerations are integrated into the design. <em>Consent and licensing</em>: every recording entering the corpus is accompanied by a verifiable consent and license document, and Tier&#8209;D recordings are excluded from any open release. <em>Speaker privacy</em>: voice models pose a potential re&#8209;identification risk; the published student model is therefore distilled from a teacher trained on a privacy&#8209;screened subset, and a model card discloses the residual risk. <em>Use restriction</em>: model cards explicitly disallow surveillance applications and require the propagation of the use restriction in any derivative work.</p>
+
+    <h3>IV.4.4 Dialect equity</h3>
+    <p>Dialect equity is treated as an evaluation dimension rather than as a secondary concern. The stratified evaluation of Table 4.7 reports per&#8209;dialect WER explicitly; a deployment is considered usable only when the worst&#8209;dialect WER is within a stated factor of the best&#8209;dialect WER. The factor is conservatively set to two for the present thesis and is intended to tighten as the corpus expands.</p>
+  </section>
 
   <!-- ============== A: Positioning ============== -->
   <section id="p4a">
