@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Results, application and discussion — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter 4 of 4</div>
+    <h1 class="title">Results, application and <em>discussion</em></h1>
+    <p class="standfirst">This chapter situates each component of PROVA&#8209;MG with respect to the closest prior art, presents the planned validation procedure as an ordered sequence of phases with measurable gates, describes the intended applications, and discusses limitations.</p>
+  </header>
+
+  <!-- ============== A: Positioning ============== -->
+  <section id="p4a">
+    <div class="part-label">Part Four &mdash; A</div>
+    <h2 class="part">Positioning with respect to prior art</h2>
+    <p>Each component of PROVA&#8209;MG draws on existing literature; the contribution lies in the specific formulation of each component and in their integration. The following table summarizes the nearest prior art and the elements that are new in the present work.</p>
+    <table>
+      <thead><tr><th>Component</th><th>Nearest prior art</th><th>Contribution of the present work</th></tr></thead>
+      <tbody>
+        <tr><td>3.1 Co&#8209;inference</td><td>Ensemble distillation, DistilWhisper</td><td>Teachers treated as distinct posteriors with informative disagreement; routing rather than averaging.</td></tr>
+        <tr><td>3.2 Typological priors</td><td>Language&#8209;family adapters in low&#8209;resource machine translation</td><td>Explicit Bayesian prior on phonotactics integrated into the decoding probability.</td></tr>
+        <tr><td>3.3 Constrained EM</td><td>slimIPL, Kaizen, Noisy Student Training</td><td>Formal convergence and non&#8209;collapse conditions in constrained variational form.</td></tr>
+        <tr><td>3.4 Latent decomposition</td><td>Dialect adapters for Arabic and Chinese</td><td>Joint inference of dialect, register, and code&#8209;switching within a single generative model.</td></tr>
+        <tr><td>3.5 Calibration</td><td>Post&#8209;hoc calibration in classification</td><td>Calibration that generalizes from a small supervised set to a larger, distributionally shifted unlabeled set.</td></tr>
+      </tbody>
+    </table>
+    <p>The integration of the five components is itself a contribution: the calibrated confidence (3.5), the agreement signal (3.1), and the constraint set (3.3) are shared across components, so that they reinforce one another rather than operating in isolation.</p>
+  </section>
+
+  <!-- ============== B: Application & validation plan ============== -->
+  <section id="p4b" class="checklist-intro">
+    <div class="part-label">Part Four &mdash; B</div>
+    <h2 class="part">Application: a publication plan</h2>
+    <p>The methodology supports an ordered sequence of publications. Each publication isolates one component, while the doctoral manuscript provides the integrated demonstration.</p>
+    <table>
+      <thead><tr><th>Paper</th><th>Content</th><th>Target venue</th></tr></thead>
+      <tbody>
+        <tr><td>Paper 1</td><td>License&#8209;first corpus pipeline (data substrate)</td><td>SIGUL workshop</td></tr>
+        <tr><td>Paper 2</td><td>Heterogeneous foundation&#8209;model co&#8209;inference (3.1)</td><td>Interspeech / ICASSP</td></tr>
+        <tr><td>Paper 3</td><td>Typological priors for low&#8209;resource ASR (3.2)</td><td>ACL / EMNLP</td></tr>
+        <tr><td>Paper 4</td><td>Constrained variational EM for pseudo&#8209;labeling (3.3)</td><td>Computer Speech and Language / IEEE&#8209;ACM TASLP</td></tr>
+        <tr><td>Paper 5</td><td>Joint dialect, register, and code&#8209;switching inference (3.4 + 3.5)</td><td>Interspeech</td></tr>
+      </tbody>
+    </table>
+
+    <h2 class="part" style="margin-top:2rem">Validation plan: phases, tasks, and gates</h2>
+    <p>The validation procedure is decomposed into eight phases. Each phase terminates with a <em>gate</em>, a measurable result that must hold before the next phase begins. Items can be marked as they are completed; progress is persisted automatically.</p>
+
+    <div class="controls">
+      <button id="btn-reset">Reset all</button>
+      <button id="btn-print">Print / save as PDF</button>
+    </div>
+  </section>
+
+  <div class="progress-shell">
+    <div class="progress-row">
+      <span class="lbl">Validation progress</span>
+      <span class="count" id="count">0 / 0 complete</span>
+    </div>
+    <div class="bar"><i id="bar-fill"></i></div>
+  </div>
+
+  <div id="checklist-body">
+
+    <!-- PHASE 0 -->
+    <div class="phase">
+      <div class="phase-head"><span class="pid">P0</span><h3>Foundations, infrastructure, and evaluation harness</h3></div>
+      <p class="phase-note">A reliable measuring instrument is the precondition for every subsequent phase.</p>
+      <div class="task"><input type="checkbox" data-id="p0-1"><label><span class="tcode">P0.1</span><span class="ttitle">Consolidate the literature review into a single internal document mapping every PROVA-MG component to its nearest prior art.</span><span class="deliver">Deliverable: state-of-the-art chapter draft.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p0-2"><label><span class="tcode">P0.2</span><span class="ttitle">Set up the reproducible compute environment (Python 3.10+, PyTorch, Transformers, Datasets, Accelerate) and archive it as a versioned Docker image.</span><span class="deliver">Deliverable: pinned environment and image hash.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p0-3"><label><span class="tcode">P0.3</span><span class="ttitle">Build the evaluation harness: WER and CER with jiwer, plus paired bootstrap, MAPSSWE, and Wilcoxon significance tests.</span><span class="deliver">Deliverable: a single command produces a metrics report with confidence intervals.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p0-4"><label><span class="tcode">P0.4</span><span class="ttitle">Define and freeze the held-out test sets: FLEURS-MG, Common Voice-MG, and a speaker-disjoint in-domain split, each stratified by dialect and register.</span><span class="deliver">Deliverable: frozen test manifests, untouched during development.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p0-5"><label><span class="tcode">P0.5</span><span class="ttitle">Reproduce published baselines: zero-shot Whisper-large-v3, XLS-R fine-tuned, MMS, on FLEURS-MG and CV-MG.</span><span class="deliver">Deliverable: baseline WER table consistent with public numbers.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p0-6"><label><span class="tcode">P0.6</span><span class="ttitle">Configure experiment tracking (Weights &amp; Biases or MLflow) so that every run is logged, seeded, and reproducible.</span><span class="deliver">Deliverable: tracked-experiment template.</span></label></div>
+      <div class="gate"><b>Gate 0</b> &nbsp; Baselines reproduce within a small margin of published WER, and the harness produces stable confidence intervals on a repeated run.</div>
+    </div>
+
+    <!-- PHASE 1 -->
+    <div class="phase">
+      <div class="phase-head"><span class="pid">P1</span><h3>Data substrate (license-first pipeline)</h3></div>
+      <p class="phase-note">PROVA-MG consumes a gold supervised set and a large licensed unlabeled set; the pipeline produces both.</p>
+      <div class="task"><input type="checkbox" data-id="p1-1"><label><span class="tcode">P1.1</span><span class="ttitle">Execute the pipeline end-to-end on the pilot corpus (approximately 20 h, Tier A and Tier C); verify that every one of the nine stages functions as specified.</span><span class="deliver">Deliverable: pilot corpus and stage manifests.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p1-2"><label><span class="tcode">P1.2</span><span class="ttitle">Onboard professional Malagasy transcribers; reach the inter-annotator CER target on double-annotated segments.</span><span class="deliver">Deliverable: agreement report meeting the threshold.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p1-3"><label><span class="tcode">P1.3</span><span class="ttitle">Populate the SIGUL article (Paper 1) with pilot numbers and submit it.</span><span class="deliver">Deliverable: SIGUL submission.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p1-4"><label><span class="tcode">P1.4</span><span class="ttitle">Scale to the intermediate corpus (approximately 200 h) covering at least three dialects, with register metadata.</span><span class="deliver">Deliverable: corpus v1 on Hugging Face with datasheet.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p1-5"><label><span class="tcode">P1.5</span><span class="ttitle">Scale to the full corpus (1 000+ h supervised plus the large unlabeled pool), balanced across dialect and register.</span><span class="deliver">Deliverable: corpus v2, Zenodo-archived with persistent DOI.</span></label></div>
+      <div class="gate"><b>Gate 1</b> &nbsp; A licensed unlabeled pool sufficient for pseudo-labeling exists, and the supervised set is sufficient to train a routing function and a calibration head.</div>
+    </div>
+
+    <!-- PHASE 2 -->
+    <div class="phase">
+      <div class="phase-head"><span class="pid">P2</span><h3>Component 3.1 &mdash; Heterogeneous foundation-model co-inference</h3></div>
+      <p class="phase-note">Show that routing across distinct teachers outperforms any single teacher, averaging, and voting.</p>
+      <div class="task"><input type="checkbox" data-id="p2-1"><label><span class="tcode">P2.1</span><span class="ttitle">Implement posterior extraction for Whisper-large-v3, MMS, and Wav2Vec2-BERT with normalized, comparable beam scores.</span><span class="deliver">Deliverable: per-segment posterior dumps for the unlabeled pool.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p2-2"><label><span class="tcode">P2.2</span><span class="ttitle">Engineer the agreement feature set (n-best overlap, edit distance between teachers, entropy, length agreement).</span><span class="deliver">Deliverable: feature table aligned to the supervised set.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p2-3"><label><span class="tcode">P2.3</span><span class="ttitle">Train the routing function on the supervised set, predicting one of the four routing outcomes.</span><span class="deliver">Deliverable: trained router and held-out routing accuracy.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p2-4"><label><span class="tcode">P2.4</span><span class="ttitle">Run the controlled ablation: best single teacher vs n-best voting vs posterior averaging vs PROVA-MG routing, on identical data.</span><span class="deliver">Deliverable: ablation table with significance tests.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p2-5"><label><span class="tcode">P2.5</span><span class="ttitle">Distill the co-inference into a single student model and verify that it retains most of the gain at deployment cost.</span><span class="deliver">Deliverable: student model with cost/quality comparison.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p2-6"><label><span class="tcode">P2.6</span><span class="ttitle">Write and submit Paper 2 (co-inference).</span><span class="deliver">Deliverable: Interspeech or ICASSP submission.</span></label></div>
+      <div class="gate"><b>Gate 2</b> &nbsp; Routing yields a statistically significant WER reduction over the best single teacher and over averaging, on at least two test sets. Otherwise, the disagreement signal is not informative and Component 3.1 must be revised.</div>
+    </div>
+
+    <!-- PHASE 3 -->
+    <div class="phase">
+      <div class="phase-head"><span class="pid">P3</span><h3>Component 3.5 &mdash; Confidence calibration</h3></div>
+      <p class="phase-note">Built early because both 3.1 routing and 3.3 constraints consume calibrated confidence.</p>
+      <div class="task"><input type="checkbox" data-id="p3-1"><label><span class="tcode">P3.1</span><span class="ttitle">Extract calibration features (model entropy, three-way agreement, typological likelihood, duration, VAD confidence, dialect-posterior entropy).</span><span class="deliver">Deliverable: calibration feature pipeline.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p3-2"><label><span class="tcode">P3.2</span><span class="ttitle">Train the post-hoc calibration model (temperature scaling and isotonic regression) on the supervised set.</span><span class="deliver">Deliverable: fitted calibrator.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p3-3"><label><span class="tcode">P3.3</span><span class="ttitle">Measure calibration with reliability diagrams and Expected Calibration Error before and after fitting.</span><span class="deliver">Deliverable: ECE table and reliability plots.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p3-4"><label><span class="tcode">P3.4</span><span class="ttitle">Run the distribution-shift study: does a calibrator fit on the small supervised set still calibrate the larger, shifted unlabeled pool?</span><span class="deliver">Deliverable: shift-robustness analysis.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p3-5"><label><span class="tcode">P3.5</span><span class="ttitle">Ablation: re-run 3.1 routing with raw vs calibrated confidence and quantify the difference.</span><span class="deliver">Deliverable: calibrated-vs-uncalibrated routing table.</span></label></div>
+      <div class="gate"><b>Gate 3</b> &nbsp; Calibrated confidence has substantially lower ECE than raw confidence and improves routing decisions; the calibrator generalizes from the supervised set to the unlabeled distribution.</div>
+    </div>
+
+    <!-- PHASE 4 -->
+    <div class="phase">
+      <div class="phase-head"><span class="pid">P4</span><h3>Component 3.2 &mdash; Typologically informed priors</h3></div>
+      <p class="phase-note">Show that an Austronesian family prior constrains decoding where a Malagasy-only language model cannot.</p>
+      <div class="task"><input type="checkbox" data-id="p4-1"><label><span class="tcode">P4.1</span><span class="ttitle">Collect and clean Austronesian text corpora (Indonesian, Malay, Cebuano, Tagalog) together with all available Malagasy text.</span><span class="deliver">Deliverable: family text corpus with provenance.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p4-2"><label><span class="tcode">P4.2</span><span class="ttitle">Train the phonotactic and morphotactic prior P_typ on the family corpus.</span><span class="deliver">Deliverable: trained typological prior model.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p4-3"><label><span class="tcode">P4.3</span><span class="ttitle">Integrate the prior into decoding through the calibrated mixture; tune the mixture weights on the development set.</span><span class="deliver">Deliverable: decoder with tuned weights.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p4-4"><label><span class="tcode">P4.4</span><span class="ttitle">Ablation: decode with no prior vs Malagasy-only LM vs Malagasy LM combined with the typological prior.</span><span class="deliver">Deliverable: prior ablation table.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p4-5"><label><span class="tcode">P4.5</span><span class="ttitle">Error-localization study: verify that any gain concentrates on sparse-data regions (rare morphology, low-frequency words) rather than uniformly.</span><span class="deliver">Deliverable: stratified error analysis.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p4-6"><label><span class="tcode">P4.6</span><span class="ttitle">Write and submit Paper 3 (typological priors). A negative result is reported and submitted.</span><span class="deliver">Deliverable: ACL or EMNLP submission.</span></label></div>
+      <div class="gate"><b>Gate 4</b> &nbsp; Either the typological prior produces a measurable, localized WER gain (component confirmed), or it does not (component recorded as a documented negative result and dropped from the load-bearing path).</div>
+    </div>
+
+    <!-- PHASE 5 -->
+    <div class="phase">
+      <div class="phase-head"><span class="pid">P5</span><h3>Component 3.3 &mdash; Constrained variational EM</h3></div>
+      <p class="phase-note">The theoretically heaviest component. Establish convergence, non-collapse, and the contribution of each constraint.</p>
+      <div class="task"><input type="checkbox" data-id="p5-1"><label><span class="tcode">P5.1</span><span class="ttitle">Write the formal specification of the E-step, M-step, and the four constraints (confidence floor, KL drift bound, agreement, typological consistency).</span><span class="deliver">Deliverable: formal methodology section.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p5-2"><label><span class="tcode">P5.2</span><span class="ttitle">Derive convergence to a stationary point under stated simplifying assumptions.</span><span class="deliver">Deliverable: proof (or proof sketch) with explicit assumptions.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p5-3"><label><span class="tcode">P5.3</span><span class="ttitle">Implement the iterative loop with all constraints toggleable independently.</span><span class="deliver">Deliverable: working constrained-EM trainer.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p5-4"><label><span class="tcode">P5.4</span><span class="ttitle">Run the loop and plot empirical convergence: WER and held-out loss across iterations.</span><span class="deliver">Deliverable: convergence curves.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p5-5"><label><span class="tcode">P5.5</span><span class="ttitle">Deliberately induce model collapse with constraints disabled, and show that constraints enabled prevent it (confidence rising while accuracy falls vs both remaining aligned).</span><span class="deliver">Deliverable: collapse-vs-no-collapse comparison.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p5-6"><label><span class="tcode">P5.6</span><span class="ttitle">Leave-one-constraint-out ablation: quantify the contribution of each of the four constraints.</span><span class="deliver">Deliverable: constraint ablation table.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p5-7"><label><span class="tcode">P5.7</span><span class="ttitle">Write and submit Paper 4 (constrained variational EM) to a journal.</span><span class="deliver">Deliverable: Computer Speech and Language or TASLP submission.</span></label></div>
+      <div class="gate"><b>Gate 5</b> &nbsp; The constrained loop improves WER monotonically (or near-monotonically) across iterations, the unconstrained loop demonstrably collapses, and each constraint has a measurable effect.</div>
+    </div>
+
+    <!-- PHASE 6 -->
+    <div class="phase">
+      <div class="phase-head"><span class="pid">P6</span><h3>Component 3.4 &mdash; Latent dialect, register, code-switching</h3></div>
+      <p class="phase-note">Show that joint inference of the latent variables outperforms treating them as separate subproblems.</p>
+      <div class="task"><input type="checkbox" data-id="p6-1"><label><span class="tcode">P6.1</span><span class="ttitle">Specify the graphical model and its conditional independence structure.</span><span class="deliver">Deliverable: model specification.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p6-2"><label><span class="tcode">P6.2</span><span class="ttitle">Implement dialect-conditioned adapters and register-conditioned decoding parameters.</span><span class="deliver">Deliverable: conditioned model variants.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p6-3"><label><span class="tcode">P6.3</span><span class="ttitle">Implement the per-segment code-switching head and the routing of French segments.</span><span class="deliver">Deliverable: code-switching-aware decoder.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p6-4"><label><span class="tcode">P6.4</span><span class="ttitle">Implement joint approximate inference (variational mean-field or sampling) over dialect, register, code-switching, and transcript.</span><span class="deliver">Deliverable: joint inference routine.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p6-5"><label><span class="tcode">P6.5</span><span class="ttitle">Ablation: independent per-subproblem handling vs joint latent-variable inference.</span><span class="deliver">Deliverable: joint-vs-separate table.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p6-6"><label><span class="tcode">P6.6</span><span class="ttitle">Stratified evaluation: WER by dialect, by register, and by code-switching density, with per-dialect equity reported explicitly.</span><span class="deliver">Deliverable: stratified results table.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p6-7"><label><span class="tcode">P6.7</span><span class="ttitle">Write and submit Paper 5 (joint dialect, register, code-switching and calibration).</span><span class="deliver">Deliverable: Interspeech submission.</span></label></div>
+      <div class="gate"><b>Gate 6</b> &nbsp; Joint inference reduces WER on under-represented dialects and code-switched speech without degrading the majority dialect.</div>
+    </div>
+
+    <!-- PHASE 7 -->
+    <div class="phase">
+      <div class="phase-head"><span class="pid">P7</span><h3>Full-system validation and the thesis claim</h3></div>
+      <p class="phase-note">Show that the integrated system outperforms every subset of its components and every published baseline.</p>
+      <div class="task"><input type="checkbox" data-id="p7-1"><label><span class="tcode">P7.1</span><span class="ttitle">Run the full PROVA-MG system end-to-end on the full corpus and report WER on all three frozen test sets.</span><span class="deliver">Deliverable: headline results table.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p7-2"><label><span class="tcode">P7.2</span><span class="ttitle">Run the master ablation: full system minus each component in turn, demonstrating the integration claim.</span><span class="deliver">Deliverable: component-removal ablation with significance tests.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p7-3"><label><span class="tcode">P7.3</span><span class="ttitle">Compare against zero-shot and naively fine-tuned baselines, and against the thesis WER targets (&le;15% read, &le;25% spontaneous).</span><span class="deliver">Deliverable: target-attainment table.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p7-4"><label><span class="tcode">P7.4</span><span class="ttitle">Statistical significance: paired bootstrap and Wilcoxon on every headline comparison.</span><span class="deliver">Deliverable: significance appendix.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p7-5"><label><span class="tcode">P7.5</span><span class="ttitle">Write the Threats to Validity section: small calibration set, dialect-category simplification, anchoring bias in correction, compute limits.</span><span class="deliver">Deliverable: threats-to-validity chapter.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p7-6"><label><span class="tcode">P7.6</span><span class="ttitle">Release all artifacts: corpus, models, code, reproducibility bundles, datasheets, and model cards, under open licenses with a persistent DOI.</span><span class="deliver">Deliverable: open release package.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p7-7"><label><span class="tcode">P7.7</span><span class="ttitle">Assemble the manuscript: state of the art, formalization, data substrate, the five components, full-system validation, conclusion.</span><span class="deliver">Deliverable: thesis manuscript.</span></label></div>
+      <div class="task"><input type="checkbox" data-id="p7-8"><label><span class="tcode">P7.8</span><span class="ttitle">Defense preparation and final open releases.</span><span class="deliver">Deliverable: defended thesis.</span></label></div>
+      <div class="gate"><b>Gate 7 (thesis claim)</b> &nbsp; The integrated PROVA-MG system significantly outperforms every ablation and every baseline on independent, frozen, dialect-stratified test sets, and the gain is attributable to the integration rather than to any single component alone.</div>
+    </div>
+
+  </div>
+
+  <!-- ============== C: Discussion ============== -->
+  <section id="p4c">
+    <div class="part-label">Part Four &mdash; C</div>
+    <h2 class="part">Discussion: limitations and mitigations</h2>
+    <p>The methodology presents several limitations that condition the interpretation of its expected results. They are listed below together with their mitigations.</p>
+    <ul class="plain">
+      <li><strong>Scope.</strong> Five components constitute an ambitious programme. A defensible minimal thesis comprises Components 3.1, 3.3, and 3.5; Components 3.2 and 3.4 may be reported as future work if time becomes insufficient.</li>
+      <li><strong>Theoretical depth.</strong> Components 3.3 and 3.5 require non&#8209;trivial variational inference, EM convergence, and calibration theory. Adequate probabilistic supervision is therefore necessary; if it is unavailable, Component 3.3 is restricted to empirical claims supported by proof sketches.</li>
+      <li><strong>Empirical uncertainty.</strong> The typological prior of Component 3.2 may fail to reduce WER if the Malagasy language model is sufficiently strong. The corresponding ablation is therefore essential, and a negative result is itself a publishable outcome.</li>
+      <li><strong>Compute.</strong> Operating three teachers at scale is costly. Distillation of the co&#8209;inference into a single student model after corpus construction is therefore planned; teachers are required at training time but not at deployment.</li>
+      <li><strong>Priority of novelty.</strong> Early publication is preferred. The SIGUL submission anchors priority on the data substrate, and an early Interspeech submission on Component 3.1 anchors priority on the methodological contribution.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a href="03-methodology.html"><span class="dir">&larr; Previous</span><span class="ctitle">Methodology: the PROVA&#8209;MG framework</span></a>
+    <a class="next" href="../index.html"><span class="dir">Overview &rarr;</span><span class="ctitle">PROVA&#8209;MG summary</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    Chapter 4 of 4 &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>
+
+<script>
+  (function(){
+    var boxes = Array.prototype.slice.call(document.querySelectorAll('.task input[type=checkbox]'));
+    var countEl = document.getElementById('count');
+    var fillEl  = document.getElementById('bar-fill');
+    var STORE_KEY = 'prova-mg-checklist';
+    var hasStorage = (typeof window !== 'undefined' && window.storage &&
+                      typeof window.storage.get === 'function');
+
+    function refresh(){
+      var done = boxes.filter(function(b){ return b.checked; }).length;
+      var total = boxes.length;
+      countEl.textContent = done + ' / ' + total + ' complete';
+      fillEl.style.width = total ? (100*done/total) + '%' : '0%';
+      boxes.forEach(function(b){
+        b.closest('.task').classList.toggle('done', b.checked);
+      });
+    }
+
+    function collect(){
+      var state = {};
+      boxes.forEach(function(b){ state[b.dataset.id] = b.checked; });
+      return state;
+    }
+
+    function persist(){
+      if(!hasStorage) return;
+      try { window.storage.set(STORE_KEY, JSON.stringify(collect()), false); }
+      catch(e){ /* download / offline use: visual toggle still works */ }
+    }
+
+    async function restore(){
+      if(hasStorage){
+        try{
+          var r = await window.storage.get(STORE_KEY, false);
+          if(r && r.value){
+            var state = JSON.parse(r.value);
+            boxes.forEach(function(b){
+              if(state.hasOwnProperty(b.dataset.id)) b.checked = !!state[b.dataset.id];
+            });
+          }
+        }catch(e){ /* no saved state yet */ }
+      }
+      refresh();
+    }
+
+    boxes.forEach(function(b){
+      b.addEventListener('change', function(){ refresh(); persist(); });
+    });
+
+    document.getElementById('btn-reset').addEventListener('click', function(){
+      boxes.forEach(function(b){ b.checked = false; });
+      refresh(); persist();
+    });
+    document.getElementById('btn-print').addEventListener('click', function(){
+      window.print();
+    });
+
+    restore();
+  })();
+</script>

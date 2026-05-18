@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>2. State of the art (II): low-resource and multilingual ASR — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter 2 of 4</div>
+    <h1 class="title">State of the art (II): <em>low&#8209;resource and multilingual ASR</em></h1>
+    <p class="standfirst">This chapter surveys the methods that extend the general ASR paradigms to low&#8209;resource and multilingual settings, then identifies the open methodological problems that the present work addresses.</p>
+  </header>
+
+  <section id="p2a">
+    <div class="part-label">Part Two &mdash; A</div>
+    <h2 class="part">Multilingual and low&#8209;resource methods</h2>
+    <p>The four paradigms reviewed in Chapter 1 do not by themselves close the gap between high&#8209;resource and low&#8209;resource languages. The following six families of methods address that gap; Malagasy is nominally covered by most of them, yet zero&#8209;shot performance remains poor.</p>
+
+    <h3>2.1 Cross&#8209;lingual self&#8209;supervised representations</h3>
+    <p>XLSR&#8209;53 and XLS&#8209;R (Babu et al., 2022, 436 000 h, 128 languages), MMS (Pratap et al., 2023, more than 1 100 languages), and Wav2Vec2&#8209;BERT (Seamless Communication, 2024, approximately 4.5 M h, 143 languages) produce universal acoustic representations. Although Malagasy is included in all of them, the published zero&#8209;shot word error rate (WER) remains high.</p>
+
+    <h3>2.2 Large&#8209;scale weak supervision</h3>
+    <p>Whisper (Radford et al., 2023) was trained on 680 000 h of audio paired with weakly supervised web transcripts. USM, Canary, OWSM, and OLMoASR are variants and open reimplementations. Whisper&#8209;large&#8209;v3 currently produces the strongest open zero&#8209;shot transcripts for Malagasy and is therefore used as a first&#8209;pass teacher in the present pipeline.</p>
+
+    <h3>2.3 Parameter&#8209;efficient adaptation</h3>
+    <p>LoRA, adapters, BitFit, and prompt tuning specialize large encoders by training a small fraction of parameters. For low&#8209;resource ASR these methods reduce both the GPU budget and the risk of overfitting on small supervised sets.</p>
+
+    <h3>2.4 Semi&#8209;supervised learning and pseudo&#8209;labeling</h3>
+    <p>slimIPL, Kaizen, and Noisy Student Training share a common procedure: a seed model is trained, it transcribes a large unlabeled set, the resulting pseudo&#8209;labels are filtered by confidence, and the model is retrained on the union. Variations concern the filtering criterion, the teacher&#8209;update rule, and the prevention of collapse. The procedure works empirically but its conditions of success are not formally characterized in the literature.</p>
+
+    <h3>2.5 Speech&#8209;LLM integration</h3>
+    <p>Recent systems feed speech to a large language model either as discrete tokens or through a learned projection (SALMONN, Qwen&#8209;Audio). For high&#8209;resource languages, quality rivals dedicated ASR; for low&#8209;resource languages, performance is limited by the text&#8209;side coverage of the underlying LLM.</p>
+
+    <h3>2.6 Data construction and licensing</h3>
+    <p>License&#8209;first data construction, segment&#8209;level traceability, datasheets, and reproducibility have become a research contribution in their own right. They constitute the data substrate of the present work but do not, by themselves, constitute a modeling methodology.</p>
+  </section>
+
+  <section id="p2b">
+    <div class="part-label">Part Two &mdash; B</div>
+    <h2 class="part">Open methodological problems</h2>
+    <p>Several methods are well established at thesis scale: continued self&#8209;supervised pre&#8209;training for a single low&#8209;resource language, pseudo&#8209;labeling with confidence filtering, LoRA and adapter cross&#8209;lingual fine&#8209;tuning, dialect&#8209;conditioned adapters, and code&#8209;switched ASR. Applying any of these to Malagasy would be linguistically informative but would not constitute a methodological contribution.</p>
+    <p>The following problems, by contrast, remain open at thesis scale and structure the methodology proposed in Chapter 3:</p>
+    <ul class="plain">
+      <li>The principled probabilistic integration of multiple <strong>heterogeneous</strong> foundation models, treated as distinct posteriors and exploiting their disagreement structure as a routing signal.</li>
+      <li>The injection of <strong>typological priors</strong> from a known language family as Bayesian priors that constrain the decoding hypothesis space.</li>
+      <li>The formal treatment of iterative pseudo&#8209;labeling as a <strong>constrained variational EM</strong> procedure with explicit non&#8209;collapse conditions and convergence analysis.</li>
+      <li>The unification of dialect, register, and code&#8209;switching as <strong>latent variables</strong> in a single graphical model with explicit conditional independence structure.</li>
+    </ul>
+    <div class="callout">
+      <span class="tag">Transition</span>
+      These four problems, taken together and instantiated on a single under&#8209;resourced language with a corpus constructed under a license&#8209;first regime, define the scope of the methodology developed in the next chapter.
+    </div>
+  </section>
+
+  <nav class="pager">
+    <a href="01-sota-foundations.html"><span class="dir">&larr; Previous</span><span class="ctitle">State of the art (I): foundations</span></a>
+    <a class="next" href="03-methodology.html"><span class="dir">Next &rarr;</span><span class="ctitle">Methodology: the PROVA&#8209;MG framework</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    Chapter 2 of 4 &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>

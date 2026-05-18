@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>1. State of the art (I): foundations of speech recognition — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter 1 of 4</div>
+    <h1 class="title">State of the art (I): <em>foundations of speech recognition</em></h1>
+    <p class="standfirst">This chapter reviews the classical and neural foundations on which contemporary speech recognition is built: from the hidden Markov framework to hybrid acoustic models, end&#8209;to&#8209;end architectures, and self&#8209;supervised representations.</p>
+  </header>
+
+  <section id="p1">
+    <div class="part-label">Part One</div>
+    <h2 class="part">Four foundational paradigms</h2>
+    <p>Automatic speech recognition has evolved through four broadly successive paradigms. Each retained from its predecessor the probabilistic decomposition P(W|X) &prop; P(X|W) P(W) while progressively replacing components with learned representations. The present chapter summarizes these paradigms; the next chapter addresses the multilingual and low&#8209;resource extensions that bear directly on Malagasy.</p>
+
+    <h3>1.1 The classical paradigm: HMM&#8209;GMM</h3>
+    <p>The hidden Markov model with Gaussian&#8209;mixture emissions modeled speech as a hidden Markov chain emitting Gaussian mixtures over short&#8209;frame features (MFCC, PLP). This paradigm introduced the noisy&#8209;channel decomposition that still underlies any probabilistic reading of ASR, together with weighted finite&#8209;state transducer decoding, which remains the formal substrate of beam search. Although no thesis can be centred on this layer today, its formal apparatus is the foundation on which every subsequent paradigm builds.</p>
+
+    <h3>1.2 The hybrid paradigm: DNN&#8209;HMM (2009 &ndash; 2016)</h3>
+    <p>Deep neural networks replaced the Gaussian mixture as the emission model while the decoder, lexicon, and language model remained external. Kaldi&#8209;style chain models, time&#8209;delay neural networks (TDNN&#8209;F), and lattice&#8209;free MMI belong to this regime. Hybrid systems remain competitive on small supervised sets but are engineering&#8209;intensive and demand careful phonetic resources.</p>
+
+    <h3>1.3 The end&#8209;to&#8209;end paradigm (2014 &ndash; 2020)</h3>
+    <p>End&#8209;to&#8209;end models replaced the modular hybrid pipeline by a single neural network that maps acoustic features to character or sub&#8209;word sequences. Three training objectives still structure the field:</p>
+    <ul class="plain">
+      <li><strong>Connectionist Temporal Classification</strong> (Graves et al., 2006) marginalizes over all monotonic alignments. It converges rapidly with few hyperparameters and remains the dominant choice when training data is scarce.</li>
+      <li><strong>Attention&#8209;based encoder&#8209;decoder</strong> (Listen, Attend and Spell, Chan et al., 2016) drops the monotonic assumption. It is more expressive but more data&#8209;hungry.</li>
+      <li><strong>RNN Transducer</strong> (Graves, 2012) reintroduces monotonic alignment through an internal predictor and is the production choice for streaming recognition.</li>
+    </ul>
+    <p>The <strong>Conformer</strong> encoder (Gulati et al., 2020) combines convolution for local patterns with self&#8209;attention for long&#8209;range context and is the predominant encoder for both attention and transducer systems.</p>
+
+    <h3>1.4 The self&#8209;supervised representation paradigm (2018 &ndash; 2022)</h3>
+    <p>Self&#8209;supervised pre&#8209;training on unlabeled audio shifted the bottleneck from supervision to representation. Wav2Vec 2.0 (Baevski et al., 2020) introduced contrastive pre&#8209;training; HuBERT (Hsu et al., 2021) replaced the contrastive term by masked prediction over discretized targets; WavLM added denoising; data2vec unified modalities under self&#8209;distillation. When fine&#8209;tuned with a small supervised head, these representations often match models trained from scratch on substantially larger labeled corpora &mdash; a property of central importance for low&#8209;resource languages.</p>
+
+    <div class="callout">
+      <span class="tag">Transition</span>
+      The four paradigms above are predominantly designed and evaluated on high&#8209;resource languages. The next chapter examines how they extend to multilingual and low&#8209;resource settings, and identifies where the remaining methodological gaps lie for languages such as Malagasy.
+    </div>
+  </section>
+
+  <nav class="pager">
+    <a href="../index.html"><span class="dir">&larr; Overview</span><span class="ctitle">PROVA&#8209;MG summary</span></a>
+    <a class="next" href="02-sota-asr.html"><span class="dir">Next &rarr;</span><span class="ctitle">State of the art (II): low&#8209;resource and multilingual ASR</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    Chapter 1 of 4 &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>

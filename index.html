@@ -13,7 +13,7 @@
   <header class="masthead">
     <div class="kicker">Doctoral Methodology Note &nbsp;/&nbsp; Engineering and Technology Sciences</div>
     <h1 class="title">PROVA&#8209;MG: A Probabilistic Routing Framework for <em>Low&#8209;Resource Malagasy Speech Recognition</em></h1>
-    <p class="standfirst">A novel, unified methodology for Automatic Speech Recognition that aggregates heterogeneous foundation models, typological priors, and a large licensed unlabeled corpus under explicit calibration and explicit constraints &mdash; with a complete validation plan to prove that it works.</p>
+    <p class="standfirst">A unified methodology for Automatic Speech Recognition that aggregates heterogeneous foundation models, typological priors, and a large licensed unlabeled corpus under explicit calibration and explicit constraints, together with the validation procedure that supports its claims.</p>
     <div class="meta-grid">
       <div>Candidate: <span>RANDRIAMANASINA Mianala Loharano</span></div>
       <div>Director: <span>Pr RAVONINJATOVO Achille Olivier</span></div>
@@ -29,9 +29,9 @@
   <section>
     <div class="part-label">Abstract</div>
     <h2 class="part">Summary</h2>
-    <p class="lead">Malagasy is nominally covered by every modern multilingual ASR release, yet zero&#8209;shot quality is poor and no single foundation model, supervision regime, or adaptation trick lifts it on its own.</p>
-    <p>PROVA&#8209;MG &mdash; <em>Probabilistic Routing Of Variational Alignments for Malagasy</em> &mdash; treats low&#8209;resource ASR as a probabilistic system that aggregates heterogeneous evidence. Three foundation models (Whisper&#8209;large&#8209;v3, MMS, Wav2Vec2&#8209;BERT) are kept as distinct posteriors and their disagreement is used as a routing signal; an Austronesian typological prior constrains decoding where a Malagasy&#8209;only language model cannot; iterative pseudo&#8209;labeling is formalized as constrained variational EM with explicit non&#8209;collapse conditions; dialect, register, and code&#8209;switching are unified as latent variables; and a calibration head is trained on the small supervised set to make every confidence feeding into the system trustworthy.</p>
-    <p>The seven chapters below carry the argument: the state of the art and the open gaps, the five PROVA&#8209;MG components and their positioning, how the existing license&#8209;first pipeline is absorbed, the risks, and the ordered validation checklist that proves each claim.</p>
+    <p class="lead">Malagasy is nominally covered by every modern multilingual ASR release, yet zero&#8209;shot quality is poor and no single foundation model, supervision regime, or adaptation technique improves it on its own.</p>
+    <p>PROVA&#8209;MG &mdash; <em>Probabilistic Routing Of Variational Alignments for Malagasy</em> &mdash; treats low&#8209;resource ASR as a probabilistic system that aggregates heterogeneous evidence. Three foundation models (Whisper&#8209;large&#8209;v3, MMS, Wav2Vec2&#8209;BERT) are retained as distinct posteriors and their disagreement is used as a routing signal; an Austronesian typological prior constrains decoding where a Malagasy&#8209;only language model cannot; iterative pseudo&#8209;labeling is formalized as a constrained variational EM procedure with explicit non&#8209;collapse conditions; dialect, register, and code&#8209;switching are unified as latent variables; and a calibration head, trained on the small supervised set, ensures that every confidence feeding into the system is trustworthy.</p>
+    <p>The four chapters below carry the argument: the foundational state of the art, the multilingual and low&#8209;resource state of the art together with the open methodological gaps, the PROVA&#8209;MG methodology and its integration with the existing data pipeline, and the validation procedure, expected applications, and limitations.</p>
   </section>
 
   <!-- ===================== TOC ===================== -->
@@ -39,32 +39,20 @@
     <h2>Contents</h2>
     <ol>
       <li>
-        <a href="chapters/01-landscape.html">The existing methodological landscape</a>
-        <span class="sum">Ten layers of the ASR stack, from HMM&#8209;GMM to speech&#8209;LLMs and license&#8209;first data.</span>
+        <a href="chapters/01-sota-foundations.html">State of the art (I): foundations of speech recognition</a>
+        <span class="sum">Classical HMM&#8209;GMM, hybrid DNN&#8209;HMM, end&#8209;to&#8209;end objectives, and self&#8209;supervised representations.</span>
       </li>
       <li>
-        <a href="chapters/02-gaps.html">Where the gaps actually are</a>
-        <span class="sum">Most low&#8209;resource ASR moves are taken at thesis scale; four are genuinely open.</span>
+        <a href="chapters/02-sota-asr.html">State of the art (II): low&#8209;resource and multilingual ASR</a>
+        <span class="sum">Cross&#8209;lingual SSL, weak supervision, adaptation, pseudo&#8209;labeling, speech&#8209;LLMs, and the open methodological gaps.</span>
       </li>
       <li>
-        <a href="chapters/03-methodology.html">The novel methodology: PROVA&#8209;MG</a>
-        <span class="sum">Five interlocking components: co&#8209;inference, typological priors, constrained EM, latent decomposition, calibration.</span>
+        <a href="chapters/03-methodology.html">Methodology: the PROVA&#8209;MG framework</a>
+        <span class="sum">Five interlocking components &mdash; co&#8209;inference, typological priors, constrained EM, latent decomposition, calibration &mdash; and their integration with the existing pipeline.</span>
       </li>
       <li>
-        <a href="chapters/04-novelty.html">Why this is not someone else's thesis</a>
-        <span class="sum">Per&#8209;component positioning against the nearest prior art, and the integration claim.</span>
-      </li>
-      <li>
-        <a href="chapters/05-integration.html">Integration with the existing project</a>
-        <span class="sum">How the license&#8209;first pipeline and prior plans are absorbed; publication map.</span>
-      </li>
-      <li>
-        <a href="chapters/06-risks.html">Risks and honesty</a>
-        <span class="sum">Where to cut scope, where to expect negative results, and where to publish first.</span>
-      </li>
-      <li>
-        <a href="chapters/07-checklist.html">Validation checklist</a>
-        <span class="sum">Eight phases, ~50 tasks, each closed by a gate &mdash; the full work plan that proves it.</span>
+        <a href="chapters/04-results-discussion.html">Results, application and discussion</a>
+        <span class="sum">Positioning with respect to prior art, publication plan, ordered validation procedure with measurable gates, and limitations.</span>
       </li>
     </ol>
   </nav>
@@ -76,52 +64,31 @@
 
     <div class="chapter-grid">
 
-      <a class="chapter-card" href="chapters/01-landscape.html">
+      <a class="chapter-card" href="chapters/01-sota-foundations.html">
         <div class="pid">Chapter 1</div>
-        <div class="ctitle">The existing methodological landscape</div>
-        <p class="csum">Read the field as ten layers, each largely settled. A thesis lives at one of them and must say which.</p>
+        <div class="ctitle">State of the art (I): foundations of speech recognition</div>
+        <p class="csum">The four paradigms on which modern ASR is built: HMM&#8209;GMM, hybrid DNN&#8209;HMM, end&#8209;to&#8209;end objectives, and self&#8209;supervised representations.</p>
         <span class="arrow">Open &rarr;</span>
       </a>
 
-      <a class="chapter-card" href="chapters/02-gaps.html">
+      <a class="chapter-card" href="chapters/02-sota-asr.html">
         <div class="pid">Chapter 2</div>
-        <div class="ctitle">Where the gaps actually are</div>
-        <p class="csum">Continued pre&#8209;training and adapter fine&#8209;tuning are taken. Co&#8209;inference, typological priors, constrained EM, and latent decomposition are not.</p>
+        <div class="ctitle">State of the art (II): low&#8209;resource and multilingual ASR</div>
+        <p class="csum">Cross&#8209;lingual self&#8209;supervision, weak supervision, parameter&#8209;efficient adaptation, pseudo&#8209;labeling, speech&#8209;LLMs, and license&#8209;first data, with the open methodological problems identified.</p>
         <span class="arrow">Open &rarr;</span>
       </a>
 
       <a class="chapter-card" href="chapters/03-methodology.html">
         <div class="pid">Chapter 3</div>
-        <div class="ctitle">The novel methodology: PROVA&#8209;MG</div>
-        <p class="csum">Three teachers as distinct posteriors, an Austronesian prior, constrained variational EM, latent dialect/register/code&#8209;switching, and a calibration head.</p>
+        <div class="ctitle">Methodology: the PROVA&#8209;MG framework</div>
+        <p class="csum">Three teachers as distinct posteriors, an Austronesian prior, constrained variational EM, latent dialect, register and code&#8209;switching, and a calibration head; integration with the existing pipeline.</p>
         <span class="arrow">Open &rarr;</span>
       </a>
 
-      <a class="chapter-card" href="chapters/04-novelty.html">
+      <a class="chapter-card" href="chapters/04-results-discussion.html">
         <div class="pid">Chapter 4</div>
-        <div class="ctitle">Why this is not someone else's thesis</div>
-        <p class="csum">A per&#8209;component table of nearest prior art and what is new here. The integration is what makes a thesis rather than five papers.</p>
-        <span class="arrow">Open &rarr;</span>
-      </a>
-
-      <a class="chapter-card" href="chapters/05-integration.html">
-        <div class="pid">Chapter 5</div>
-        <div class="ctitle">Integration with the existing project</div>
-        <p class="csum">The license&#8209;first pipeline becomes the data substrate; planned pre&#8209;training, comparison, and adaptation are repurposed. Five papers, mapped to venues.</p>
-        <span class="arrow">Open &rarr;</span>
-      </a>
-
-      <a class="chapter-card" href="chapters/06-risks.html">
-        <div class="pid">Chapter 6</div>
-        <div class="ctitle">Risks and honesty</div>
-        <p class="csum">Scope, theoretical depth, empirical uncertainty, compute, and novelty priority &mdash; with concrete fallbacks.</p>
-        <span class="arrow">Open &rarr;</span>
-      </a>
-
-      <a class="chapter-card" href="chapters/07-checklist.html">
-        <div class="pid">Chapter 7</div>
-        <div class="ctitle">Validation checklist</div>
-        <p class="csum">Eight phases (P0 &mdash; P7) with gated deliverables. Interactive checklist, progress bar, print&#8209;to&#8209;PDF.</p>
+        <div class="ctitle">Results, application and discussion</div>
+        <p class="csum">Positioning with respect to prior art, publication plan, eight&#8209;phase validation procedure with measurable gates, and discussion of limitations.</p>
         <span class="arrow">Open &rarr;</span>
       </a>
 
