@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doctoral Research Progress Report — EDTM 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#f7f4ec;
+    --paper-2:#fffdf7;
+    --ink:#211f1a;
+    --ink-soft:#4b4740;
+    --rule:#d8d1be;
+    --accent:#1f5d54;
+    --accent-soft:#e3ece8;
+    --gold:#9a6b2e;
+    --shadow:0 1px 2px rgba(33,31,26,.06),0 8px 24px rgba(33,31,26,.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:'Newsreader',Georgia,serif;font-size:18px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:64px 28px 120px;}
+
+  .masthead{border-bottom:2px solid var(--ink);padding-bottom:26px;margin-bottom:8px;}
+  .kicker{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:18px;
+  }
+  h1.title{
+    font-family:'Fraunces',serif;font-weight:600;font-size:42px;line-height:1.1;
+    margin:0 0 14px;letter-spacing:-.01em;
+  }
+  h1.title em{font-style:italic;color:var(--accent);}
+  .standfirst{
+    font-size:19px;line-height:1.5;color:var(--ink-soft);font-style:italic;
+    max-width:62ch;margin:0 0 22px;
+  }
+  .meta-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:4px 36px;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);
+    border-top:1px solid var(--rule);padding-top:18px;
+  }
+  .meta-grid div span{color:var(--ink);}
+
+  .nav-back{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+    text-decoration:none;margin-bottom:18px;
+  }
+  .nav-back:hover{text-decoration:underline;}
+
+  .callout{
+    background:var(--accent-soft);border-radius:4px;padding:16px 20px;margin:24px 0;
+    font-size:16px;
+  }
+  .callout .tag{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px;
+  }
+
+  section{margin-top:46px;scroll-margin-top:24px;}
+  .part-label{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:8px;
+  }
+  h2.part{
+    font-family:'Fraunces',serif;font-weight:600;font-size:28px;line-height:1.14;
+    margin:0 0 6px;letter-spacing:-.01em;
+  }
+  h2.part::after{
+    content:"";display:block;width:54px;height:3px;background:var(--accent);
+    margin-top:14px;
+  }
+  h3{
+    font-family:'Fraunces',serif;font-weight:600;font-size:20px;
+    margin:28px 0 6px;letter-spacing:-.005em;
+  }
+  p{margin:12px 0;}
+  ul.plain{margin:12px 0;padding-left:22px;}
+  ul.plain li{margin:7px 0;}
+
+  /* identification block (form-style) */
+  .ident{
+    border:1px solid var(--rule);border-radius:4px;background:var(--paper-2);
+    margin:18px 0;box-shadow:var(--shadow);overflow:hidden;
+  }
+  .ident .row{
+    display:grid;grid-template-columns:minmax(220px,1fr) 2fr;
+    border-bottom:1px solid var(--rule);
+  }
+  .ident .row:last-child{border-bottom:none;}
+  .ident .row .lbl{
+    padding:12px 18px;background:var(--paper);
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);
+    border-right:1px solid var(--rule);text-transform:uppercase;letter-spacing:.06em;
+  }
+  .ident .row .val{padding:12px 18px;min-height:42px;}
+
+  table{border-collapse:collapse;width:100%;margin:16px 0;font-size:15px;}
+  th,td{border:1px solid var(--rule);padding:10px 12px;text-align:left;vertical-align:top;}
+  th{
+    background:var(--accent);color:var(--paper-2);font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;
+  }
+  td.empty{height:34px;}
+  tr:nth-child(even) td{background:var(--paper);}
+
+  .sig-block{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px;
+  }
+  .sig-box{
+    border:1px solid var(--rule);border-radius:4px;background:var(--paper-2);
+    padding:18px;min-height:140px;box-shadow:var(--shadow);
+  }
+  .sig-box .lbl{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);display:block;margin-bottom:8px;
+  }
+
+  footer{
+    margin-top:80px;padding-top:22px;border-top:2px solid var(--ink);
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);
+    line-height:1.7;
+  }
+
+  @media (max-width:620px){
+    body{font-size:16.5px;}
+    .wrap{padding:40px 18px 90px;}
+    h1.title{font-size:30px;}
+    h2.part{font-size:22px;}
+    .meta-grid,.ident .row,.sig-block{grid-template-columns:1fr;}
+    .ident .row .lbl{border-right:none;border-bottom:1px solid var(--rule);}
+  }
+  @media print{body{background:#fff;}.ident,.sig-box{box-shadow:none;}}
+</style>
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; Back to PROVA&#8209;MG</a>
+
+  <header class="masthead">
+    <div class="kicker">Ministry of Higher Education and Scientific Research &nbsp;/&nbsp; University of Toamasina &nbsp;/&nbsp; Doctoral School 3D</div>
+    <h1 class="title">Doctoral Research <em>Progress Report</em></h1>
+    <p class="standfirst">Thematic Doctoral School "Diversity and Sustainable Development (3D)". The progress report must be formatted with 1.5 line spacing and written in Times New Roman 12 pt.</p>
+    <div class="meta-grid">
+      <div>Issued by: <span>EDTM 3D, University of Toamasina</span></div>
+      <div>Document type: <span>Annual progress report template</span></div>
+      <div>Language: <span>English translation</span></div>
+      <div>Source: <span>AVANCEMENT.pdf (French original)</span></div>
+    </div>
+  </header>
+
+  <div class="callout">
+    <span class="tag">Note</span>
+    This is an unofficial English translation of the EDTM 3D progress report template, provided for working convenience. The French version remains the reference for any formal submission.
+  </div>
+
+  <!-- I. -->
+  <section id="s1">
+    <div class="part-label">Section I</div>
+    <h2 class="part">Identification of the doctoral candidate</h2>
+    <div class="ident">
+      <div class="row"><div class="lbl">Full name</div><div class="val">&nbsp;</div></div>
+      <div class="row"><div class="lbl">Thesis subject</div><div class="val">&nbsp;</div></div>
+      <div class="row"><div class="lbl">Keywords</div><div class="val">&nbsp;</div></div>
+      <div class="row"><div class="lbl">Thesis director</div><div class="val">&nbsp;</div></div>
+      <div class="row"><div class="lbl">Thesis co&#8209;director</div><div class="val">&nbsp;</div></div>
+      <div class="row"><div class="lbl">Host doctoral team (EAD)</div><div class="val">&nbsp;</div></div>
+      <div class="row"><div class="lbl">Discipline</div><div class="val">&nbsp;</div></div>
+      <div class="row"><div class="lbl">Year / level</div><div class="val">&nbsp;</div></div>
+      <div class="row"><div class="lbl">Date of submission</div><div class="val">&nbsp;</div></div>
+    </div>
+  </section>
+
+  <!-- II. -->
+  <section id="s2">
+    <div class="part-label">Section II</div>
+    <h2 class="part">Introduction</h2>
+    <ul class="plain">
+      <li>Reminder of the general context</li>
+      <li>Reminder of the research problem</li>
+      <li>Reminder of the innovative ideas put forward</li>
+      <li>Reminder of the research objectives</li>
+    </ul>
+  </section>
+
+  <!-- III. -->
+  <section id="s3">
+    <div class="part-label">Section III</div>
+    <h2 class="part">Research activities since the last report</h2>
+    <ul class="plain">
+      <li>Literature review: analysis, synthesis, and discussion of prior work</li>
+      <li>Data collection: documentation, surveys, experimentation</li>
+      <li>Training sessions, seminars, workshops, and conferences attended</li>
+    </ul>
+  </section>
+
+  <!-- IV. -->
+  <section id="s4">
+    <div class="part-label">Section IV</div>
+    <h2 class="part">Writing activities since the last report</h2>
+    <p>Describe the chapters, sections, or articles drafted, revised, or finalized during the reporting period.</p>
+  </section>
+
+  <!-- V. -->
+  <section id="s5">
+    <div class="part-label">Section V</div>
+    <h2 class="part">Publications and communications</h2>
+    <ul class="plain">
+      <li>Articles submitted or published</li>
+      <li>Conference and symposium communications</li>
+    </ul>
+  </section>
+
+  <!-- VI. -->
+  <section id="s6">
+    <div class="part-label">Section VI</div>
+    <h2 class="part">Doctoral training completed</h2>
+    <ul class="plain">
+      <li>Methodology training</li>
+      <li>Language training</li>
+      <li>Scientific writing training</li>
+    </ul>
+  </section>
+
+  <!-- VII. -->
+  <section id="s7">
+    <div class="part-label">Section VII</div>
+    <h2 class="part">Teaching activities</h2>
+
+    <h3>1. Teaching</h3>
+    <table>
+      <thead><tr><th>Level</th><th>Subject</th><th>Institution</th><th>Location</th></tr></thead>
+      <tbody>
+        <tr><td class="empty"></td><td></td><td></td><td></td></tr>
+        <tr><td class="empty"></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+
+    <h3>2. Supervision</h3>
+    <table>
+      <thead><tr><th>Level</th><th>Topic</th><th>Institution</th><th>Location</th></tr></thead>
+      <tbody>
+        <tr><td class="empty"></td><td></td><td></td><td></td></tr>
+        <tr><td class="empty"></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+
+    <h3>3. Jury participation</h3>
+    <table>
+      <thead><tr><th>Level</th><th>Topic</th><th>Institution</th><th>Location</th><th>Role</th></tr></thead>
+      <tbody>
+        <tr><td class="empty"></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td class="empty"></td><td></td><td></td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- VIII. -->
+  <section id="s8">
+    <div class="part-label">Section VIII</div>
+    <h2 class="part">Difficulties encountered</h2>
+    <ul class="plain">
+      <li>Methodological problems</li>
+      <li>Data problems</li>
+      <li>Logistical problems</li>
+      <li>Administrative problems (at the doctoral school level)</li>
+    </ul>
+  </section>
+
+  <!-- IX. -->
+  <section id="s9">
+    <div class="part-label">Section IX</div>
+    <h2 class="part">Mitigation measures for the difficulties encountered</h2>
+    <p>Describe the actions taken, planned, or proposed to overcome the obstacles listed above.</p>
+  </section>
+
+  <!-- X. -->
+  <section id="s10">
+    <div class="part-label">Section X</div>
+    <h2 class="part">Outlook and next steps</h2>
+    <ul class="plain">
+      <li>Remaining steps before defense</li>
+      <li>Projected schedule through to the end of the thesis</li>
+    </ul>
+  </section>
+
+  <div class="sig-block">
+    <div class="sig-box"><span class="lbl">Candidate's signature</span></div>
+    <div class="sig-box"><span class="lbl">Director's opinion and signature</span></div>
+    <div class="sig-box"><span class="lbl">Doctoral School stamp</span></div>
+  </div>
+
+  <footer>
+    Contacts: +261 34 27 21903 &nbsp;/&nbsp; edtm.3d@gmail.com &nbsp;/&nbsp; secretariat.edtm.3d@gmail.com<br>
+    EDTM 3D, University of Toamasina. English translation of the AVANCEMENT.pdf template for working reference.
+  </footer>
+
+</div>
+</html>

@@ -1,242 +1,19 @@
-<!-- PROVA-MG: methodology + validation checklist -->
+<!doctype html>
+<html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PROVA-MG — Methodology and Validation Plan</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-<style>
-  :root{
-    --paper:#f7f4ec;
-    --paper-2:#fffdf7;
-    --ink:#211f1a;
-    --ink-soft:#4b4740;
-    --rule:#d8d1be;
-    --accent:#1f5d54;
-    --accent-soft:#e3ece8;
-    --gold:#9a6b2e;
-    --shadow:0 1px 2px rgba(33,31,26,.06),0 8px 24px rgba(33,31,26,.06);
-  }
-  *{box-sizing:border-box;}
-  html,body{margin:0;padding:0;}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Newsreader',Georgia,serif;
-    font-size:18px;
-    line-height:1.62;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:820px;margin:0 auto;padding:64px 28px 120px;}
-
-  /* ---- masthead ---- */
-  .masthead{border-bottom:2px solid var(--ink);padding-bottom:26px;margin-bottom:8px;}
-  .kicker{
-    font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.22em;
-    text-transform:uppercase;color:var(--accent);margin-bottom:18px;
-  }
-  h1.title{
-    font-family:'Fraunces',serif;font-weight:600;font-size:46px;line-height:1.08;
-    margin:0 0 14px;letter-spacing:-.01em;
-  }
-  h1.title em{font-style:italic;color:var(--accent);}
-  .standfirst{
-    font-size:20px;line-height:1.5;color:var(--ink-soft);font-style:italic;
-    max-width:62ch;margin:0 0 22px;
-  }
-  .meta-grid{
-    display:grid;grid-template-columns:repeat(2,1fr);gap:4px 36px;
-    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);
-    border-top:1px solid var(--rule);padding-top:18px;
-  }
-  .meta-grid div span{color:var(--ink);}
-
-  /* ---- table of contents ---- */
-  .toc{
-    background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;
-    padding:24px 28px;margin:40px 0 8px;box-shadow:var(--shadow);
-  }
-  .toc h2{
-    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.18em;
-    text-transform:uppercase;margin:0 0 14px;color:var(--accent);font-weight:500;
-  }
-  .toc ol{margin:0;padding:0;list-style:none;counter-reset:toc;}
-  .toc li{
-    counter-increment:toc;padding:5px 0;border-bottom:1px dotted var(--rule);
-    font-size:16px;
-  }
-  .toc li:last-child{border-bottom:none;}
-  .toc li::before{
-    content:counter(toc,decimal-leading-zero);
-    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold);
-    margin-right:14px;
-  }
-  .toc a{color:var(--ink);text-decoration:none;}
-  .toc a:hover{color:var(--accent);text-decoration:underline;}
-
-  /* ---- sections ---- */
-  section{margin-top:58px;scroll-margin-top:24px;}
-  .part-label{
-    font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.2em;
-    text-transform:uppercase;color:var(--gold);margin-bottom:8px;
-  }
-  h2.part{
-    font-family:'Fraunces',serif;font-weight:600;font-size:31px;line-height:1.14;
-    margin:0 0 6px;letter-spacing:-.01em;
-  }
-  h2.part::after{
-    content:"";display:block;width:54px;height:3px;background:var(--accent);
-    margin-top:14px;
-  }
-  h3{
-    font-family:'Fraunces',serif;font-weight:600;font-size:21px;
-    margin:34px 0 6px;letter-spacing:-.005em;
-  }
-  h4{
-    font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.04em;
-    text-transform:uppercase;color:var(--accent);margin:26px 0 4px;font-weight:500;
-  }
-  p{margin:12px 0;}
-  strong{font-weight:600;}
-  em{font-style:italic;}
-  .lead{font-size:19px;color:var(--ink-soft);}
-
-  .formula{
-    background:var(--paper-2);border-left:3px solid var(--accent);
-    font-family:'IBM Plex Mono',monospace;font-size:14px;line-height:1.7;
-    padding:14px 18px;margin:18px 0;border-radius:0 4px 4px 0;overflow-x:auto;
-  }
-  .callout{
-    background:var(--accent-soft);border-radius:4px;padding:16px 20px;margin:20px 0;
-    font-size:16px;
-  }
-  .callout .tag{
-    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.15em;
-    text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px;
-  }
-  ul.plain{margin:12px 0;padding-left:22px;}
-  ul.plain li{margin:7px 0;}
-
-  /* component cards */
-  .component{
-    border:1px solid var(--rule);border-radius:4px;background:var(--paper-2);
-    padding:22px 26px;margin:22px 0;box-shadow:var(--shadow);
-  }
-  .component .cnum{
-    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);
-    letter-spacing:.1em;
-  }
-  .component h3{margin-top:4px;}
-
-  /* paper table */
-  table{border-collapse:collapse;width:100%;margin:20px 0;font-size:15px;}
-  th,td{border:1px solid var(--rule);padding:9px 12px;text-align:left;vertical-align:top;}
-  th{
-    background:var(--accent);color:var(--paper-2);font-family:'IBM Plex Mono',monospace;
-    font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;
-  }
-  tr:nth-child(even) td{background:var(--paper);}
-
-  /* ---- checklist ---- */
-  .checklist-intro{margin-top:58px;}
-  .progress-shell{
-    position:sticky;top:0;background:var(--paper);padding:14px 0 10px;
-    z-index:5;border-bottom:1px solid var(--rule);margin-bottom:8px;
-  }
-  .progress-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px;}
-  .progress-row .lbl{
-    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;
-    text-transform:uppercase;color:var(--accent);
-  }
-  .progress-row .count{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink);}
-  .bar{height:7px;background:var(--rule);border-radius:4px;overflow:hidden;}
-  .bar > i{
-    display:block;height:100%;width:0;background:var(--accent);
-    transition:width .35s ease;
-  }
-
-  .phase{margin-top:34px;}
-  .phase-head{
-    display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--ink);
-    padding-bottom:6px;margin-bottom:4px;
-  }
-  .phase-head .pid{
-    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--paper-2);
-    background:var(--ink);padding:3px 8px;border-radius:3px;letter-spacing:.05em;
-  }
-  .phase-head h3{margin:0;font-size:20px;}
-  .phase-note{font-size:15px;color:var(--ink-soft);font-style:italic;margin:8px 0 6px;}
-
-  .task{
-    display:flex;gap:13px;align-items:flex-start;padding:11px 4px;
-    border-bottom:1px dotted var(--rule);
-  }
-  .task:last-child{border-bottom:none;}
-  .task input[type=checkbox]{
-    appearance:none;-webkit-appearance:none;
-    width:20px;height:20px;min-width:20px;margin-top:3px;
-    border:1.6px solid var(--accent);border-radius:4px;background:var(--paper-2);
-    cursor:pointer;position:relative;transition:background .15s;
-  }
-  .task input[type=checkbox]:checked{background:var(--accent);}
-  .task input[type=checkbox]:checked::after{
-    content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
-    border:solid var(--paper-2);border-width:0 2.4px 2.4px 0;transform:rotate(45deg);
-  }
-  .task label{cursor:pointer;font-size:16.5px;line-height:1.5;flex:1;}
-  .task .tcode{
-    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold);
-    margin-right:7px;
-  }
-  .task.done label{color:var(--ink-soft);}
-  .task.done label .ttitle{text-decoration:line-through;}
-  .task .deliver{
-    display:block;font-size:13.5px;color:var(--ink-soft);font-style:italic;
-    margin-top:2px;
-  }
-  .gate{
-    background:var(--accent-soft);border-radius:4px;padding:12px 16px;margin:14px 0;
-    font-size:15px;
-  }
-  .gate b{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--accent);}
-
-  .controls{margin:18px 0 4px;display:flex;gap:10px;flex-wrap:wrap;}
-  .controls button{
-    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;
-    text-transform:uppercase;background:var(--paper-2);color:var(--ink);
-    border:1px solid var(--rule);border-radius:3px;padding:7px 12px;cursor:pointer;
-  }
-  .controls button:hover{border-color:var(--accent);color:var(--accent);}
-
-  footer{
-    margin-top:80px;padding-top:22px;border-top:2px solid var(--ink);
-    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);
-    line-height:1.7;
-  }
-
-  @media (max-width:560px){
-    body{font-size:16.5px;}
-    .wrap{padding:40px 18px 90px;}
-    h1.title{font-size:33px;}
-    h2.part{font-size:25px;}
-    .meta-grid{grid-template-columns:1fr;}
-  }
-  @media print{
-    .progress-shell,.controls{display:none;}
-    body{background:#fff;}
-    .component,.toc{box-shadow:none;}
-  }
-</style>
+<link rel="stylesheet" href="assets/style.css">
 
 <div class="wrap">
 
-  <!-- ===================== MASTHEAD ===================== -->
   <header class="masthead">
     <div class="kicker">Doctoral Methodology Note &nbsp;/&nbsp; Engineering and Technology Sciences</div>
     <h1 class="title">PROVA&#8209;MG: A Probabilistic Routing Framework for <em>Low&#8209;Resource Malagasy Speech Recognition</em></h1>
-    <p class="standfirst">A novel, unified methodology for Automatic Speech Recognition that aggregates heterogeneous foundation models, typological priors, and a large licensed unlabeled corpus under explicit calibration and explicit constraints. With a complete validation plan to prove that it works.</p>
+    <p class="standfirst">A novel, unified methodology for Automatic Speech Recognition that aggregates heterogeneous foundation models, typological priors, and a large licensed unlabeled corpus under explicit calibration and explicit constraints &mdash; with a complete validation plan to prove that it works.</p>
     <div class="meta-grid">
       <div>Candidate: <span>RANDRIAMANASINA Mianala Loharano</span></div>
       <div>Director: <span>Pr RAVONINJATOVO Achille Olivier</span></div>
@@ -248,313 +25,117 @@
     </div>
   </header>
 
+  <!-- ===================== ABSTRACT ===================== -->
+  <section>
+    <div class="part-label">Abstract</div>
+    <h2 class="part">Summary</h2>
+    <p class="lead">Malagasy is nominally covered by every modern multilingual ASR release, yet zero&#8209;shot quality is poor and no single foundation model, supervision regime, or adaptation trick lifts it on its own.</p>
+    <p>PROVA&#8209;MG &mdash; <em>Probabilistic Routing Of Variational Alignments for Malagasy</em> &mdash; treats low&#8209;resource ASR as a probabilistic system that aggregates heterogeneous evidence. Three foundation models (Whisper&#8209;large&#8209;v3, MMS, Wav2Vec2&#8209;BERT) are kept as distinct posteriors and their disagreement is used as a routing signal; an Austronesian typological prior constrains decoding where a Malagasy&#8209;only language model cannot; iterative pseudo&#8209;labeling is formalized as constrained variational EM with explicit non&#8209;collapse conditions; dialect, register, and code&#8209;switching are unified as latent variables; and a calibration head is trained on the small supervised set to make every confidence feeding into the system trustworthy.</p>
+    <p>The seven chapters below carry the argument: the state of the art and the open gaps, the five PROVA&#8209;MG components and their positioning, how the existing license&#8209;first pipeline is absorbed, the risks, and the ordered validation checklist that proves each claim.</p>
+  </section>
+
   <!-- ===================== TOC ===================== -->
   <nav class="toc">
     <h2>Contents</h2>
     <ol>
-      <li><a href="#p1">The existing methodological landscape</a></li>
-      <li><a href="#p2">Where the gaps actually are</a></li>
-      <li><a href="#p3">The novel methodology: PROVA&#8209;MG</a></li>
-      <li><a href="#p4">Why this is not someone else's thesis</a></li>
-      <li><a href="#p5">Integration with the existing project</a></li>
-      <li><a href="#p6">Risks and honesty</a></li>
-      <li><a href="#checklist">Validation checklist: every work item to prove it</a></li>
+      <li>
+        <a href="chapters/01-landscape.html">The existing methodological landscape</a>
+        <span class="sum">Ten layers of the ASR stack, from HMM&#8209;GMM to speech&#8209;LLMs and license&#8209;first data.</span>
+      </li>
+      <li>
+        <a href="chapters/02-gaps.html">Where the gaps actually are</a>
+        <span class="sum">Most low&#8209;resource ASR moves are taken at thesis scale; four are genuinely open.</span>
+      </li>
+      <li>
+        <a href="chapters/03-methodology.html">The novel methodology: PROVA&#8209;MG</a>
+        <span class="sum">Five interlocking components: co&#8209;inference, typological priors, constrained EM, latent decomposition, calibration.</span>
+      </li>
+      <li>
+        <a href="chapters/04-novelty.html">Why this is not someone else's thesis</a>
+        <span class="sum">Per&#8209;component positioning against the nearest prior art, and the integration claim.</span>
+      </li>
+      <li>
+        <a href="chapters/05-integration.html">Integration with the existing project</a>
+        <span class="sum">How the license&#8209;first pipeline and prior plans are absorbed; publication map.</span>
+      </li>
+      <li>
+        <a href="chapters/06-risks.html">Risks and honesty</a>
+        <span class="sum">Where to cut scope, where to expect negative results, and where to publish first.</span>
+      </li>
+      <li>
+        <a href="chapters/07-checklist.html">Validation checklist</a>
+        <span class="sum">Eight phases, ~50 tasks, each closed by a gate &mdash; the full work plan that proves it.</span>
+      </li>
     </ol>
   </nav>
 
-  <!-- ===================== PART 1 ===================== -->
-  <section id="p1">
-    <div class="part-label">Part One</div>
-    <h2 class="part">The existing methodological landscape</h2>
-    <p class="lead">The question of novelty is not "which algorithm" but "at which layer of the stack does the contribution live, and what does it claim". The field is best read as ten layers, each largely settled.</p>
+  <!-- ===================== CHAPTER CARDS ===================== -->
+  <section>
+    <div class="part-label">Chapters</div>
+    <h2 class="part">Read in order</h2>
 
-    <h3>1.1 The classical layer</h3>
-    <p>The HMM&#8209;GMM paradigm modeled speech as a hidden Markov chain emitting Gaussian mixtures over short&#8209;frame features (MFCC, PLP). It introduced the decomposition P(W|X) proportional to P(X|W) P(W) that still underlies any probabilistic reading of ASR, and weighted finite&#8209;state transducer decoding that remains the formal substrate of beam search. No thesis can be "about" this layer today, but any thesis that ignores it is theoretically thin.</p>
+    <div class="chapter-grid">
 
-    <h3>1.2 The hybrid layer (DNN&#8209;HMM, 2009 to 2016)</h3>
-    <p>Deep neural networks replaced the Gaussian mixture as the emission model while the decoder, lexicon, and language model stayed external. Kaldi chain models, TDNN&#8209;F, and lattice&#8209;free MMI live here. This regime is engineering&#8209;heavy and unforgiving on data.</p>
+      <a class="chapter-card" href="chapters/01-landscape.html">
+        <div class="pid">Chapter 1</div>
+        <div class="ctitle">The existing methodological landscape</div>
+        <p class="csum">Read the field as ten layers, each largely settled. A thesis lives at one of them and must say which.</p>
+        <span class="arrow">Open &rarr;</span>
+      </a>
 
-    <h3>1.3 The end&#8209;to&#8209;end layer (2014 to 2020)</h3>
-    <p>Three objectives still structure the field. <strong>CTC</strong> (Graves et al. 2006) marginalizes over all monotonic alignments and is the dominant choice when data is scarce because it converges fast with few hyperparameters. <strong>Attention encoder&#8209;decoder</strong> (Listen, Attend and Spell, Chan et al. 2016) drops the monotonic assumption and is more expressive but more data&#8209;hungry. <strong>RNN&#8209;Transducer</strong> (Graves 2012) reintroduces monotonic alignment with an internal predictor and is the production choice for streaming. <strong>Conformer</strong> (Gulati et al. 2020) is the encoder that combines convolution for local patterns with self&#8209;attention for long range context.</p>
+      <a class="chapter-card" href="chapters/02-gaps.html">
+        <div class="pid">Chapter 2</div>
+        <div class="ctitle">Where the gaps actually are</div>
+        <p class="csum">Continued pre&#8209;training and adapter fine&#8209;tuning are taken. Co&#8209;inference, typological priors, constrained EM, and latent decomposition are not.</p>
+        <span class="arrow">Open &rarr;</span>
+      </a>
 
-    <h3>1.4 The self&#8209;supervised representation layer (2018 to 2022)</h3>
-    <p>Wav2Vec 2.0 (Baevski et al. 2020) introduced contrastive self&#8209;supervised pre&#8209;training on unlabeled audio; HuBERT (Hsu et al. 2021) replaced the contrastive term with masked prediction over discretized targets; WavLM added denoising; data2vec unified modalities under self&#8209;distillation. Fine&#8209;tuned with a small supervised head, these representations often match models trained from scratch on far more data.</p>
+      <a class="chapter-card" href="chapters/03-methodology.html">
+        <div class="pid">Chapter 3</div>
+        <div class="ctitle">The novel methodology: PROVA&#8209;MG</div>
+        <p class="csum">Three teachers as distinct posteriors, an Austronesian prior, constrained variational EM, latent dialect/register/code&#8209;switching, and a calibration head.</p>
+        <span class="arrow">Open &rarr;</span>
+      </a>
 
-    <h3>1.5 The cross&#8209;lingual self&#8209;supervised layer (2020 to 2024)</h3>
-    <p>XLSR&#8209;53 and XLS&#8209;R (Babu et al. 2022, 436,000 hours, 128 languages), MMS (Pratap et al. 2023, over 1,100 languages), and Wav2Vec2&#8209;BERT (Seamless Communication 2024, roughly 4.5 million hours, 143 languages) produce universal acoustic representations. Malagasy is nominally covered by all of them; in practice the zero&#8209;shot quality is poor.</p>
+      <a class="chapter-card" href="chapters/04-novelty.html">
+        <div class="pid">Chapter 4</div>
+        <div class="ctitle">Why this is not someone else's thesis</div>
+        <p class="csum">A per&#8209;component table of nearest prior art and what is new here. The integration is what makes a thesis rather than five papers.</p>
+        <span class="arrow">Open &rarr;</span>
+      </a>
 
-    <h3>1.6 The large&#8209;scale weak supervision layer (2022 to present)</h3>
-    <p>Whisper (Radford et al. 2023) trained on 680,000 hours of audio paired with weakly supervised web transcripts. USM, Canary, OWSM, and OLMoASR are variants and open reimplementations. Whisper&#8209;large&#8209;v3 currently "knows the most" about Malagasy of any open release, which is why the SIGUL pipeline uses it for first&#8209;pass pseudo&#8209;labels.</p>
+      <a class="chapter-card" href="chapters/05-integration.html">
+        <div class="pid">Chapter 5</div>
+        <div class="ctitle">Integration with the existing project</div>
+        <p class="csum">The license&#8209;first pipeline becomes the data substrate; planned pre&#8209;training, comparison, and adaptation are repurposed. Five papers, mapped to venues.</p>
+        <span class="arrow">Open &rarr;</span>
+      </a>
 
-    <h3>1.7 The parameter&#8209;efficient adaptation layer</h3>
-    <p>LoRA, adapters, BitFit, and prompt tuning specialize large encoders by training a small fraction of parameters. For low&#8209;resource ASR this matters both for GPU budget and for reducing overfitting on small supervised sets.</p>
+      <a class="chapter-card" href="chapters/06-risks.html">
+        <div class="pid">Chapter 6</div>
+        <div class="ctitle">Risks and honesty</div>
+        <p class="csum">Scope, theoretical depth, empirical uncertainty, compute, and novelty priority &mdash; with concrete fallbacks.</p>
+        <span class="arrow">Open &rarr;</span>
+      </a>
 
-    <h3>1.8 The semi&#8209;supervised and pseudo&#8209;labeling layer</h3>
-    <p>slimIPL, Kaizen, and Noisy Student Training share one skeleton: train a seed model, transcribe a large unlabeled set, filter by confidence, retrain on the union, repeat. The variations concern filtering, teacher update, and collapse prevention. The procedure works empirically but its conditions of success are not formally characterized.</p>
+      <a class="chapter-card" href="chapters/07-checklist.html">
+        <div class="pid">Chapter 7</div>
+        <div class="ctitle">Validation checklist</div>
+        <p class="csum">Eight phases (P0 &mdash; P7) with gated deliverables. Interactive checklist, progress bar, print&#8209;to&#8209;PDF.</p>
+        <span class="arrow">Open &rarr;</span>
+      </a>
 
-    <h3>1.9 The speech&#8209;LLM integration layer (2023 to present)</h3>
-    <p>Recent work feeds speech to a large language model, either as discrete tokens or through a learned projection (SALMONN, Qwen&#8209;Audio). Quality on well&#8209;resourced languages rivals dedicated ASR; on low&#8209;resource languages the bottleneck shifts to the LLM's text coverage.</p>
-
-    <h3>1.10 The data and licensing layer</h3>
-    <p>This is the layer the existing SIGUL draft occupies: license&#8209;first data construction, segment&#8209;level traceability, datasheets, reproducibility. It is genuinely contributive, but it is a methodology for <em>constructing a corpus</em>, not for <em>modeling speech</em>. Necessary but not sufficient for a thesis whose center is "neural and probabilistic approaches".</p>
-  </section>
-
-  <!-- ===================== PART 2 ===================== -->
-  <section id="p2">
-    <div class="part-label">Part Two</div>
-    <h2 class="part">Where the gaps actually are</h2>
-    <p>Several methods are "taken", in the sense that completed theses or near&#8209;thesis bodies of work already exist for them: continued self&#8209;supervised pre&#8209;training for a single low&#8209;resource language, pseudo&#8209;labeling with confidence filtering, LoRA and adapter cross&#8209;lingual fine&#8209;tuning, dialect&#8209;conditioned adapters, and code&#8209;switched ASR. Doing any of these for Malagasy would be <em>linguistically</em> new but not <em>methodologically</em> new.</p>
-    <p>What is genuinely under&#8209;explored at thesis scale:</p>
-    <ul class="plain">
-      <li>The principled probabilistic integration of multiple <strong>heterogeneous</strong> foundation models treated as distinct posteriors, with their disagreement structure used as a routing signal rather than discarded.</li>
-      <li>The injection of <strong>typological priors</strong> from a known language family as Bayesian priors that constrain the hypothesis space, rather than as soft cues for data augmentation.</li>
-      <li>The formal treatment of iterative pseudo&#8209;labeling as a <strong>constrained variational EM</strong> procedure with explicit safeguards against model collapse, with convergence analysis.</li>
-      <li>The unification of dialect, register, and code&#8209;switching as <strong>latent variables</strong> in one graphical model with explicit conditional independence structure.</li>
-    </ul>
-    <div class="callout">
-      <span class="tag">The thesis claim</span>
-      Each item above is a thinkable Interspeech paper. Their combination, applied coherently to one under&#8209;resourced language with a corpus you built yourself under a license&#8209;first regime, is a thinkable PhD thesis.
     </div>
   </section>
 
-  <!-- ===================== PART 3 ===================== -->
-  <section id="p3">
-    <div class="part-label">Part Three</div>
-    <h2 class="part">The novel methodology: PROVA&#8209;MG</h2>
-    <p class="lead">Working name: <strong>PROVA&#8209;MG</strong>, for <em>Probabilistic Routing Of Variational Alignments for Malagasy</em>. Five interlocking components. The thesis formalizes each individually, then shows that their integration beats any subset.</p>
-
-    <div class="component">
-      <div class="cnum">Component 3.1</div>
-      <h3>Heterogeneous Foundation Model Co&#8209;Inference</h3>
-      <p>Whisper&#8209;large&#8209;v3, MMS, and Wav2Vec2&#8209;BERT are treated not as competing baselines but as three approximate posteriors over the transcript. Each encodes different inductive biases (weak supervision, religious&#8209;text alignment, self&#8209;supervision), so their disagreement on a Malagasy segment is informative.</p>
-      <p>For each unlabeled segment x we compute approximate posteriors and define a learned routing function:</p>
-      <div class="formula">r : ( q_W(y|x), q_M(y|x), q_B(y|x) ) &rarr; { train_high_confidence , route_to_human , hold_in_reserve , discard }</div>
-      <p>The routing function is trained on the small supervised set, using the agreement structure as features. We <strong>route</strong>, we do not average: averaging is Bayes&#8209;optimal only when teachers are mutually calibrated, and these are not.</p>
-    </div>
-
-    <div class="component">
-      <div class="cnum">Component 3.2</div>
-      <h3>Typologically Informed Bayesian Priors</h3>
-      <p>Malagasy belongs to the Malayo&#8209;Polynesian subgroup; its phonotactics and morphology overlap measurably with Indonesian, Malay, Cebuano, and Tagalog, which have far more data. We train a phonotactic and morphotactic prior on Austronesian text and incorporate it into decoding via a calibrated mixture:</p>
-      <div class="formula">P(y|x) &prop; P_acoustic(x|y) &middot; P_LM_MG(y)^&alpha; &middot; P_typ(y)^&beta;</div>
-      <p>The hypothesis: this prior regularizes regions of the hypothesis space that a Malagasy&#8209;only language model cannot constrain because of data sparsity, but a family&#8209;level prior can.</p>
-    </div>
-
-    <div class="component">
-      <div class="cnum">Component 3.3</div>
-      <h3>Constrained Variational EM for Iterative Pseudo&#8209;Labeling</h3>
-      <p>On the extended dataset D = D_sup union D_unsup, parameters &theta; and latent transcripts are inferred jointly:</p>
-      <div class="formula">E&#8209;step:&nbsp; q*(y&#771;|x) = argmin_q  KL( q || p_&theta;(y&#771;|x) )  subject to constraints C
-M&#8209;step:&nbsp; &theta; &larr; argmax_&theta;  E_q*[ log p_&theta;(y_sup, y&#771;_unsup | x) ] + &lambda; R(&theta;)</div>
-      <p>The constraints C are the novelty: a confidence floor, a KL divergence bound on drift between successive iterations, an agreement constraint from 3.1, and a typological consistency constraint from 3.2. Under these constraints the thesis derives convergence and non&#8209;collapse conditions that the existing empirical literature does not articulate.</p>
-    </div>
-
-    <div class="component">
-      <div class="cnum">Component 3.4</div>
-      <h3>Latent Variable Decomposition: Dialect, Register, Code&#8209;Switching</h3>
-      <p>The generation process is decomposed into a graphical model with explicit latent variables:</p>
-      <div class="formula">x &rarr; ( d , r , c , y )
-d = dialect &nbsp; r = register &nbsp; c = per&#8209;segment code&#8209;switching language identity</div>
-      <p>The acoustic model factorizes as p(x|y,d,r), the language model as p(y|d,c,r). Dialect&#8209;specific adapters condition on d, register parameters on r, code&#8209;switched segments route through a French acoustic model. Threads usually treated as separate subproblems become one generative model admitting joint inference.</p>
-    </div>
-
-    <div class="component">
-      <div class="cnum">Component 3.5</div>
-      <h3>Linguistically Informed Confidence Calibration</h3>
-      <p>ASR models are overconfident; mis&#8209;calibrated confidences sabotage the routing of 3.1 and the constraints of 3.3. A small post&#8209;hoc calibration model (temperature scaling or isotonic regression) is trained on the supervised set, with features including model entropy, three&#8209;way teacher agreement, typological likelihood, segment duration, voice&#8209;activity confidence, and dialect&#8209;posterior entropy. The calibrated confidence is what every downstream constraint actually consumes.</p>
-    </div>
-
-    <div class="callout">
-      <span class="tag">The unifying claim</span>
-      Low&#8209;resource ASR is best approached not as one model on one objective with one source of supervision, but as a probabilistic system that aggregates heterogeneous evidence under explicit calibration and explicit constraints. Malagasy is the empirical demonstration.
-    </div>
-  </section>
-
-  <!-- ===================== PART 4 ===================== -->
-  <section id="p4">
-    <div class="part-label">Part Four</div>
-    <h2 class="part">Why this is not someone else's thesis</h2>
-    <p>Each component touches existing literature, but none has been done in this form, and the integration has not been done at all.</p>
-    <table>
-      <thead><tr><th>Component</th><th>Nearest prior art</th><th>What is new here</th></tr></thead>
-      <tbody>
-        <tr><td>3.1 Co&#8209;inference</td><td>Ensemble distillation, DistilWhisper</td><td>Teachers as distinct posteriors with informative disagreement; routing not averaging</td></tr>
-        <tr><td>3.2 Typological priors</td><td>Language&#8209;family adapters in low&#8209;resource MT</td><td>Explicit Bayesian prior on phonotactics inside the decoding probability</td></tr>
-        <tr><td>3.3 Constrained EM</td><td>slimIPL, Kaizen, Noisy Student</td><td>Formal convergence and non&#8209;collapse conditions in constrained variational form</td></tr>
-        <tr><td>3.4 Latent decomposition</td><td>Arabic / Chinese dialect adapters</td><td>Joint inference of dialect, register, code&#8209;switching in one generative model</td></tr>
-        <tr><td>3.5 Calibration</td><td>Post&#8209;hoc calibration in classification</td><td>Calibration that generalizes from a tiny supervised set to a large shifted unlabeled set</td></tr>
-      </tbody>
-    </table>
-    <p>The integration is what makes a thesis rather than five papers: the components share the calibrated confidence (3.5), the agreement signal (3.1), and the constraint set (3.3), so they reinforce one another rather than sitting side by side.</p>
-  </section>
-
-  <!-- ===================== PART 5 ===================== -->
-  <section id="p5">
-    <div class="part-label">Part Five</div>
-    <h2 class="part">Integration with the existing project</h2>
-    <p>Nothing already committed is discarded. PROVA&#8209;MG absorbs it.</p>
-    <ul class="plain">
-      <li>The <strong>license&#8209;first pipeline</strong> becomes the data substrate: it produces the gold supervised set and the large licensed unlabeled set, plus the dialect, register, and license metadata that feed the latent&#8209;variable model of 3.4.</li>
-      <li>The planned <strong>continued pre&#8209;training</strong> of Wav2Vec2&#8209;BERT produces one of the three teachers in 3.1.</li>
-      <li>The planned <strong>architecture comparison</strong> is repurposed: instead of choosing one winner, three teachers are kept and co&#8209;infer; the comparison calibrates the routing function.</li>
-      <li>The planned <strong>pseudo&#8209;labeling loop</strong> becomes the constrained EM of 3.3, with safeguards made explicit.</li>
-      <li>The planned <strong>dialect adaptation</strong> becomes 3.4, with dialect as a latent variable.</li>
-    </ul>
-    <h3>Publication map</h3>
-    <table>
-      <thead><tr><th>Paper</th><th>Content</th><th>Target venue</th></tr></thead>
-      <tbody>
-        <tr><td>Paper 1</td><td>License&#8209;first corpus pipeline (data substrate)</td><td>SIGUL workshop</td></tr>
-        <tr><td>Paper 2</td><td>Heterogeneous foundation model co&#8209;inference (3.1)</td><td>Interspeech / ICASSP</td></tr>
-        <tr><td>Paper 3</td><td>Typological priors for low&#8209;resource ASR (3.2)</td><td>ACL / EMNLP</td></tr>
-        <tr><td>Paper 4</td><td>Constrained variational EM for pseudo&#8209;labeling (3.3)</td><td>Computer Speech and Language / IEEE&#8209;ACM TASLP</td></tr>
-        <tr><td>Paper 5</td><td>Joint dialect, register, code&#8209;switching inference (3.4 + 3.5)</td><td>Interspeech</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- ===================== PART 6 ===================== -->
-  <section id="p6">
-    <div class="part-label">Part Six</div>
-    <h2 class="part">Risks and honesty</h2>
-    <ul class="plain">
-      <li><strong>Scope.</strong> Five components is ambitious. A defensible thesis is 3.1 + 3.3 + 3.5, with 3.2 and 3.4 as future work if time runs short.</li>
-      <li><strong>Theoretical depth.</strong> Components 3.3 and 3.5 need honest variational inference, EM convergence, and calibration theory. Strong probabilistic supervision (ideally a co&#8209;director) is advisable; if unavailable, scope 3.3 to empirical claims with sketched proofs.</li>
-      <li><strong>Empirical uncertainty.</strong> Typological priors (3.2) may not move WER if the Malagasy LM is strong. The ablation is essential, and a negative result is itself publishable.</li>
-      <li><strong>Compute.</strong> Three teachers at scale is expensive. Mitigation: distill the co&#8209;inference into a single student once the corpus exists; teachers are needed at training time, not deployment.</li>
-      <li><strong>Novelty contestability.</strong> Publish early. SIGUL anchors priority on data; a fast Interspeech submission on 3.1 anchors priority on methodology.</li>
-    </ul>
-  </section>
-
-  <!-- ===================== CHECKLIST ===================== -->
-  <section id="checklist" class="checklist-intro">
-    <div class="part-label">Part Seven</div>
-    <h2 class="part">Validation checklist: every work item to prove it</h2>
-    <p class="lead">A complete, ordered work plan. Each phase ends with a <em>gate</em>: a measurable result that must hold before the next phase is worth starting. Check items off as they are done; progress is saved automatically.</p>
-
-    <div class="controls">
-      <button id="btn-reset">Reset all</button>
-      <button id="btn-print">Print / save as PDF</button>
-    </div>
-  </section>
-
-  <div class="progress-shell">
-    <div class="progress-row">
-      <span class="lbl">Validation progress</span>
-      <span class="count" id="count">0 / 0 complete</span>
-    </div>
-    <div class="bar"><i id="bar-fill"></i></div>
-  </div>
-
-  <div id="checklist-body">
-
-    <!-- PHASE 0 -->
-    <div class="phase">
-      <div class="phase-head"><span class="pid">P0</span><h3>Foundations, infrastructure, and evaluation harness</h3></div>
-      <p class="phase-note">You cannot prove anything without a trustworthy measuring stick. Build it first.</p>
-      <div class="task"><input type="checkbox" data-id="p0-1"><label><span class="tcode">P0.1</span><span class="ttitle">Consolidate the literature review into a single internal document mapping every PROVA-MG component to its nearest prior art.</span><span class="deliver">Deliverable: state-of-the-art chapter draft.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p0-2"><label><span class="tcode">P0.2</span><span class="ttitle">Set up the reproducible compute environment (Python 3.10+, PyTorch, Transformers, Datasets, Accelerate) and archive it as a versioned Docker image.</span><span class="deliver">Deliverable: pinned environment + image hash.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p0-3"><label><span class="tcode">P0.3</span><span class="ttitle">Build the evaluation harness: WER and CER with jiwer, plus paired bootstrap, MAPSSWE, and Wilcoxon significance tests.</span><span class="deliver">Deliverable: one command produces a metrics report with confidence intervals.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p0-4"><label><span class="tcode">P0.4</span><span class="ttitle">Define and freeze the held-out test sets: FLEURS-MG, Common Voice-MG, and a speaker-disjoint in-domain split, each stratified by dialect and register.</span><span class="deliver">Deliverable: frozen test manifests, never touched during development.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p0-5"><label><span class="tcode">P0.5</span><span class="ttitle">Reproduce published baselines: zero-shot Whisper-large-v3, XLS-R fine-tuned, MMS, on FLEURS-MG and CV-MG.</span><span class="deliver">Deliverable: baseline WER table, consistent with public numbers.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p0-6"><label><span class="tcode">P0.6</span><span class="ttitle">Set up experiment tracking (Weights &amp; Biases or MLflow) so every run is logged, seeded, and reproducible.</span><span class="deliver">Deliverable: tracked-experiment template.</span></label></div>
-      <div class="gate"><b>Gate 0</b> &nbsp; Baselines reproduce within a small margin of published WER, and the harness gives stable confidence intervals on a repeated run.</div>
-    </div>
-
-    <!-- PHASE 1 -->
-    <div class="phase">
-      <div class="phase-head"><span class="pid">P1</span><h3>Data substrate (license-first pipeline)</h3></div>
-      <p class="phase-note">PROVA-MG consumes a gold supervised set and a large licensed unlabeled set. The pipeline produces both.</p>
-      <div class="task"><input type="checkbox" data-id="p1-1"><label><span class="tcode">P1.1</span><span class="ttitle">Execute the pipeline end-to-end on the pilot corpus (~20 h, Tier A + Tier C); verify every one of the nine stages functions as specified.</span><span class="deliver">Deliverable: pilot corpus + stage manifests.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p1-2"><label><span class="tcode">P1.2</span><span class="ttitle">Onboard professional Malagasy transcribers; reach the inter-annotator CER target on double-annotated segments.</span><span class="deliver">Deliverable: agreement report meeting the threshold.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p1-3"><label><span class="tcode">P1.3</span><span class="ttitle">Populate the SIGUL article (Paper 1) with real pilot numbers and submit it.</span><span class="deliver">Deliverable: SIGUL submission.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p1-4"><label><span class="tcode">P1.4</span><span class="ttitle">Scale to the intermediate corpus (~200 h) covering at least three dialects, with register metadata.</span><span class="deliver">Deliverable: corpus v1 on Hugging Face with datasheet.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p1-5"><label><span class="tcode">P1.5</span><span class="ttitle">Scale to the full corpus (1,000+ h supervised, plus the large unlabeled pool), balanced across dialect and register.</span><span class="deliver">Deliverable: corpus v2, Zenodo-archived with persistent DOI.</span></label></div>
-      <div class="gate"><b>Gate 1</b> &nbsp; A licensed unlabeled pool large enough for pseudo-labeling exists, and the supervised set is large enough to train a routing function and a calibration head.</div>
-    </div>
-
-    <!-- PHASE 2 -->
-    <div class="phase">
-      <div class="phase-head"><span class="pid">P2</span><h3>Component 3.1 — Heterogeneous Foundation Model Co-Inference</h3></div>
-      <p class="phase-note">Prove that routing across distinct teachers beats any single teacher, averaging, and voting.</p>
-      <div class="task"><input type="checkbox" data-id="p2-1"><label><span class="tcode">P2.1</span><span class="ttitle">Implement posterior extraction for Whisper-large-v3, MMS, and Wav2Vec2-BERT with normalized, comparable beam scores.</span><span class="deliver">Deliverable: per-segment posterior dumps for the unlabeled pool.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p2-2"><label><span class="tcode">P2.2</span><span class="ttitle">Engineer the agreement feature set (n-best overlap, edit distance between teachers, entropy, length agreement).</span><span class="deliver">Deliverable: feature table aligned to the supervised set.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p2-3"><label><span class="tcode">P2.3</span><span class="ttitle">Train the routing function on the supervised set; predicting one of the four routing outcomes.</span><span class="deliver">Deliverable: trained router + held-out routing accuracy.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p2-4"><label><span class="tcode">P2.4</span><span class="ttitle">Run the controlled ablation: single best teacher vs n-best voting vs posterior averaging vs PROVA-MG routing, all on the same data.</span><span class="deliver">Deliverable: ablation table with significance tests.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p2-5"><label><span class="tcode">P2.5</span><span class="ttitle">Distill the co-inference into a single student model and confirm it retains most of the gain at deployment cost.</span><span class="deliver">Deliverable: student model + cost/quality comparison.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p2-6"><label><span class="tcode">P2.6</span><span class="ttitle">Write and submit Paper 2 (co-inference).</span><span class="deliver">Deliverable: Interspeech or ICASSP submission.</span></label></div>
-      <div class="gate"><b>Gate 2</b> &nbsp; Routing yields a statistically significant WER reduction over the best single teacher AND over averaging, on at least two test sets. If not, the disagreement signal is not informative and 3.1 must be revised.</div>
-    </div>
-
-    <!-- PHASE 3 -->
-    <div class="phase">
-      <div class="phase-head"><span class="pid">P3</span><h3>Component 3.5 — Confidence Calibration</h3></div>
-      <p class="phase-note">Built early because 3.1 routing and 3.3 constraints both consume calibrated confidence.</p>
-      <div class="task"><input type="checkbox" data-id="p3-1"><label><span class="tcode">P3.1</span><span class="ttitle">Extract calibration features (model entropy, three-way agreement, typological likelihood, duration, VAD confidence, dialect-posterior entropy).</span><span class="deliver">Deliverable: calibration feature pipeline.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p3-2"><label><span class="tcode">P3.2</span><span class="ttitle">Train the post-hoc calibration model (temperature scaling and isotonic regression) on the supervised set.</span><span class="deliver">Deliverable: fitted calibrator.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p3-3"><label><span class="tcode">P3.3</span><span class="ttitle">Measure calibration with reliability diagrams and Expected Calibration Error before and after.</span><span class="deliver">Deliverable: ECE table + reliability plots.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p3-4"><label><span class="tcode">P3.4</span><span class="ttitle">Run the distribution-shift study: does a calibrator fit on the small supervised set still calibrate the larger, shifted unlabeled pool?</span><span class="deliver">Deliverable: shift-robustness analysis.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p3-5"><label><span class="tcode">P3.5</span><span class="ttitle">Ablation: re-run 3.1 routing with raw vs calibrated confidence and quantify the difference.</span><span class="deliver">Deliverable: calibrated-vs-uncalibrated routing table.</span></label></div>
-      <div class="gate"><b>Gate 3</b> &nbsp; Calibrated confidence has substantially lower ECE than raw confidence and improves routing decisions; the calibrator generalizes from supervised to unlabeled distribution.</div>
-    </div>
-
-    <!-- PHASE 4 -->
-    <div class="phase">
-      <div class="phase-head"><span class="pid">P4</span><h3>Component 3.2 — Typologically Informed Priors</h3></div>
-      <p class="phase-note">Prove that an Austronesian family prior constrains decoding where a Malagasy-only LM cannot.</p>
-      <div class="task"><input type="checkbox" data-id="p4-1"><label><span class="tcode">P4.1</span><span class="ttitle">Collect and clean Austronesian text corpora (Indonesian, Malay, Cebuano, Tagalog) plus all available Malagasy text.</span><span class="deliver">Deliverable: family text corpus with provenance.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p4-2"><label><span class="tcode">P4.2</span><span class="ttitle">Train the phonotactic and morphotactic prior P_typ on the family corpus.</span><span class="deliver">Deliverable: trained typological prior model.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p4-3"><label><span class="tcode">P4.3</span><span class="ttitle">Integrate the prior into decoding via the calibrated mixture; tune the mixture weights on the dev set.</span><span class="deliver">Deliverable: decoder with tuned weights.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p4-4"><label><span class="tcode">P4.4</span><span class="ttitle">Ablation: decode with no prior vs Malagasy-only LM vs Malagasy LM + typological prior.</span><span class="deliver">Deliverable: prior ablation table.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p4-5"><label><span class="tcode">P4.5</span><span class="ttitle">Error-localization study: confirm any gain concentrates on sparse-data regions (rare morphology, low-frequency words), not uniformly.</span><span class="deliver">Deliverable: stratified error analysis.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p4-6"><label><span class="tcode">P4.6</span><span class="ttitle">Write and submit Paper 3 (typological priors). A negative result is reported honestly and still submitted.</span><span class="deliver">Deliverable: ACL or EMNLP submission.</span></label></div>
-      <div class="gate"><b>Gate 4</b> &nbsp; Either the typological prior gives a measurable, localized WER gain (component confirmed) or it does not (component becomes a documented negative result; 3.2 dropped from the load-bearing path).</div>
-    </div>
-
-    <!-- PHASE 5 -->
-    <div class="phase">
-      <div class="phase-head"><span class="pid">P5</span><h3>Component 3.3 — Constrained Variational EM</h3></div>
-      <p class="phase-note">The theoretically heaviest component. Prove convergence, prove non-collapse, and prove the constraints matter.</p>
-      <div class="task"><input type="checkbox" data-id="p5-1"><label><span class="tcode">P5.1</span><span class="ttitle">Write the formal specification of the E-step, M-step, and the four constraints (confidence floor, KL drift bound, agreement, typological consistency).</span><span class="deliver">Deliverable: formal methodology section.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p5-2"><label><span class="tcode">P5.2</span><span class="ttitle">Derive convergence to a stationary point under stated simplifying assumptions.</span><span class="deliver">Deliverable: proof (or proof sketch) with assumptions made explicit.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p5-3"><label><span class="tcode">P5.3</span><span class="ttitle">Implement the iterative loop with all constraints toggleable independently.</span><span class="deliver">Deliverable: working constrained-EM trainer.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p5-4"><label><span class="tcode">P5.4</span><span class="ttitle">Run the loop and plot empirical convergence: WER and held-out loss across iterations.</span><span class="deliver">Deliverable: convergence curves.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p5-5"><label><span class="tcode">P5.5</span><span class="ttitle">Deliberately induce model collapse with constraints OFF, and show constraints ON prevent it (confidence rises while accuracy falls vs both stay aligned).</span><span class="deliver">Deliverable: collapse-vs-no-collapse comparison.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p5-6"><label><span class="tcode">P5.6</span><span class="ttitle">Leave-one-constraint-out ablation: quantify the contribution of each of the four constraints.</span><span class="deliver">Deliverable: constraint ablation table.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p5-7"><label><span class="tcode">P5.7</span><span class="ttitle">Write and submit Paper 4 (constrained variational EM) to a journal.</span><span class="deliver">Deliverable: Computer Speech and Language or TASLP submission.</span></label></div>
-      <div class="gate"><b>Gate 5</b> &nbsp; The constrained loop improves WER monotonically (or near-monotonically) over iterations, the unconstrained loop demonstrably collapses, and each constraint has a measurable effect.</div>
-    </div>
-
-    <!-- PHASE 6 -->
-    <div class="phase">
-      <div class="phase-head"><span class="pid">P6</span><h3>Component 3.4 — Latent Dialect, Register, Code-Switching</h3></div>
-      <p class="phase-note">Prove that joint inference of the latent variables beats treating them as separate subproblems.</p>
-      <div class="task"><input type="checkbox" data-id="p6-1"><label><span class="tcode">P6.1</span><span class="ttitle">Specify the graphical model and its conditional independence structure.</span><span class="deliver">Deliverable: model specification.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p6-2"><label><span class="tcode">P6.2</span><span class="ttitle">Implement dialect-conditioned adapters and register-conditioned decoding parameters.</span><span class="deliver">Deliverable: conditioned model variants.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p6-3"><label><span class="tcode">P6.3</span><span class="ttitle">Implement the per-segment code-switching head and the routing of French segments.</span><span class="deliver">Deliverable: code-switching-aware decoder.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p6-4"><label><span class="tcode">P6.4</span><span class="ttitle">Implement joint approximate inference (variational mean-field or sampling) over dialect, register, code-switching, and transcript.</span><span class="deliver">Deliverable: joint inference routine.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p6-5"><label><span class="tcode">P6.5</span><span class="ttitle">Ablation: independent per-subproblem handling vs joint latent-variable inference.</span><span class="deliver">Deliverable: joint-vs-separate table.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p6-6"><label><span class="tcode">P6.6</span><span class="ttitle">Stratified evaluation: WER by dialect, by register, by code-switching density, with per-dialect equity reported explicitly.</span><span class="deliver">Deliverable: stratified results table.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p6-7"><label><span class="tcode">P6.7</span><span class="ttitle">Write and submit Paper 5 (joint dialect, register, code-switching + calibration).</span><span class="deliver">Deliverable: Interspeech submission.</span></label></div>
-      <div class="gate"><b>Gate 6</b> &nbsp; Joint inference reduces WER on under-represented dialects and code-switched speech without degrading the majority dialect.</div>
-    </div>
-
-    <!-- PHASE 7 -->
-    <div class="phase">
-      <div class="phase-head"><span class="pid">P7</span><h3>Full-system validation and the thesis claim</h3></div>
-      <p class="phase-note">Prove that the integrated system beats every subset and every published baseline.</p>
-      <div class="task"><input type="checkbox" data-id="p7-1"><label><span class="tcode">P7.1</span><span class="ttitle">Run the full PROVA-MG system end-to-end on the full corpus and report WER on all three frozen test sets.</span><span class="deliver">Deliverable: headline results table.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p7-2"><label><span class="tcode">P7.2</span><span class="ttitle">Run the master ablation: full system minus each component in turn, proving the integration claim.</span><span class="deliver">Deliverable: component-removal ablation with significance tests.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p7-3"><label><span class="tcode">P7.3</span><span class="ttitle">Compare against zero-shot and naively fine-tuned baselines, and against the thesis WER targets (≤15% read, ≤25% spontaneous).</span><span class="deliver">Deliverable: target-attainment table.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p7-4"><label><span class="tcode">P7.4</span><span class="ttitle">Statistical significance: paired bootstrap and Wilcoxon on every headline comparison.</span><span class="deliver">Deliverable: significance appendix.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p7-5"><label><span class="tcode">P7.5</span><span class="ttitle">Write the Threats to Validity section: small calibration set, dialect-category simplification, anchoring bias in correction, compute limits.</span><span class="deliver">Deliverable: threats-to-validity chapter.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p7-6"><label><span class="tcode">P7.6</span><span class="ttitle">Release all artifacts: corpus, models, code, reproducibility bundles, datasheets, model cards, under open licenses with a persistent DOI.</span><span class="deliver">Deliverable: open release package.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p7-7"><label><span class="tcode">P7.7</span><span class="ttitle">Assemble the manuscript: state of the art, formalization, data substrate, the five components, full-system validation, conclusion.</span><span class="deliver">Deliverable: thesis manuscript.</span></label></div>
-      <div class="task"><input type="checkbox" data-id="p7-8"><label><span class="tcode">P7.8</span><span class="ttitle">Defense preparation and final open releases.</span><span class="deliver">Deliverable: defended thesis.</span></label></div>
-      <div class="gate"><b>Gate 7 (the thesis claim)</b> &nbsp; The integrated PROVA-MG system significantly outperforms every ablation and every baseline on independent, frozen, dialect-stratified test sets, and the gain is attributable to the integration rather than to any single component alone.</div>
-    </div>
-
-  </div>
+  <!-- ===================== EDTM 3D GUIDELINES ===================== -->
+  <nav class="toc">
+    <h2>EDTM 3D guidelines (English)</h2>
+    <ol>
+      <li><a href="guidelines/guide-redaction.html">Doctoral thesis writing guide</a></li>
+      <li><a href="guidelines/avancement.html">Doctoral research progress report</a></li>
+    </ol>
+  </nav>
 
   <footer>
     PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
@@ -563,66 +144,3 @@ d = dialect &nbsp; r = register &nbsp; c = per&#8209;segment code&#8209;switchin
   </footer>
 
 </div>
-
-<script>
-  // Interactive checklist with graceful persistence.
-  (function(){
-    var boxes = Array.prototype.slice.call(document.querySelectorAll('.task input[type=checkbox]'));
-    var countEl = document.getElementById('count');
-    var fillEl  = document.getElementById('bar-fill');
-    var STORE_KEY = 'prova-mg-checklist';
-    var hasStorage = (typeof window !== 'undefined' && window.storage &&
-                      typeof window.storage.get === 'function');
-
-    function refresh(){
-      var done = boxes.filter(function(b){ return b.checked; }).length;
-      var total = boxes.length;
-      countEl.textContent = done + ' / ' + total + ' complete';
-      fillEl.style.width = total ? (100*done/total) + '%' : '0%';
-      boxes.forEach(function(b){
-        b.closest('.task').classList.toggle('done', b.checked);
-      });
-    }
-
-    function collect(){
-      var state = {};
-      boxes.forEach(function(b){ state[b.dataset.id] = b.checked; });
-      return state;
-    }
-
-    function persist(){
-      if(!hasStorage) return;
-      try { window.storage.set(STORE_KEY, JSON.stringify(collect()), false); }
-      catch(e){ /* download / offline use: visual toggle still works */ }
-    }
-
-    async function restore(){
-      if(hasStorage){
-        try{
-          var r = await window.storage.get(STORE_KEY, false);
-          if(r && r.value){
-            var state = JSON.parse(r.value);
-            boxes.forEach(function(b){
-              if(state.hasOwnProperty(b.dataset.id)) b.checked = !!state[b.dataset.id];
-            });
-          }
-        }catch(e){ /* no saved state yet */ }
-      }
-      refresh();
-    }
-
-    boxes.forEach(function(b){
-      b.addEventListener('change', function(){ refresh(); persist(); });
-    });
-
-    document.getElementById('btn-reset').addEventListener('click', function(){
-      boxes.forEach(function(b){ b.checked = false; });
-      refresh(); persist();
-    });
-    document.getElementById('btn-print').addEventListener('click', function(){
-      window.print();
-    });
-
-    restore();
-  })();
-</script>

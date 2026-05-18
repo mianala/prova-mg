@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3. The novel methodology: PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter 3 of 7</div>
+    <h1 class="title">The novel methodology: <em>PROVA&#8209;MG</em></h1>
+    <p class="standfirst">Five interlocking components — co&#8209;inference, typological priors, constrained variational EM, latent&#8209;variable decomposition, and confidence calibration. The thesis formalizes each individually, then shows their integration beats any subset.</p>
+  </header>
+
+  <section id="p3">
+    <div class="part-label">Part Three</div>
+    <h2 class="part">Five interlocking components</h2>
+    <p class="lead">Working name: <strong>PROVA&#8209;MG</strong>, for <em>Probabilistic Routing Of Variational Alignments for Malagasy</em>.</p>
+
+    <div class="component">
+      <div class="cnum">Component 3.1</div>
+      <h3>Heterogeneous Foundation Model Co&#8209;Inference</h3>
+      <p>Whisper&#8209;large&#8209;v3, MMS, and Wav2Vec2&#8209;BERT are treated not as competing baselines but as three approximate posteriors over the transcript. Each encodes different inductive biases (weak supervision, religious&#8209;text alignment, self&#8209;supervision), so their disagreement on a Malagasy segment is informative.</p>
+      <p>For each unlabeled segment x we compute approximate posteriors and define a learned routing function:</p>
+      <div class="formula">r : ( q_W(y|x), q_M(y|x), q_B(y|x) ) &rarr; { train_high_confidence , route_to_human , hold_in_reserve , discard }</div>
+      <p>The routing function is trained on the small supervised set, using the agreement structure as features. We <strong>route</strong>, we do not average: averaging is Bayes&#8209;optimal only when teachers are mutually calibrated, and these are not.</p>
+    </div>
+
+    <div class="component">
+      <div class="cnum">Component 3.2</div>
+      <h3>Typologically Informed Bayesian Priors</h3>
+      <p>Malagasy belongs to the Malayo&#8209;Polynesian subgroup; its phonotactics and morphology overlap measurably with Indonesian, Malay, Cebuano, and Tagalog, which have far more data. We train a phonotactic and morphotactic prior on Austronesian text and incorporate it into decoding via a calibrated mixture:</p>
+      <div class="formula">P(y|x) &prop; P_acoustic(x|y) &middot; P_LM_MG(y)^&alpha; &middot; P_typ(y)^&beta;</div>
+      <p>The hypothesis: this prior regularizes regions of the hypothesis space that a Malagasy&#8209;only language model cannot constrain because of data sparsity, but a family&#8209;level prior can.</p>
+    </div>
+
+    <div class="component">
+      <div class="cnum">Component 3.3</div>
+      <h3>Constrained Variational EM for Iterative Pseudo&#8209;Labeling</h3>
+      <p>On the extended dataset D = D_sup union D_unsup, parameters &theta; and latent transcripts are inferred jointly:</p>
+      <div class="formula">E&#8209;step:&nbsp; q*(y&#771;|x) = argmin_q  KL( q || p_&theta;(y&#771;|x) )  subject to constraints C
+M&#8209;step:&nbsp; &theta; &larr; argmax_&theta;  E_q*[ log p_&theta;(y_sup, y&#771;_unsup | x) ] + &lambda; R(&theta;)</div>
+      <p>The constraints C are the novelty: a confidence floor, a KL divergence bound on drift between successive iterations, an agreement constraint from 3.1, and a typological consistency constraint from 3.2. Under these constraints the thesis derives convergence and non&#8209;collapse conditions that the existing empirical literature does not articulate.</p>
+    </div>
+
+    <div class="component">
+      <div class="cnum">Component 3.4</div>
+      <h3>Latent Variable Decomposition: Dialect, Register, Code&#8209;Switching</h3>
+      <p>The generation process is decomposed into a graphical model with explicit latent variables:</p>
+      <div class="formula">x &rarr; ( d , r , c , y )
+d = dialect &nbsp; r = register &nbsp; c = per&#8209;segment code&#8209;switching language identity</div>
+      <p>The acoustic model factorizes as p(x|y,d,r), the language model as p(y|d,c,r). Dialect&#8209;specific adapters condition on d, register parameters on r, code&#8209;switched segments route through a French acoustic model. Threads usually treated as separate subproblems become one generative model admitting joint inference.</p>
+    </div>
+
+    <div class="component">
+      <div class="cnum">Component 3.5</div>
+      <h3>Linguistically Informed Confidence Calibration</h3>
+      <p>ASR models are overconfident; mis&#8209;calibrated confidences sabotage the routing of 3.1 and the constraints of 3.3. A small post&#8209;hoc calibration model (temperature scaling or isotonic regression) is trained on the supervised set, with features including model entropy, three&#8209;way teacher agreement, typological likelihood, segment duration, voice&#8209;activity confidence, and dialect&#8209;posterior entropy. The calibrated confidence is what every downstream constraint actually consumes.</p>
+    </div>
+
+    <div class="callout">
+      <span class="tag">The unifying claim</span>
+      Low&#8209;resource ASR is best approached not as one model on one objective with one source of supervision, but as a probabilistic system that aggregates heterogeneous evidence under explicit calibration and explicit constraints. Malagasy is the empirical demonstration.
+    </div>
+  </section>
+
+  <nav class="pager">
+    <a href="02-gaps.html"><span class="dir">&larr; Previous</span><span class="ctitle">Where the gaps actually are</span></a>
+    <a class="next" href="04-novelty.html"><span class="dir">Next &rarr;</span><span class="ctitle">Why this is not someone else's thesis</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    Chapter 3 of 7 &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>
