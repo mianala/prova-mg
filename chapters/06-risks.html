@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6. Risks and honesty — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter 6 of 7</div>
+    <h1 class="title">Risks and <em>honesty</em></h1>
+    <p class="standfirst">Where the methodology can fail, where the scope can be cut, and where priority should be anchored.</p>
+  </header>
+
+  <section id="p6">
+    <div class="part-label">Part Six</div>
+    <h2 class="part">Known risks and mitigations</h2>
+    <ul class="plain">
+      <li><strong>Scope.</strong> Five components is ambitious. A defensible thesis is 3.1 + 3.3 + 3.5, with 3.2 and 3.4 as future work if time runs short.</li>
+      <li><strong>Theoretical depth.</strong> Components 3.3 and 3.5 need honest variational inference, EM convergence, and calibration theory. Strong probabilistic supervision (ideally a co&#8209;director) is advisable; if unavailable, scope 3.3 to empirical claims with sketched proofs.</li>
+      <li><strong>Empirical uncertainty.</strong> Typological priors (3.2) may not move WER if the Malagasy LM is strong. The ablation is essential, and a negative result is itself publishable.</li>
+      <li><strong>Compute.</strong> Three teachers at scale is expensive. Mitigation: distill the co&#8209;inference into a single student once the corpus exists; teachers are needed at training time, not deployment.</li>
+      <li><strong>Novelty contestability.</strong> Publish early. SIGUL anchors priority on data; a fast Interspeech submission on 3.1 anchors priority on methodology.</li>
+    </ul>
+  </section>
+
+  <nav class="pager">
+    <a href="05-integration.html"><span class="dir">&larr; Previous</span><span class="ctitle">Integration with the existing project</span></a>
+    <a class="next" href="07-checklist.html"><span class="dir">Next &rarr;</span><span class="ctitle">Validation checklist</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    Chapter 6 of 7 &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>

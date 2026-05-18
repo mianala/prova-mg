@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4. Why this is not someone else's thesis — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter 4 of 7</div>
+    <h1 class="title">Why this is <em>not</em> someone else's thesis</h1>
+    <p class="standfirst">Each component touches existing literature, but none has been done in this form, and the integration has not been done at all.</p>
+  </header>
+
+  <section id="p4">
+    <div class="part-label">Part Four</div>
+    <h2 class="part">Positioning against prior art</h2>
+    <table>
+      <thead><tr><th>Component</th><th>Nearest prior art</th><th>What is new here</th></tr></thead>
+      <tbody>
+        <tr><td>3.1 Co&#8209;inference</td><td>Ensemble distillation, DistilWhisper</td><td>Teachers as distinct posteriors with informative disagreement; routing not averaging</td></tr>
+        <tr><td>3.2 Typological priors</td><td>Language&#8209;family adapters in low&#8209;resource MT</td><td>Explicit Bayesian prior on phonotactics inside the decoding probability</td></tr>
+        <tr><td>3.3 Constrained EM</td><td>slimIPL, Kaizen, Noisy Student</td><td>Formal convergence and non&#8209;collapse conditions in constrained variational form</td></tr>
+        <tr><td>3.4 Latent decomposition</td><td>Arabic / Chinese dialect adapters</td><td>Joint inference of dialect, register, code&#8209;switching in one generative model</td></tr>
+        <tr><td>3.5 Calibration</td><td>Post&#8209;hoc calibration in classification</td><td>Calibration that generalizes from a tiny supervised set to a large shifted unlabeled set</td></tr>
+      </tbody>
+    </table>
+    <p>The integration is what makes a thesis rather than five papers: the components share the calibrated confidence (3.5), the agreement signal (3.1), and the constraint set (3.3), so they reinforce one another rather than sitting side by side.</p>
+  </section>
+
+  <nav class="pager">
+    <a href="03-methodology.html"><span class="dir">&larr; Previous</span><span class="ctitle">The novel methodology: PROVA&#8209;MG</span></a>
+    <a class="next" href="05-integration.html"><span class="dir">Next &rarr;</span><span class="ctitle">Integration with the existing project</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    Chapter 4 of 7 &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>
