@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chapter III: The PROVA-MG Methodology — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; Chapter III of IV</div>
+    <h1 class="title">Chapter III: <em>The PROVA&#8209;MG Methodology</em></h1>
+    <p class="standfirst">PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy &mdash; is formulated as a latent&#8209;variable probabilistic system that aggregates heterogeneous evidence under explicit calibration and explicit constraints. The present chapter derives the framework, specifies its five components and their algorithmic implementation, analyses their complexity, and describes their integration with the license&#8209;first data pipeline.</p>
+  </header>
+
+  <section>
+    <div class="part-label">Chapter Introduction</div>
+    <h2 class="part">A latent-variable reading of low-resource ASR</h2>
+    <p>Low&#8209;resource ASR is treated, in the present work, not as a single model trained on a single objective with a single source of supervision, but as a probabilistic system that aggregates heterogeneous evidence. The substrate of that system is a graphical model in which the transcript <em>y</em> is jointly generated with several latent variables &mdash; dialect <em>d</em>, register <em>r</em>, code&#8209;switching identity <em>c</em> &mdash; conditioning the acoustic emission and the language&#8209;model prior. The estimation procedure is a constrained variational EM whose constraints are derived from the agreement of heterogeneous teachers, from a calibrated confidence head, and from a typological prior trained on the Austronesian family.</p>
+    <p>The chapter is organized in three parts. Part III.1 derives the theoretical formulation of the system: graphical structure, likelihood, prior, posterior approximation, and learning objective. Part III.2 specifies the five interlocking components in algorithmic form, with derivations, pseudocode, and complexity analysis. Part III.3 describes the training protocol, the optimization schedule, and the integration with the data pipeline of Chapter II.</p>
+  </section>
+
+  <section id="p3a">
+    <div class="part-label">Part Three &mdash; A</div>
+    <h2 class="part">III.1 Theoretical formulation</h2>
+
+    <h3>III.1.1 The generative model</h3>
+    <p>Let <em>x</em> denote the acoustic signal and <em>y</em> the transcript. The latent variables of the system are <em>d</em> (dialect, categorical with K_d levels), <em>r</em> (register, categorical with K_r levels, distinguishing read, broadcast, conversational, and ceremonial speech), and <em>c</em> (per&#8209;segment code&#8209;switching identity, taking values in {MG, FR, mixed}). The generative model factorizes as</p>
+    <div class="formula">p(x, y, d, r, c) = p(d) p(r) p(c | r, d) p(y | d, r, c) p(x | y, d, r)</div>
+    <p>which encodes three modelling decisions. The dialect and register are marginally independent, reflecting the empirical observation that a Merina speaker can be recorded in either a read or a conversational register. The code&#8209;switching identity is conditioned on register and dialect because code&#8209;switching is itself sociolinguistically structured. The acoustic emission depends on the transcript, the dialect, and the register, but not on the code&#8209;switching identity beyond what is already encoded in the transcript and the dialect.</p>
+
+    <h3>III.1.2 The variational posterior</h3>
+    <p>Exact inference under the model above is intractable. A mean&#8209;field variational posterior is therefore introduced:</p>
+    <div class="formula">q(y, d, r, c | x) = q_y(y | x) q_d(d | x) q_r(r | x) q_c(c | x, y)</div>
+    <p>Each factor of <em>q</em> is parameterized by a neural network. The factor <em>q_y</em> is the transcript posterior of an ASR head; the factors <em>q_d</em> and <em>q_r</em> are classification heads predicting dialect and register from the acoustic input; the factor <em>q_c</em> is a sequence labeller predicting code&#8209;switching identity per segment of the transcript. The mean&#8209;field factorization is admissible because the model decouples <em>d</em>, <em>r</em>, and <em>c</em> at the prior level; residual dependence is captured by the conditioning of every factor on <em>x</em>.</p>
+
+    <h3>III.1.3 The evidence lower bound</h3>
+    <p>The learning objective is the standard evidence lower bound (ELBO) on the marginal log&#8209;likelihood of the observed data:</p>
+    <div class="formula">log p(x, y) &ge; L_ELBO(theta, phi)
+            = E_q[ log p_theta(x, y, d, r, c) ] - E_q[ log q_phi(y, d, r, c | x) ]
+            = E_q[ log p_theta(x | y, d, r) p_theta(y | d, r, c) ] - KL( q_phi || p )</div>
+    <p>where <em>theta</em> parameterizes the generative model and <em>phi</em> the variational posterior. On the supervised subset of the data the transcript <em>y</em> is observed and the corresponding factor of <em>q</em> is replaced by a delta on the gold transcript; on the unsupervised subset <em>y</em> is latent and the variational posterior is unrolled jointly with the other latent factors.</p>
+
+    <h3>III.1.4 The constrained variational EM</h3>
+    <p>On the union of the supervised and unsupervised subsets the parameters <em>theta</em> and the variational posterior <em>q</em> are estimated jointly by an EM procedure. The E&#8209;step minimizes the Kullback&#8209;Leibler divergence between <em>q</em> and <em>p_theta(. | x)</em> subject to a constraint set <em>C</em>; the M&#8209;step maximizes the expected complete&#8209;data log&#8209;likelihood plus a parameter regularizer:</p>
+    <div class="formula">E-step:   q* = argmin_{q in C}  KL( q || p_theta(. | x) )
+M-step:   theta &larr; argmax_theta  E_{q*}[ log p_theta(x, y, d, r, c) ] + lambda R(theta)</div>
+    <p>The constraint set <em>C</em> is the locus of the methodological contribution. It comprises four constraints, each derived from one of the open problems identified in Chapter II.</p>
+
+    <h3>III.1.5 The four constraints</h3>
+    <ul class="plain">
+      <li><strong>C1 &mdash; confidence floor.</strong> Pseudo&#8209;labels are admitted only above a calibrated confidence threshold <em>tau</em>: <em>q*(y | x)</em> is supported only on transcripts with <em>conf_cal(y, x) &ge; tau</em>.</li>
+      <li><strong>C2 &mdash; KL drift bound.</strong> Across successive iterations <em>n</em> and <em>n+1</em>, the variational posterior is constrained to drift slowly: <em>E_x [ KL( q^{(n+1)} || q^{(n)} ) ] &le; epsilon</em>.</li>
+      <li><strong>C3 &mdash; teacher agreement.</strong> The support of <em>q*</em> intersects the n&#8209;best lists of at least two of the three teachers of Component 3.1.</li>
+      <li><strong>C4 &mdash; typological consistency.</strong> The expected typological log&#8209;likelihood under <em>q*</em> is bounded below: <em>E_{q*}[ log P_typ(y) ] &ge; - eta</em>.</li>
+    </ul>
+    <div class="formula">KL drift bound (C2):   E_x [ KL( q^{(n+1)}(. | x) || q^{(n)}(. | x) ) ] &le; epsilon</div>
+    <p>Under the four constraints, the E&#8209;step is a constrained optimization that admits, in the discrete&#8209;support case, a projected&#8209;gradient or barrier&#8209;method implementation; the M&#8209;step retains its standard gradient form on <em>theta</em>. A short convergence argument (Section III.3) shows that under C1&#8209;C4 the iteration cannot exhibit the runaway collapse characteristic of unconstrained pseudo&#8209;labeling.</p>
+  </section>
+
+  <section id="p3b">
+    <div class="part-label">Part Three &mdash; B</div>
+    <h2 class="part">III.2 The five components</h2>
+    <p>The theoretical formulation of Part III.1 is instantiated by five interlocking components. Each is specified below with its derivation, its pseudocode, and a complexity analysis.</p>
+
+    <div class="component">
+      <div class="cnum">Component 3.1</div>
+      <h3>Heterogeneous foundation-model co-inference</h3>
+      <p>Whisper&#8209;large&#8209;v3, MMS, and Wav2Vec2&#8209;BERT are treated as three approximate posteriors over the transcript rather than as competing baselines. Each model encodes a different inductive bias (weak supervision, religious&#8209;text alignment, self&#8209;supervision); their disagreement on a given Malagasy segment is therefore informative. For each unlabeled segment <em>x</em>, the approximate posteriors <em>q_W(y|x)</em>, <em>q_M(y|x)</em>, <em>q_B(y|x)</em> are computed in n&#8209;best form and a learned routing function is defined:</p>
+      <div class="formula">r : ( q_W(y|x), q_M(y|x), q_B(y|x) ) &rarr; { train_high_confidence , route_to_human , hold_in_reserve , discard }</div>
+      <p>The features consumed by <em>r</em> include: per&#8209;teacher top&#8209;1 confidence (calibrated), n&#8209;best overlap between teachers, pairwise edit distance between top&#8209;1 transcripts, posterior entropy of each teacher, length agreement, and the Jensen&#8209;Shannon divergence between teacher posterior distributions over a shared lattice. The routing function is trained as a gradient&#8209;boosted classifier on the supervised set, with the four routing outcomes as targets supplied by the agreement of each teacher's top&#8209;1 with the gold transcript.</p>
+      <div class="example">
+        <span class="lbl">Algorithm 3.1 &mdash; Co-inference routing</span>
+        for each unlabeled segment x:
+          q_W &larr; whisper_large_v3.posterior(x)
+          q_M &larr; mms.posterior(x)
+          q_B &larr; wav2vec2_bert.posterior(x)
+          f &larr; features(q_W, q_M, q_B)
+          decision &larr; r(f)
+          if decision == train_high_confidence:
+            yhat &larr; consensus_decode(q_W, q_M, q_B)
+            emit (x, yhat, conf_cal)
+          elif decision == route_to_human:
+            queue.enqueue(x, q_W, q_M, q_B)
+          elif decision == hold_in_reserve:
+            reserve.put(x, features=f)
+          else:
+            discard(x)
+      </div>
+      <p><em>Complexity.</em> The dominant cost is the three forward passes through the foundation models. Let <em>n</em> denote the number of segments and <em>T</em> the mean segment length in frames. Inference is <em>O(n T (d_W + d_M + d_B))</em>, where <em>d_*</em> is the model dimension. Feature extraction and routing add <em>O(n B^2)</em> where <em>B</em> is the n&#8209;best width. The routing classifier itself is sub&#8209;linear in <em>n</em>. The dominant memory cost is the storage of the three posteriors, mitigated by retaining only the top&#8209;B paths.</p>
+    </div>
+
+    <div class="component">
+      <div class="cnum">Component 3.2</div>
+      <h3>Typologically informed Bayesian priors</h3>
+      <p>Malagasy belongs to the Malayo&#8209;Polynesian subgroup. Its phonotactics and morphology overlap measurably with Indonesian, Malay, Cebuano, and Tagalog, all of which have substantially larger text corpora. A phonotactic and morphotactic prior <em>P_typ</em> is trained on Austronesian text and incorporated into decoding through a calibrated log&#8209;linear mixture:</p>
+      <div class="formula">log P(y | x) &prop; log P_acoustic(x | y) + alpha log P_LM_MG(y) + beta log P_typ(y)</div>
+      <p>The hyperparameters <em>alpha</em> and <em>beta</em> are tuned on the development set by grid search subject to the constraint that the mixture remains a valid log&#8209;posterior (positive weights summing to a fixed total). <em>P_typ</em> is implemented as a sub&#8209;word language model over a shared phonotactic vocabulary; transfer to Malagasy proceeds through a morphological mapping that aligns Austronesian affixes to their Malagasy cognates.</p>
+      <div class="example">
+        <span class="lbl">Algorithm 3.2 &mdash; Typological prior integration</span>
+        # Training of P_typ
+        corpus &larr; Indonesian + Malay + Cebuano + Tagalog + Malagasy (text)
+        vocab &larr; shared_BPE(corpus, size=8000)
+        P_typ &larr; train_LM(vocab, corpus)
+        # Decoding
+        for each beam hypothesis y in beam_search:
+          s_acoustic &larr; log P_acoustic(x | y)
+          s_LM       &larr; alpha * log P_LM_MG(y)
+          s_typ      &larr; beta  * log P_typ(y)
+          score(y)   &larr; s_acoustic + s_LM + s_typ
+      </div>
+      <p><em>Complexity.</em> The prior is evaluated during beam search, adding <em>O(B T |V|)</em> to the decoding cost, where <em>|V|</em> is the vocabulary size and <em>B</em> the beam width. The cost is amortized by caching the language&#8209;model state across beam expansions.</p>
+    </div>
+
+    <div class="component">
+      <div class="cnum">Component 3.3</div>
+      <h3>Constrained variational EM for iterative pseudo-labeling</h3>
+      <p>On the extended dataset <em>D = D_sup &cup; D_unsup</em>, parameters <em>theta</em> and latent transcripts are inferred jointly through the constrained EM derived in Part III.1. The four constraints C1&ndash;C4 act on the E&#8209;step support.</p>
+      <div class="formula">E-step:   q*(y | x) = argmin_{q in C}  KL( q || p_theta(y | x) )
+M-step:   theta &larr; argmax_theta  E_{q*}[ log p_theta(y_sup, y_unsup, x) ] + lambda R(theta)</div>
+      <div class="example">
+        <span class="lbl">Algorithm 3.3 &mdash; Constrained variational EM</span>
+        theta &larr; init_from_supervised(D_sup)
+        for iteration n = 1, ..., N:
+          # E-step (per segment)
+          for each x in D_unsup:
+            n_best &larr; decode_top_B(theta, x)
+            n_best &larr; filter_by_confidence(n_best, tau)         # C1
+            n_best &larr; intersect_with_teachers(n_best, q_W, q_M, q_B)  # C3
+            n_best &larr; filter_by_typology(n_best, P_typ, eta)    # C4
+            q_star(. | x) &larr; renormalize(n_best)
+            assert KL(q_star || q_prev[x]) &le; epsilon              # C2
+          # M-step
+          theta &larr; sgd_step(D_sup &cup; {(x, q_star) : x in D_unsup})
+          q_prev &larr; q_star
+          if held_out_loss(theta) - prev_loss &gt; delta: break
+      </div>
+      <p><em>Non&#8209;collapse argument.</em> Without constraints, iterative pseudo&#8209;labeling can exhibit confidence inflation accompanied by accuracy degradation &mdash; the canonical collapse mode. Under C1 (confidence floor on calibrated confidence) the support of <em>q*</em> cannot expand into low&#8209;confidence regions; under C2 (KL drift bound) the variational posterior cannot move arbitrarily fast across iterations; under C3 (teacher agreement) the support is intersected with the union of teacher n&#8209;best lists, which by construction reflects independent inductive biases; under C4 (typological consistency) the support is pruned of transcripts that violate Austronesian phonotactics. The intersection of these four constraints bounds the iterative drift in both confidence space and hypothesis space.</p>
+      <p><em>Complexity.</em> Each EM iteration is <em>O(|D_unsup| (decoding + feature extraction))</em> in the E&#8209;step and <em>O(|D| epochs)</em> in the M&#8209;step. The total cost is <em>N</em> times that of a single fine&#8209;tuning run, with <em>N</em> typically between three and six.</p>
+    </div>
+
+    <div class="component">
+      <div class="cnum">Component 3.4</div>
+      <h3>Latent-variable decomposition: dialect, register, code-switching</h3>
+      <p>The graphical model of Part III.1 makes dialect, register, and code&#8209;switching latent variables jointly inferred with the transcript. The acoustic model factorizes as <em>p(x | y, d, r)</em> and the language model as <em>p(y | d, c, r)</em>. Dialect&#8209;specific adapters condition on <em>d</em>, register&#8209;specific parameters on <em>r</em>, and code&#8209;switched segments are routed through a French acoustic model.</p>
+      <div class="formula">x &rarr; ( d , r , c , y )
+d = dialect (Merina, Betsimisaraka, Sakalava, Antandroy, ...)
+r = register (read, broadcast, conversational, ceremonial)
+c = per-segment code-switching identity (MG, FR, mixed)</div>
+      <p>Approximate inference proceeds by mean&#8209;field updates: each factor <em>q_d</em>, <em>q_r</em>, <em>q_c</em> is updated holding the others fixed, and the transcript factor <em>q_y</em> is updated by decoding with the current expected dialect and register adapters.</p>
+      <div class="example">
+        <span class="lbl">Algorithm 3.4 &mdash; Joint mean-field inference</span>
+        init q_d, q_r, q_c, q_y from heads
+        repeat until convergence:
+          q_d &larr; softmax( log p(d) + E_{q_r,q_c,q_y}[ log p(x,y,d,r,c) ] )
+          q_r &larr; softmax( log p(r) + E_{q_d,q_c,q_y}[ log p(x,y,d,r,c) ] )
+          q_c &larr; softmax( log p(c|r,d) + E_{q_d,q_r,q_y}[ log p(y,c) ] )
+          q_y &larr; decode_with_adapters( E_{q_d}[adapter_d], E_{q_r}[adapter_r], x )
+      </div>
+      <p><em>Complexity.</em> The dominant cost is the repeated decoding inside the loop. In practice, two to three coordinate&#8209;ascent passes suffice for convergence; total cost is <em>O(I T (encoder + decoder))</em> where <em>I</em> is the number of passes.</p>
+    </div>
+
+    <div class="component">
+      <div class="cnum">Component 3.5</div>
+      <h3>Linguistically informed confidence calibration</h3>
+      <p>ASR models are typically over&#8209;confident, and miscalibrated confidences would compromise both the routing of Component 3.1 and the constraints of Component 3.3. A post&#8209;hoc calibration model is therefore trained on the supervised set.</p>
+      <div class="formula">Calibrated probability:  p_cal(correct | features) = g_phi(features)</div>
+      <p>where <em>g_phi</em> is implemented either as temperature scaling (single parameter) or as isotonic regression (non&#8209;parametric) or as a small gradient&#8209;boosted classifier on the feature set. The features are: per&#8209;teacher posterior entropy, three&#8209;way teacher agreement, typological log&#8209;likelihood, segment duration, voice&#8209;activity confidence, dialect&#8209;posterior entropy, and the rank of the top&#8209;1 hypothesis in the consensus lattice. The calibration objective is the negative log&#8209;likelihood on the supervised set plus a smoothness penalty:</p>
+      <div class="formula">L_cal(phi) = - sum_{(x,y) in D_sup}  log g_phi( features(x), 1[ yhat(x) = y ] ) + mu || g_phi ||^2</div>
+      <p>The calibration quality is measured by the Expected Calibration Error with <em>n</em> bins:</p>
+      <div class="formula">ECE_n = sum_b ( |B_b| / N ) | acc(B_b) - conf(B_b) |</div>
+      <div class="example">
+        <span class="lbl">Algorithm 3.5 &mdash; Calibration training and use</span>
+        # Training
+        features &larr; extract(D_sup, teachers, P_typ)
+        targets  &larr; 1[ yhat == y ]  for (x, y) in D_sup
+        phi      &larr; fit_calibrator(features, targets)
+        # Use
+        conf_cal &larr; g_phi( extract(x, teachers, P_typ) )
+      </div>
+      <p><em>Complexity.</em> Calibration training is linear in <em>|D_sup|</em>. Use at inference is <em>O(1)</em> per segment after feature extraction.</p>
+    </div>
+
+    <div class="callout">
+      <span class="tag">Unifying claim</span>
+      The calibrated confidence (Component 3.5) feeds the routing of 3.1 and the constraints of 3.3; the typological prior (3.2) feeds the constraint C4; the teacher agreement of 3.1 feeds the constraint C3; the latent decomposition of 3.4 feeds the conditional adapters consumed by every other component. The framework is therefore not a list of independent techniques but a system whose components reinforce one another.
+    </div>
+  </section>
+
+  <section id="p3c">
+    <div class="part-label">Part Three &mdash; C</div>
+    <h2 class="part">III.3 Training protocol and integration with the data pipeline</h2>
+
+    <h3>III.3.1 Stage 1 &mdash; Initialization from supervised set</h3>
+    <p>The acoustic head is initialized by fine&#8209;tuning Wav2Vec2&#8209;BERT on the Tier&#8209;A supervised set with a CTC objective and LoRA adapters of rank 16. The dialect, register, and code&#8209;switching heads are trained jointly on the same supervised set, supervised by the available metadata labels.</p>
+
+    <h3>III.3.2 Stage 2 &mdash; Teacher inference on unlabeled pool</h3>
+    <p>The three teachers are run on Tier&#8209;C unlabeled data. The output is stored as compressed n&#8209;best lattices with per&#8209;path posterior scores. This stage is embarrassingly parallel and dominates the compute budget; on the target hardware it requires of the order of one GPU&#8209;week per 10 000 hours of audio.</p>
+
+    <h3>III.3.3 Stage 3 &mdash; Routing and calibration</h3>
+    <p>The routing function and the calibration head are trained on the supervised set with features extracted from the Stage&#8209;2 teacher outputs. The calibrator is then evaluated for distribution shift between the supervised and the unlabeled pool by a held&#8209;out reliability diagram.</p>
+
+    <h3>III.3.4 Stage 4 &mdash; Constrained EM loop</h3>
+    <p>The constrained EM loop of Component 3.3 is executed for between three and six iterations, with each iteration consuming the Stage&#8209;2 teacher outputs and producing an updated <em>theta</em>. The loop terminates either when held&#8209;out loss stops improving or when the KL drift bound saturates.</p>
+
+    <h3>III.3.5 Stage 5 &mdash; Joint latent inference and final evaluation</h3>
+    <p>The final model performs joint mean&#8209;field inference over dialect, register, code&#8209;switching, and transcript on the frozen test sets. Stratified evaluation is then conducted across all three test sets and all four dialect strata.</p>
+
+    <h3>III.3.6 Optimization details</h3>
+    <p>Optimization uses AdamW with a cosine schedule, peak learning rate 3e&#8209;5 for the LoRA adapters and 1e&#8209;4 for the heads, batch size 16 with gradient accumulation to an effective 64, dropout 0.1 in the adapters and 0.0 in the frozen backbone, label smoothing 0.1 for attention&#8209;based decoders, mixed&#8209;precision (bf16) on the target hardware, gradient clipping at 1.0, and a small auxiliary CTC loss in joint CTC&#8209;attention runs with weight 0.3.</p>
+  </section>
+
+  <section>
+    <div class="part-label">Chapter Conclusion</div>
+    <h2 class="part">Conclusion of Chapter III</h2>
+    <p>The present chapter has formulated PROVA&#8209;MG as a latent&#8209;variable probabilistic system; specified its five components &mdash; co&#8209;inference, typological prior, constrained variational EM, latent decomposition, calibration &mdash; in algorithmic form with derivations and complexity analyses; and described a five&#8209;stage training protocol that integrates the framework with the license&#8209;first data pipeline of Chapter II. The next chapter presents the prototype implementation, the experimental matrix, the expected results, the discussion of limitations, and the perspectives of further work.</p>
+    <div class="callout">
+      <span class="tag">Transition</span>
+      Methodology is no contribution without empirical confrontation. Chapter IV constructs that confrontation as an ordered sequence of phases with measurable gates.
+    </div>
+  </section>
+
+  <nav class="pager">
+    <a href="02-sota-asr.html"><span class="dir">&larr; Previous</span><span class="ctitle">Chapter II &mdash; Low-resource ASR</span></a>
+    <a class="next" href="04-results-discussion.html"><span class="dir">Next &rarr;</span><span class="ctitle">Chapter IV &mdash; Application, Results, Discussion</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    Chapter III of IV &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>

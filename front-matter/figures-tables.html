@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>List of Figures and Tables — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="stylesheet" href="../assets/style.css">
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">Front matter &nbsp;/&nbsp; Figures and tables</div>
+    <h1 class="title">List of <em>Figures and Tables</em></h1>
+    <p class="standfirst">Indicative inventory of the figures and tables that accompany the present thesis. Numbering follows the chapter-figure convention used throughout the manuscript.</p>
+  </header>
+
+  <section>
+    <div class="part-label">Part One</div>
+    <h2 class="part">List of figures</h2>
+    <table>
+      <thead><tr><th>Number</th><th>Caption</th></tr></thead>
+      <tbody>
+        <tr><td>Figure 1.1</td><td>Noisy-channel decomposition of speech recognition: acoustic likelihood and language-model prior.</td></tr>
+        <tr><td>Figure 1.2</td><td>Schematic of an HMM-GMM acoustic model with three-state phone topology.</td></tr>
+        <tr><td>Figure 1.3</td><td>WFST decoding graph: composition of H, C, L and G transducers.</td></tr>
+        <tr><td>Figure 1.4</td><td>Hybrid DNN-HMM training pipeline using forced alignment.</td></tr>
+        <tr><td>Figure 1.5</td><td>Comparison of CTC, attention-based encoder-decoder, and RNN-Transducer architectures.</td></tr>
+        <tr><td>Figure 1.6</td><td>Conformer block: macaron feed-forward, multi-head self-attention, and convolution module.</td></tr>
+        <tr><td>Figure 1.7</td><td>Self-supervised pre-training pipeline of Wav2Vec 2.0 with contrastive loss.</td></tr>
+        <tr><td>Figure 1.8</td><td>Masked-prediction objective in HuBERT and its iterative target-refinement loop.</td></tr>
+        <tr><td>Figure 2.1</td><td>Cross-lingual speech representations: language coverage of XLS-R, MMS, and Wav2Vec2-BERT.</td></tr>
+        <tr><td>Figure 2.2</td><td>Whisper architecture overview and weak-supervision corpus composition.</td></tr>
+        <tr><td>Figure 2.3</td><td>Adapter and LoRA parameter-efficient adaptation schematic.</td></tr>
+        <tr><td>Figure 2.4</td><td>Pseudo-labeling loop with confidence filtering.</td></tr>
+        <tr><td>Figure 2.5</td><td>License-first data pipeline: nine stages from collection to release.</td></tr>
+        <tr><td>Figure 3.1</td><td>Block diagram of the PROVA-MG routing function.</td></tr>
+        <tr><td>Figure 3.2</td><td>Graphical model of latent dialect, register, and code-switching with observed acoustic and transcript variables.</td></tr>
+        <tr><td>Figure 3.3</td><td>Constrained variational EM loop and the four constraint families.</td></tr>
+        <tr><td>Figure 3.4</td><td>Calibration head: features and post-hoc temperature / isotonic mapping.</td></tr>
+        <tr><td>Figure 3.5</td><td>Integration of the five components with the existing license-first pipeline.</td></tr>
+        <tr><td>Figure 4.1</td><td>Reliability diagram before and after calibration on the FLEURS-MG development set.</td></tr>
+        <tr><td>Figure 4.2</td><td>Stratified WER across four Malagasy dialect regions.</td></tr>
+        <tr><td>Figure 4.3</td><td>Convergence curves of constrained vs unconstrained iterative pseudo-labeling.</td></tr>
+        <tr><td>Figure 4.4</td><td>Compute cost vs WER for teacher ensemble and distilled student.</td></tr>
+        <tr><td>Figure 4.5</td><td>Routing decision distribution by agreement bucket.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <div class="part-label">Part Two</div>
+    <h2 class="part">List of tables</h2>
+    <table>
+      <thead><tr><th>Number</th><th>Caption</th></tr></thead>
+      <tbody>
+        <tr><td>Table 1.1</td><td>Comparison of four ASR paradigms: acoustic model, language-model integration, typical data, key reference.</td></tr>
+        <tr><td>Table 1.2</td><td>Self-supervised speech models: pre-training objective, target, languages.</td></tr>
+        <tr><td>Table 2.1</td><td>Cross-lingual foundation models considered: hours, languages, license, role in PROVA-MG.</td></tr>
+        <tr><td>Table 2.2</td><td>Evaluation datasets for Malagasy ASR: hours, speakers, dialects, license.</td></tr>
+        <tr><td>Table 2.3</td><td>Open methodological problems and their formal status.</td></tr>
+        <tr><td>Table 3.1</td><td>Routing function: feature catalogue and decision outcomes.</td></tr>
+        <tr><td>Table 3.2</td><td>Constraint set C of the variational EM with admissibility conditions.</td></tr>
+        <tr><td>Table 3.3</td><td>Calibration features: source, semantics, and expected sign of effect.</td></tr>
+        <tr><td>Table 4.1</td><td>Headline WER on FLEURS-MG, CV-MG, and in-domain test sets.</td></tr>
+        <tr><td>Table 4.2</td><td>Component-leave-one-out ablation.</td></tr>
+        <tr><td>Table 4.3</td><td>Routing vs averaging vs voting comparison.</td></tr>
+        <tr><td>Table 4.4</td><td>Typological prior leave-one-language-out study.</td></tr>
+        <tr><td>Table 4.5</td><td>Constrained-EM leave-one-constraint-out study.</td></tr>
+        <tr><td>Table 4.6</td><td>Expected Calibration Error before and after fitting.</td></tr>
+        <tr><td>Table 4.7</td><td>Dialect-stratified WER (Merina, Betsimisaraka, Sakalava, Antandroy).</td></tr>
+        <tr><td>Table 4.8</td><td>Code-switching density buckets and WER per bucket.</td></tr>
+        <tr><td>Table 4.9</td><td>Compute cost comparison: per-utterance and per-hour figures.</td></tr>
+        <tr><td>Table 4.10</td><td>Publication plan: contributions, target venues, status.</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <nav class="pager">
+    <a href="abbreviations.html"><span class="dir">&larr; Previous</span><span class="ctitle">Abbreviations</span></a>
+    <a class="next" href="../chapters/00-introduction-generale.html"><span class="dir">Next &rarr;</span><span class="ctitle">General Introduction</span></a>
+  </nav>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    Front matter &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>

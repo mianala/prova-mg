@@ -1,0 +1,720 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Doctoral Thesis Writing Guide — EDTM 3D</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#f7f4ec;
+    --paper-2:#fffdf7;
+    --ink:#211f1a;
+    --ink-soft:#4b4740;
+    --rule:#d8d1be;
+    --accent:#1f5d54;
+    --accent-soft:#e3ece8;
+    --gold:#9a6b2e;
+    --shadow:0 1px 2px rgba(33,31,26,.06),0 8px 24px rgba(33,31,26,.06);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);color:var(--ink);
+    font-family:'Newsreader',Georgia,serif;font-size:18px;line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:820px;margin:0 auto;padding:64px 28px 120px;}
+
+  .masthead{border-bottom:2px solid var(--ink);padding-bottom:26px;margin-bottom:8px;}
+  .kicker{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.22em;
+    text-transform:uppercase;color:var(--accent);margin-bottom:18px;
+  }
+  h1.title{
+    font-family:'Fraunces',serif;font-weight:600;font-size:44px;line-height:1.08;
+    margin:0 0 14px;letter-spacing:-.01em;
+  }
+  h1.title em{font-style:italic;color:var(--accent);}
+  .standfirst{
+    font-size:20px;line-height:1.5;color:var(--ink-soft);font-style:italic;
+    max-width:62ch;margin:0 0 22px;
+  }
+  .meta-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:4px 36px;
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);
+    border-top:1px solid var(--rule);padding-top:18px;
+  }
+  .meta-grid div span{color:var(--ink);}
+
+  .nav-back{
+    display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:11px;
+    letter-spacing:.16em;text-transform:uppercase;color:var(--accent);
+    text-decoration:none;margin-bottom:18px;
+  }
+  .nav-back:hover{text-decoration:underline;}
+
+  .toc{
+    background:var(--paper-2);border:1px solid var(--rule);border-radius:4px;
+    padding:24px 28px;margin:40px 0 8px;box-shadow:var(--shadow);
+  }
+  .toc h2{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.18em;
+    text-transform:uppercase;margin:0 0 14px;color:var(--accent);font-weight:500;
+  }
+  .toc ol{margin:0;padding:0;list-style:none;counter-reset:toc;}
+  .toc li{
+    counter-increment:toc;padding:5px 0;border-bottom:1px dotted var(--rule);
+    font-size:16px;
+  }
+  .toc li:last-child{border-bottom:none;}
+  .toc li::before{
+    content:counter(toc,decimal-leading-zero);
+    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--gold);
+    margin-right:14px;
+  }
+  .toc a{color:var(--ink);text-decoration:none;}
+  .toc a:hover{color:var(--accent);text-decoration:underline;}
+
+  section{margin-top:54px;scroll-margin-top:24px;}
+  .part-label{
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.2em;
+    text-transform:uppercase;color:var(--gold);margin-bottom:8px;
+  }
+  h2.part{
+    font-family:'Fraunces',serif;font-weight:600;font-size:30px;line-height:1.14;
+    margin:0 0 6px;letter-spacing:-.01em;
+  }
+  h2.part::after{
+    content:"";display:block;width:54px;height:3px;background:var(--accent);
+    margin-top:14px;
+  }
+  h3{
+    font-family:'Fraunces',serif;font-weight:600;font-size:21px;
+    margin:32px 0 6px;letter-spacing:-.005em;
+  }
+  h4{
+    font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.04em;
+    text-transform:uppercase;color:var(--accent);margin:26px 0 4px;font-weight:500;
+  }
+  p{margin:12px 0;}
+  strong{font-weight:600;}
+  em{font-style:italic;}
+  .lead{font-size:19px;color:var(--ink-soft);}
+  ul.plain,ol.plain{margin:12px 0;padding-left:22px;}
+  ul.plain li,ol.plain li{margin:7px 0;}
+
+  .callout{
+    background:var(--accent-soft);border-radius:4px;padding:16px 20px;margin:22px 0;
+    font-size:16px;
+  }
+  .callout .tag{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px;
+  }
+  .warn{
+    background:#fbeee0;border-left:3px solid var(--gold);
+    padding:14px 18px;margin:20px 0;border-radius:0 4px 4px 0;font-size:16px;
+  }
+
+  table{border-collapse:collapse;width:100%;margin:18px 0;font-size:15px;}
+  th,td{border:1px solid var(--rule);padding:10px 12px;text-align:left;vertical-align:top;}
+  th{
+    background:var(--accent);color:var(--paper-2);font-family:'IBM Plex Mono',monospace;
+    font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:500;
+  }
+  tr:nth-child(even) td{background:var(--paper);}
+
+  /* nested structure tree */
+  .tree{
+    border:1px solid var(--rule);border-radius:4px;background:var(--paper-2);
+    padding:16px 22px;margin:18px 0;box-shadow:var(--shadow);
+    font-family:'IBM Plex Mono',monospace;font-size:13.5px;line-height:1.85;
+  }
+  .tree ul{list-style:none;padding-left:18px;margin:4px 0;}
+  .tree > ul{padding-left:0;}
+  .tree li{position:relative;padding-left:14px;}
+  .tree li::before{
+    content:"›";position:absolute;left:0;color:var(--gold);
+  }
+
+  .example{
+    font-family:'IBM Plex Mono',monospace;font-size:13.5px;line-height:1.6;
+    background:var(--paper-2);border-left:3px solid var(--accent);
+    padding:12px 16px;margin:10px 0;border-radius:0 4px 4px 0;
+    overflow-x:auto;white-space:pre-wrap;word-break:break-word;
+  }
+  .example .lbl{
+    display:block;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:6px;
+  }
+
+  .cover-model{
+    border:2px solid var(--ink);background:var(--paper-2);
+    padding:32px 28px;margin:22px 0;text-align:center;
+    font-family:'Fraunces',serif;
+  }
+  .cover-model .small{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-soft);line-height:1.7;
+  }
+  .cover-model .stars{color:var(--gold);letter-spacing:.2em;margin:6px 0;}
+  .cover-model .big{font-size:36px;font-weight:600;margin:18px 0 6px;}
+  .cover-model .med{font-size:18px;font-style:italic;color:var(--accent);margin:6px 0 18px;}
+  .cover-model .title-line{
+    font-size:22px;font-weight:600;letter-spacing:.02em;margin:18px 0;
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:14px 0;
+  }
+  .cover-model .jury{text-align:left;font-family:'Newsreader',serif;font-size:15px;margin-top:18px;}
+  .cover-model .jury ul{list-style:none;padding:0;margin:0;}
+  .cover-model .jury li{padding:3px 0;}
+  .cover-model .foot{margin-top:18px;font-size:13px;color:var(--ink-soft);}
+
+  a.extlink{color:var(--accent);}
+  a.extlink:hover{color:var(--gold);}
+
+  footer{
+    margin-top:80px;padding-top:22px;border-top:2px solid var(--ink);
+    font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);
+    line-height:1.7;
+  }
+
+  @media (max-width:620px){
+    body{font-size:16.5px;}
+    .wrap{padding:40px 18px 90px;}
+    h1.title{font-size:32px;}
+    h2.part{font-size:24px;}
+    .meta-grid{grid-template-columns:1fr;}
+    .cover-model .big{font-size:26px;}
+  }
+  @media print{body{background:#fff;}.toc,.tree,.cover-model{box-shadow:none;}}
+</style>
+
+<div class="wrap">
+
+  <a class="nav-back" href="../index.html">&larr; Back to PROVA&#8209;MG</a>
+
+  <header class="masthead">
+    <div class="kicker">Ministry of Higher Education and Scientific Research &nbsp;/&nbsp; University of Toamasina &nbsp;/&nbsp; Doctoral School 3D</div>
+    <h1 class="title">Guide to Writing a <em>Doctoral Thesis</em></h1>
+    <p class="standfirst">Guidelines and recommendations for structuring and presenting doctoral theses at the Thematic Doctoral School of Madagascar "Diversity and Sustainable Development" (EDTM 3D), University of Toamasina.</p>
+    <div class="meta-grid">
+      <div>Issued by: <span>EDTM 3D, University of Toamasina</span></div>
+      <div>Year: <span>2026</span></div>
+      <div>Language: <span>English translation</span></div>
+      <div>Source: <span>GUIDE DE REDACTION DE THESE (French)</span></div>
+    </div>
+  </header>
+
+  <div class="callout">
+    <span class="tag">Note</span>
+    This is an unofficial English translation of the EDTM 3D doctoral thesis writing guide, prepared for working convenience. The French original remains the authoritative version. © EDTM 3D, 2026. All rights reserved.
+  </div>
+
+  <p>This guide was designed to support doctoral candidates enrolled at the Thematic Doctoral School of Madagascar "Diversity and Sustainable Development" (EDTM 3D) at the University of Toamasina during the writing phase of their thesis. It provides guidelines and recommendations for structuring and presenting their work, and contributes to a more uniform presentation of doctoral theses at EDTM 3D.</p>
+
+  <p>In the same spirit, complementary documents have been produced: a <em>Doctoral Research Guide</em>, intended to support candidates throughout their scientific process, and a <em>Scientific Article Writing Guide</em>, which aims to promote the dissemination and valorization of thesis results. For any further information, candidates are invited to contact the Doctoral School or their host team.</p>
+
+  <nav class="toc">
+    <h2>Contents</h2>
+    <ol>
+      <li><a href="#s1">What is a doctoral thesis?</a></li>
+      <li><a href="#s2">What is <em>not</em> a doctoral thesis?</a></li>
+      <li><a href="#s3">Objectives of a doctoral thesis</a></li>
+      <li><a href="#s4">How to write your doctoral thesis</a></li>
+      <li><a href="#s5">The bibliography</a></li>
+      <li><a href="#s6">The appendices</a></li>
+      <li><a href="#s7">Plagiarism — a practice to ban</a></li>
+      <li><a href="#s8">Generative AI tools — responsible use</a></li>
+      <li><a href="#a1">Appendix 1 — Thesis cover model</a></li>
+      <li><a href="#a2">Appendix 2 — References and citations</a></li>
+    </ol>
+  </nav>
+
+  <!-- 1 -->
+  <section id="s1">
+    <div class="part-label">Section 1</div>
+    <h2 class="part">What is a doctoral thesis?</h2>
+    <p>A doctoral thesis is a set of novel, reflective ideas resulting from theoretical, empirical, or experimental research, presented as a work of academic value (respecting academic standards) and scientific value (based on verifiable sources, referring to ideas widely recognized and tested, put forward by scientists). It is written under the supervision of a thesis director (and, where applicable, a co&#8209;director), in a specific academic field and on a given topic.</p>
+  </section>
+
+  <!-- 2 -->
+  <section id="s2">
+    <div class="part-label">Section 2</div>
+    <h2 class="part">What is <em>not</em> a doctoral thesis?</h2>
+    <p>A doctoral thesis is <strong>NOT</strong>:</p>
+    <ul class="plain">
+      <li>A documentary collection, a literature review, or a compilation of data on a topic</li>
+      <li>A personal essay or dissertation presenting an individual point of view</li>
+      <li>A descriptive text about a phenomenon, with no research problem or research question</li>
+      <li>Research without an explicit methodological approach or a clear protocol</li>
+      <li>An internship report or a record of professional experience</li>
+      <li>An extended master's thesis without genuine innovation</li>
+      <li>A fixed or dogmatic document that leaves no room for evolving scientific debate</li>
+      <li>Work that lacks ethics or intellectual honesty — showing plagiarism or falsified data</li>
+    </ul>
+  </section>
+
+  <!-- 3 -->
+  <section id="s3">
+    <div class="part-label">Section 3</div>
+    <h2 class="part">Objectives of a doctoral thesis</h2>
+    <p>A thesis is a training in intellectual rigor, autonomy, and critical thinking. Writing a doctoral thesis is not merely an academic exercise but an intellectual, scientific, and personal journey.</p>
+    <p>The defense of the doctoral thesis is the decisive test for entering a scientific and academic career, as a researcher or teacher&#8209;researcher. Its validation marks the candidate's integration into the scientific community, both nationally and internationally.</p>
+    <p>The doctoral journey addresses, among others, the following non&#8209;exhaustive objectives:</p>
+    <ul class="plain">
+      <li>Identify and rigorously analyze complex problems (research problem) around a given topic, and resolve them through original, novel ideas (the thesis), intelligible and from verifiable sources.</li>
+      <li>Demonstrate, on a given topic, the ability to conduct a literature review and an inventory of documentary sources, to mobilize existing doctrine, and to collect and analyze all other empirical data.</li>
+      <li>Develop the ability to engage in structured and critical reasoning, to work autonomously, and to manage time.</li>
+      <li>Improve the ability to write and communicate scientifically.</li>
+      <li>Contribute to the advancement of knowledge through new knowledge useful to the scientific community and to society at large.</li>
+      <li>Publicly defend and publish research results in order to obtain the title of doctor.</li>
+      <li>Facilitate access to employment or improve professional careers.</li>
+    </ul>
+  </section>
+
+  <!-- 4 -->
+  <section id="s4">
+    <div class="part-label">Section 4</div>
+    <h2 class="part">How to write your doctoral thesis</h2>
+
+    <h3>4.1 Formal elements</h3>
+
+    <h4>International writing standards</h4>
+    <p>For all disciplines within the Humanities and Social Sciences at EDTM 3D, a doctoral thesis is written following the <strong>Chicago</strong> or <strong>Turabian</strong> style, with minor adjustments.</p>
+    <p>For disciplines in Engineering and Technology, Health Sciences, and Education Sciences, the standards in force are <strong>IMRaD</strong> and <strong>APA</strong>.</p>
+
+    <h4>Structure of an EDTM 3D doctoral thesis</h4>
+
+    <p><strong>Cover pages:</strong></p>
+    <ul class="plain">
+      <li>Cover page following the EDTM 3D model (template in Appendix 1)</li>
+      <li>Blank page</li>
+      <li>Repeat of the cover page</li>
+    </ul>
+
+    <p><strong>Front matter:</strong></p>
+    <ul class="plain">
+      <li>Acknowledgements page (optional)</li>
+      <li>Abstract (in French) with main keywords</li>
+      <li>Abstract (in English) with keywords</li>
+      <li>Foreword (optional)</li>
+      <li>Summary table of contents</li>
+      <li>List of appendices (if applicable)</li>
+      <li>List of tables (if applicable)</li>
+      <li>List of figures, diagrams, and other illustrations (if applicable)</li>
+      <li>List of abbreviations, acronyms, and initialisms (depending on contents)</li>
+      <li>Glossary (as needed)</li>
+    </ul>
+
+    <p><strong>Body of the thesis:</strong></p>
+    <ul class="plain">
+      <li>Introduction</li>
+      <li>Developments structured into balanced divisions</li>
+      <li>Conclusion</li>
+    </ul>
+
+    <p><strong>Closing matter:</strong></p>
+    <ul class="plain">
+      <li>Bibliography (the webography appears under a separate heading)</li>
+      <li>Appendices</li>
+      <li>Thematic or general index (optional)</li>
+      <li>Table of contents</li>
+    </ul>
+
+    <h4>General presentation</h4>
+    <ul class="plain">
+      <li>Body text: Times New Roman, size 12, double line spacing (i.e. 1.5).</li>
+      <li>Footnotes: Times New Roman, size 9, single line spacing (i.e. 1).</li>
+      <li>Text must be justified for better readability.</li>
+      <li>Pages are numbered starting from the title page. Pagination is continuous and includes tables, figures, and appendices.</li>
+      <li>Arabic numerals start at the introduction and end, in principle, at the page dedicated to the bibliographic references. Pages before the introduction use a different format (for example, lowercase Roman numerals). The same applies to appendices or other elements following the table of contents (numbered, for example, in uppercase Roman numerals).</li>
+    </ul>
+
+    <h4>Length of the thesis</h4>
+    <p>The length of the thesis varies by discipline.</p>
+    <table>
+      <thead><tr><th>Host team / domain</th><th>Number of pages</th></tr></thead>
+      <tbody>
+        <tr><td>Humanities and Social Sciences</td><td>300 (minimum)</td></tr>
+        <tr><td>Education Sciences</td><td>300 (minimum)</td></tr>
+        <tr><td>Engineering and Technology Sciences</td><td>100 – 150</td></tr>
+        <tr><td>Health Sciences</td><td>100 – 150</td></tr>
+      </tbody>
+    </table>
+
+    <h3>4.2 Content elements</h3>
+
+    <div class="warn">
+      Writing should begin as early as possible in the doctoral process — but <strong>not</strong> before the research problem and the outline have been validated by the thesis director.
+    </div>
+
+    <p>Each scientific discipline follows, by tradition, specific standards. For reference, here are the norms for the different domains at the Doctoral School 3D:</p>
+
+    <table>
+      <thead><tr><th>Domain</th><th>Norms</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Humanities and Social Sciences</td>
+          <td>Two or three parts depending on the topic. Writing method: inductive or hypothetico&#8209;deductive. Chicago or Turabian style.</td>
+        </tr>
+        <tr><td>Health Sciences and Medicine</td><td>IMRaD; APA</td></tr>
+        <tr><td>Education Sciences</td><td>IMRaD; APA</td></tr>
+        <tr><td>Engineering and Technology Sciences</td><td>IMRaD; APA</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Introduction</h4>
+    <p>The introduction usually represents 3 – 5% of the total body text (Introduction + Development + Conclusion), excluding bibliography and appendices. It is written as several paragraphs but cannot be structured into titled subsections.</p>
+    <p>The introduction presents the following elements:</p>
+    <ul class="plain">
+      <li>Opening hook (which may rely on a current event, a quotation, a maxim, etc.)</li>
+      <li>Presentation of the theme and definition of key terms</li>
+      <li>Presentation of the context in which the theme is situated (historical, ideological, economic, social, legal, political, etc.)</li>
+      <li>State of knowledge on the topic (brief summary of work already done on the subject, highlighting the salient points)</li>
+      <li>Statement of the interest or relevance of the topic</li>
+      <li>Research problem and main research question(s)</li>
+      <li>Stated hypotheses or main proposed solution</li>
+      <li>Objective of the study</li>
+      <li>Methodological approach adopted</li>
+      <li>Expected results of the study</li>
+      <li>Plan of the thesis, indicating exactly the title of each part (two or three parts depending on the topic)</li>
+    </ul>
+
+    <h4>Outline and subdivisions</h4>
+    <p>For the Humanities and Social Sciences using the Chicago style, the number of parts varies between two and three depending on the discipline and the needs of the analysis. Legal analysis (in Law), for example, generally follows a binary structure with two main parts, whereas other disciplines such as sociology or geography adopt a ternary plan with three main parts.</p>
+
+    <p><strong>Subdivisions of a binary plan:</strong></p>
+    <div class="tree">
+      <ul>
+        <li>Parts are divided in two
+          <ul>
+            <li>Each Part is divided into Titles (two)
+              <ul>
+                <li>Each Title is divided into Chapters (two)
+                  <ul>
+                    <li>Chapters are divided into Sections (two)
+                      <ul>
+                        <li>Sections are divided into Paragraphs (two)
+                          <ul>
+                            <li>Paragraphs may be subdivided into I, II, III, etc., themselves subdivided into A, B, C, etc.
+                              <ul><li>If needed, further divisions may be used (1, 2, 3, etc., then a, b, c, etc.)</li></ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <p><strong>Subdivisions of a ternary plan:</strong></p>
+    <div class="tree">
+      <ul>
+        <li>Parts are divided in three
+          <ul>
+            <li>Each Part is divided into Titles (three)
+              <ul>
+                <li>Each Title is divided into Chapters (three)
+                  <ul>
+                    <li>Chapters are divided into Sections (three)
+                      <ul>
+                        <li>Sections are divided into Paragraphs (three)
+                          <ul>
+                            <li>Paragraphs may be subdivided into I, II, III, etc., themselves subdivided into A, B, C, etc.
+                              <ul><li>If needed, further divisions may be used (1, 2, 3, etc., then a, b, c, etc.)</li></ul>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+
+    <p>For Engineering and Technology, Education, and Health Sciences using the APA standard and IMRaD format, the outline follows the scientific approach:</p>
+    <ul class="plain">
+      <li><strong>Introduction</strong> — presents the observed phenomenon, the subject, and the research problem.</li>
+      <li><strong>Materials and Methods</strong> — describes the type of method used and the tools, materials, and techniques mobilized to explore the problem.</li>
+      <li><strong>Results</strong> — reports the research findings, which may be ordered by importance.</li>
+      <li><strong>Discussion</strong> — compares the results with the initial hypotheses and examines confirmation or divergence, in order to draw conclusions.</li>
+    </ul>
+
+    <h4>The body text</h4>
+    <ul class="plain">
+      <li>Keep parts and subdivisions balanced in length.</li>
+      <li>Do not write in the first person ("I"). Prefer "we" or "one", and especially the impersonal mode: "it should be specified that…", "it is worth mentioning that…", "it is important to note that…", "it turns out that…", etc.</li>
+      <li>Mark the development of reasoning with logical connectors: "on the one hand, on the other hand"; "first, then, finally"; "in the first place, in the second place, lastly"; "moreover", "in addition", "nevertheless", "however", etc.</li>
+      <li>Do not address two or more ideas in the same paragraph. Conversely, one idea may be covered in one or more paragraphs. Avoid developing the same idea more than once — redundancy is prohibited. Writing a doctoral thesis is an evolving and non&#8209;repetitive work of reflection.</li>
+    </ul>
+
+    <h4>Announcements and transitions</h4>
+    <p>Each subdivision must be introduced by a <em>chapeau</em> — a short introduction summarizing the contents of the subdivision — and must end with a sentence (or paragraph) of conclusion and transition to the next part.</p>
+
+    <h4>Citations and references</h4>
+    <p>Every quotation taken from an outside source, as well as every borrowed idea, must be clearly distinguished.</p>
+    <p>When a direct quotation contains fewer than 40 words, it is a short direct quotation, inserted directly within the body text and delimited by quotation marks. If it contains 40 words or more, it is a long quotation: it appears as a separate block, indented by 1.27 cm, without quotation marks.</p>
+    <p>For the Humanities and Social Sciences, references are indicated by a superscript number in the text, pointing to a footnote. All citations and references are also repeated in a bibliography placed at the end of the document.</p>
+    <p>For Education Sciences, Engineering and Technology, and Health Sciences, all sources are given in parentheses and listed in the final bibliography.</p>
+
+    <h4>Tables and figures</h4>
+    <p>Tables and figures use continuous numbering throughout the body text. They are also fully listed in a "List of tables and figures" appearing in the table of contents.</p>
+
+    <h4>The conclusion</h4>
+    <p>The doctoral thesis ends with a conclusion of 5 – 8% of the body text (Introduction + Developments + Conclusion). The conclusion contains:</p>
+    <ul class="plain">
+      <li>A reminder of the topic</li>
+      <li>A synthetic recap of the broad lines of the study</li>
+      <li>A reminder of the research problem and main questions</li>
+      <li>The main research findings</li>
+      <li>A reminder of the novel ideas and the theoretical or empirical contributions of the research</li>
+      <li>The limits of the study</li>
+      <li>Open perspectives and avenues for future research</li>
+    </ul>
+  </section>
+
+  <!-- 5 -->
+  <section id="s5">
+    <div class="part-label">Section 5</div>
+    <h2 class="part">The bibliography</h2>
+    <p>You must list in the bibliography every data source used in the footnotes (Chicago style) or in parenthetical citations (APA style). Conversely, never list a source that is not cited in the development or in the footnotes.</p>
+    <p>Sources are classified into a list subdivided by source type (general works, articles, doctoral theses, etc.). In all cases, books, articles, and other reference documents (reports, manuals, etc.) are sorted in ascending alphabetical order of author names. The same applies to webographic references.</p>
+    <p>Legal instruments, however, are listed from most recent to oldest, respecting the hierarchy of norms.</p>
+    <p>The reference list does not repeat itself: a reference is written only once.</p>
+    <p>The main standards followed at EDTM 3D are given in Appendix 2.</p>
+  </section>
+
+  <!-- 6 -->
+  <section id="s6">
+    <div class="part-label">Section 6</div>
+    <h2 class="part">The appendices</h2>
+    <p>Appendices provide the reader with documents useful for supporting the arguments developed in the thesis or for completing the main information in the text.</p>
+    <p>They may include methodological materials such as interview grids or analysis protocols, thematic reports, exhaustive results (which would take too much space in the body text), interview transcripts, and so on.</p>
+    <p>Add a title to each appendix and refer to it in the developments. If appendices are very numerous, they may appear in a separate document.</p>
+  </section>
+
+  <!-- 7 -->
+  <section id="s7">
+    <div class="part-label">Section 7</div>
+    <h2 class="part">Plagiarism — a practice to ban</h2>
+    <div class="warn">
+      Plagiarism is strictly forbidden and constitutes a fault punishable by disciplinary sanctions, which may lead to the candidate's expulsion.
+    </div>
+    <p>Plagiarism is the reproduction of a text, a part of a text, or an idea from another author without mentioning the source.</p>
+    <p>While the very nature of scientific research is to build on existing work, to discuss it and place it in perspective, the doctoral candidate has the ethical and intellectual duty to cite and reference every source they have drawn on.</p>
+  </section>
+
+  <!-- 8 -->
+  <section id="s8">
+    <div class="part-label">Section 8</div>
+    <h2 class="part">Generative AI tools — responsible use</h2>
+    <p>EDTM 3D systematically checks for the use of generative artificial intelligence tools in the doctoral theses submitted to it.</p>
+    <p>While recognizing the assistance these tools provide — particularly for writing and formatting — candidates are expected to use them responsibly and in moderation.</p>
+    <p>The following principles apply at EDTM 3D:</p>
+    <ul class="plain">
+      <li><strong>Transparency.</strong> The use of AI must be explicitly and systematically identified in the work, in the same way as other sources.</li>
+      <li><strong>Intellectual integrity.</strong> The use of AI must be limited to a research&#8209;assistance function and must never replace the intellectual work required of the student.</li>
+      <li><strong>Responsibility.</strong> Each student is fully responsible for their work — its accuracy, relevance, and currency. Respect for copyright and for personal or confidential information is part of this responsibility. Any erroneous, biased, invalid, or outdated information generated by a generative AI tool and used by the student will be entirely attributed to them.</li>
+    </ul>
+    <p>These provisions are subject to change, in line with the institutional positions of the University of Toamasina and the Ministry of Higher Education and Scientific Research.</p>
+  </section>
+
+  <!-- Appendix 1 -->
+  <section id="a1">
+    <div class="part-label">Appendix 1</div>
+    <h2 class="part">EDTM 3D thesis cover model</h2>
+
+    <div class="cover-model">
+      <div class="small">
+        MINISTRY OF HIGHER EDUCATION<br>
+        AND SCIENTIFIC RESEARCH
+      </div>
+      <div class="stars">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</div>
+      <div class="small">UNIVERSITY OF TOAMASINA</div>
+      <div class="stars">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</div>
+      <div class="small">DOCTORAL SCHOOL OF DIVERSITY AND<br>SUSTAINABLE DEVELOPMENT "3D"</div>
+      <div class="stars">★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★</div>
+
+      <div class="big">THESIS</div>
+      <div class="med">In view of obtaining the degree of</div>
+      <div class="big">DOCTORATE</div>
+      <div class="med">In: (Host team / EAD) &nbsp;·&nbsp; Discipline: …</div>
+
+      <div class="title-line">FULL TITLE OF THE THESIS</div>
+
+      <div class="small" style="margin-top:14px;">Presented by</div>
+      <div style="font-size:20px;font-weight:500;margin:6px 0 18px;">Candidate's name</div>
+
+      <div class="small">Thesis director</div>
+      <div style="margin:4px 0 10px;">Name and title of the thesis director</div>
+
+      <div class="small">Co&#8209;director (if applicable)</div>
+      <div style="margin:4px 0 14px;">Name and title of the co&#8209;director</div>
+
+      <div class="jury">
+        <div class="small" style="text-align:center;margin-bottom:8px;">Composition of the jury</div>
+        <ul>
+          <li>President — Name and title</li>
+          <li>External rapporteur — Name and title</li>
+          <li>Internal rapporteur — Name and title</li>
+          <li>Examiner — Name and title</li>
+          <li>Thesis director — Name and title</li>
+        </ul>
+      </div>
+
+      <div class="foot">Year: …  &nbsp;·&nbsp;  Location: (city and country)</div>
+    </div>
+  </section>
+
+  <!-- Appendix 2 -->
+  <section id="a2">
+    <div class="part-label">Appendix 2</div>
+    <h2 class="part">References and citations</h2>
+
+    <p>To help you with references and bibliography in line with APA and Chicago standards, several free resources are available online. You can browse them for an exhaustive list of bibliographic norms by source type.</p>
+    <p>Examples of online resources (in English and French):</p>
+    <ul class="plain">
+      <li><a class="extlink" href="https://boite-outils.bib.umontreal.ca/citer/chicago">boite-outils.bib.umontreal.ca/citer/chicago</a></li>
+      <li><a class="extlink" href="https://boite-outils.bib.umontreal.ca/citer/apa">boite-outils.bib.umontreal.ca/citer/apa</a></li>
+      <li><a class="extlink" href="https://pitt.libguides.com/citationhelp/turabian">pitt.libguides.com/citationhelp/turabian</a></li>
+      <li><a class="extlink" href="https://www.hepl.ch/files/live/sites/files-site/files/filiere-ps/programme-formation/normes-apa-stage-maeps-fps-hep-vaud.pdf">hepl.ch — APA standards (PDF)</a></li>
+    </ul>
+    <p>Several free reference&#8209;management tools (such as Zotero) generate and organize citations in every referencing style. No tool is 100% reliable, however — careful proofreading is always required.</p>
+
+    <h3>Chicago / Turabian style (Humanities and Social Sciences)</h3>
+
+    <h4>Book</h4>
+    <p><strong>Footnote — first mention:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>Firstname Lastname, Title of the book, (Place of publication: Publisher, year), page(s).</div>
+    <div class="example"><span class="lbl">Example</span>Georges Burdeau, Traité de science politique, (Paris: LGDJ, 1987), 10.</div>
+    <p><strong>Footnote — subsequent mentions (short form):</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>Lastname, Title of the book, page(s).</div>
+    <div class="example"><span class="lbl">Example</span>Burdeau, Traité de science politique, 10.</div>
+    <p><strong>Bibliography:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>LASTNAME, Firstname, Title of the work (in italics), publisher, edition number, volume, tome, place of publication, year of publication, number of pages.</div>
+    <div class="example"><span class="lbl">Example</span>BURDEAU, Georges, Traité de science politique, LGDJ, t. 2, Paris, 1987, 810 p.</div>
+
+    <h4>Book chapter</h4>
+    <p><strong>Footnote — first mention:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>Firstname Lastname, "Title of the chapter", in Title of the edited book, ed. Firstname Lastname (Place: Publisher, year), page(s).</div>
+    <div class="example"><span class="lbl">Example</span>Jennifer Martinez, "Leadership dans les environnements de travail à distance", in Gérer les organisations modernes, ed. Robert Williams (New York: Business Press, 2023), 156.</div>
+    <p><strong>Footnote — subsequent mentions:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>Lastname, "Title of the chapter", page(s).</div>
+    <p><strong>Bibliography:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>LASTNAME, Firstname. "Title of the chapter". In Title of the edited book, edited by Firstname Lastname, chapter pages. Place: Publisher, year.</div>
+    <div class="example"><span class="lbl">Example</span>MARTINEZ, Jennifer. "Leadership dans les environnements de travail à distance". In Gérer les organisations modernes, edited by Robert Williams, 145–172. New York: Business Press, 2023.</div>
+
+    <h4>Scientific journal article</h4>
+    <p><strong>Footnote — first mention:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>Firstname Lastname, "Title of the article", Journal title Volume, no. (year): page(s), URL or DOI (if online).</div>
+    <div class="example"><span class="lbl">Example</span>Ioclin Dahy, "La migration professionnelle internationale: causes profondes et enjeux majeurs", Revue Sokela, La parole du sud, no. 13, 2024, pp. 87–97.</div>
+    <p><strong>Bibliography:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>LASTNAME, Firstname, "Article title", Journal title (in italics), volume, number, year, pages of the article, specific page(s) cited if needed.</div>
+
+    <h4>Doctoral thesis</h4>
+    <p><strong>Footnote — first mention:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>Firstname Lastname, "Title of the thesis", (Degree, University, year), page(s), URL (if online).</div>
+    <div class="example"><span class="lbl">Example</span>Abdelkader Adla, "Aide à la Facilitation pour une prise de Décision Collective …", (Doctoral thesis, Université Paul Sabatier, Toulouse III, 2010), 20, https://theses.hal.science/tel-00514908/document</div>
+    <p><strong>Bibliography:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>LASTNAME, Firstname, "Title of the thesis", Institution name, year of final deposit, number of pages.</div>
+
+    <h4>Website</h4>
+    <p><strong>Web page without an author:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>Name of the organization, "Title of the web page", date, URL.</div>
+    <div class="example"><span class="lbl">Example</span>Université de Sherbrooke, "Un nouveau programme d'éveil à la lecture et à l'écriture pour les enfants de la maternelle", 13 December 2012, http://www.usherbrooke.ca/education/accueil/nouvelles/affiche/article/20373/</div>
+    <p><strong>Web page with an author:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>Firstname Lastname, "Title of the page", Site name, date, URL.</div>
+    <div class="example"><span class="lbl">Example</span>Claire Dubois, "L'impact des réseaux sociaux sur l'activisme politique", Le Blog Politique, 12 February 2023, https://leblogpolitique.fr/article/reseauxactivisme</div>
+
+    <h4>Legal instrument</h4>
+    <p><strong>Footnote:</strong></p>
+    <div class="example"><span class="lbl">Pattern</span>Title of the law, law no. day month year, art. X.</div>
+    <div class="example"><span class="lbl">Example</span>Organic law no. 2014-043 of 9 January 2015 on the High Court of Justice, art. 5.</div>
+    <p><strong>Bibliography.</strong> The list is written respecting the hierarchy of legal norms (Constitution, international legal instruments, organic laws, etc.). The most recent texts come first among texts of the same value. Repealed texts cannot be cited or used as a reference.</p>
+    <div class="example"><span class="lbl">Examples</span>Constitution of the Fourth Republic of Madagascar of 11 December 2010, art. 54, para. 1.
+Vienna Convention on Diplomatic Relations of 18 April 1961, art. 4.
+Organic law no. 2014-043 of 9 January 2015 on the High Court of Justice, art. 5.</div>
+
+    <h3>APA standards (Engineering and Technology, Education, Health Sciences)</h3>
+
+    <h4>In&#8209;text citations</h4>
+    <p>Whatever the type of document cited, the format remains the same: <strong>Lastname (author or organization), year of publication.</strong> Citations can be parenthetical or narrative.</p>
+    <p><strong>Parenthetical citations.</strong> Indicate in parentheses the author's name and year of publication, separated by a comma.</p>
+    <div class="example"><span class="lbl">Example</span>(Bourdieu, 1979)</div>
+    <p>For two authors, names are separated by an ampersand (&amp;).</p>
+    <div class="example"><span class="lbl">Example</span>(Quivy &amp; Van Campenhoudt, 1995)</div>
+    <p>For three authors or more, only the first name is given, followed by "et al."</p>
+    <div class="example"><span class="lbl">Example</span>(Dupont et al., 2019)</div>
+    <p><strong>Narrative citations.</strong> The author's name appears in the text and the date follows in parentheses.</p>
+    <div class="example"><span class="lbl">Example</span>Bourdieu (1979) emphasizes that…</div>
+    <p>For two authors, use "and" in full.</p>
+    <div class="example"><span class="lbl">Example</span>According to Quivy and Van Campenhoudt (1995)…</div>
+    <p>For three or more, use "et al."</p>
+    <div class="example"><span class="lbl">Example</span>For Dupont et al. (2019)…</div>
+
+    <h4>Quoting verbatim</h4>
+    <p>Give the author, year, and specific page after the quoted text. If the excerpt is fewer than 40 words, integrate it directly into the text, in quotation marks; final punctuation comes after the citation. If the excerpt has 40 words or more, present it as a separate paragraph without quotation marks, indented by 1.25 cm (one tab in Word). If it contains several paragraphs, the first line of each subsequent paragraph is indented by a further 1.25 cm. The citation is placed after the final punctuation of the excerpt.</p>
+
+    <h4>Particularities of APA 7th edition</h4>
+    <ul class="plain">
+      <li><strong>Footnotes</strong> are generally not used (with rare exceptions such as copyright mentions, or clarifications that would weigh down the text).</li>
+      <li><strong>Latin phrases</strong> such as <em>op. cit.</em>, <em>idem</em>, <em>ibid.</em> are not used. If a source is cited several times, APA prescribes repeating the citation.</li>
+      <li><strong>Place of publication</strong> is no longer included in references for books and book chapters.</li>
+    </ul>
+
+    <h4>Bibliography — Book</h4>
+    <div class="example"><span class="lbl">Pattern</span>Lastname, Initial(s). (Year). Title of the book. Publisher.</div>
+    <div class="example"><span class="lbl">Example</span>Bourdieu, P. (1979). La distinction. Les Éditions de Minuit.</div>
+    <p>For several authors:</p>
+    <div class="example"><span class="lbl">Pattern</span>Lastname, Initial(s)., Lastname, Initial(s)., &amp; Lastname, Initial. (Year). Title of the book. Publisher.</div>
+    <div class="example"><span class="lbl">Example</span>Quivy, R. &amp; Van Campenhoudt, L. (1995). Manuel de recherche en sciences sociales. Dunod.</div>
+
+    <h4>Bibliography — Book chapter</h4>
+    <div class="example"><span class="lbl">Pattern</span>Lastname, Initial(s). (Year). Title of the chapter. In Title of the book (pp. start–end). Publisher.</div>
+    <div class="example"><span class="lbl">Example</span>Goleman, D. (2014). L'art de bien s'entendre avec les autres. In L'intelligence émotionnelle (pp. 17–19). J'ai lu.</div>
+
+    <h4>Bibliography — Scientific journal article</h4>
+    <div class="example"><span class="lbl">Pattern</span>Lastname, Initial(s). (Year). Article title. Journal title, volume(issue), start–end. DOI or URL.</div>
+    <div class="example"><span class="lbl">Example</span>Kyindou, A. (2010). La lutte contre la pauvreté et/ou Pratiques des TIC. Communication et langages (163), 121–133. DOI: 10.4074/S0336150010011105.</div>
+
+    <h4>Bibliography — Doctoral thesis</h4>
+    <div class="example"><span class="lbl">Pattern</span>Lastname, Initial(s). (Year). Title of the thesis [Document type and discipline]. University. (Add URL or database for an online thesis.)</div>
+    <div class="example"><span class="lbl">Example</span>Debauche, O. (2020). Architecture Cloud modulaire, durable et adaptable pour l'agriculture de précision [Doctoral thesis in Computer Science, University of Mons]. ORBI UMONS.</div>
+
+    <h4>Bibliography — Conference paper</h4>
+    <div class="example"><span class="lbl">Pattern</span>Lastname, Initial(s). (Year, Month Day). Title of the paper [Communication]. Conference name, Location. URL (if any).</div>
+    <div class="example"><span class="lbl">Example</span>Misse, M. (2006, April 23). La communication stratégique : De l'appui au "développement" à la promotion du "changement social" : Une communication de connivence ? [Communication]. International Symposium, Douala, Cameroon.</div>
+
+    <h4>Bibliography — Conference proceedings</h4>
+    <div class="example"><span class="lbl">Pattern</span>Lastname, Initial(s). (Year). Title of the paper. In Editors (Ed.), Title of the proceedings (pp. pages). DOI or URL.</div>
+    <div class="example"><span class="lbl">Example</span>Bouzar, F. (2018). L'évaluation et la motivation au travail des enseignants… In C. Weis (Ed.), L'évaluation en éducation et en formation… (pp. 144–148). University of Luxembourg. https://admee2018.sciencesconf.org/data/pages/ADMEE_2018_Actes_du_colloque.pdf</div>
+
+    <h4>Bibliography — Website</h4>
+    <div class="example"><span class="lbl">Pattern</span>Author (Lastname, Initial(s)) or organization. (Year, day month). Title of the page. Site name. URL.</div>
+    <p>If the web page may be modified or removed, add the date of consultation in parentheses after the URL: (accessed 23 February 2026).</p>
+    <div class="example"><span class="lbl">Example</span>Rasolofoson, R. (2026, March 17). Tourist visits to Madagascar help conserve some forests, but others suffer: study suggests what to do. The Conversation. https://theconversation.com/tourist-visits-to-madagascar-help-conserve-some-forests-but-others-suffer-study-suggests-what-to-do-275824 (accessed 20 March 2026).</div>
+
+    <h4>Bibliography — Standard</h4>
+    <div class="example"><span class="lbl">Pattern</span>Organization that developed the standard. (Year). Title of the standard (code and number). Publishing organization. URL.</div>
+    <div class="example"><span class="lbl">Example</span>International Organization for Standardization. (2018). Quality management systems — Requirements (ISO 9001:2015). ISO. https://www.iso.org/fr/standard/62085.html</div>
+  </section>
+
+  <footer>
+    © EDTM 3D, 2026. All rights reserved. Any reproduction or distribution, even partial, is prohibited without authorization.<br>
+    Unofficial English translation of the GUIDE DE REDACTION DE THESE for working reference. The French version remains authoritative.
+  </footer>
+
+</div>
+</html>
