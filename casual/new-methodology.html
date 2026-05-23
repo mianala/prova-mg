@@ -14,66 +14,45 @@
   <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
 
   <header class="masthead">
-    <div class="kicker">Casual note &nbsp;/&nbsp; off&#8209;the&#8209;cuff answer</div>
+    <div class="kicker">Casual note</div>
     <h1 class="title">So, what&rsquo;s the <em>new methodology</em>?</h1>
-    <p class="standfirst">A short, plain&#8209;language answer to the question I keep getting asked. No equations, no Greek letters &mdash; just the idea, the way I&rsquo;d explain it over coffee.</p>
   </header>
 
   <section>
-    <div class="part-label">The short version</div>
-    <h2 class="part">One sentence</h2>
-    <p>Instead of training one big model on the tiny bit of Malagasy data we have, I treat the problem as a system: I let three different pre&#8209;trained models &ldquo;vote&rdquo;, I lean on related languages to fill the gaps, and I only trust the labels that survive a few sanity checks. That&rsquo;s it &mdash; everything else is bookkeeping.</p>
+    <p>Instead of training one model on the little Malagasy data we have, I treat ASR as a system: three pre&#8209;trained models &ldquo;vote&rdquo;, related Austronesian languages fill the gaps, and I only trust labels that survive a few sanity checks.</p>
+    <p>The big multilingual models &mdash; Whisper, MMS, Wav2Vec2&#8209;BERT &mdash; nominally support Malagasy, but the transcripts are rough. We don&rsquo;t have enough clean labelled audio to train from scratch, and fine&#8209;tuning one model alone doesn&rsquo;t fix it.</p>
   </section>
 
   <section>
-    <div class="part-label">Why bother</div>
-    <h2 class="part">The problem, plainly</h2>
-    <p>Malagasy is technically &ldquo;supported&rdquo; by every big multilingual speech model out there &mdash; Whisper, MMS, Wav2Vec2&#8209;BERT &mdash; but if you actually try them, the transcripts are rough. We don&rsquo;t have enough clean labelled audio to train our own from scratch, and just fine&#8209;tuning one of the big models doesn&rsquo;t fix it either. So the question is: how do you squeeze better Malagasy ASR out of what we already have?</p>
-  </section>
-
-  <section>
-    <div class="part-label">The idea</div>
-    <h2 class="part">Five moving parts</h2>
-    <p>The framework I&rsquo;m calling <strong>PROVA&#8209;MG</strong> has five pieces. They sound fancy on paper but each one is really doing something simple:</p>
-
-    <h3>1. Let the big models disagree &mdash; and use the disagreement</h3>
-    <p>I run three foundation models on the same audio. When all three agree, I&rsquo;m pretty confident the transcript is right. When they disagree, that&rsquo;s a signal &mdash; either the audio is hard, or one of the models is wrong, or it&rsquo;s a dialect/register thing. A small classifier decides what to do with each segment: keep it, send it to a human, hold it for later, or throw it away.</p>
+    <h3>1. Use the disagreement</h3>
+    <p>I run all three foundation models on the same audio. When they agree, the transcript is probably right; when they don&rsquo;t, that&rsquo;s a signal. A small classifier decides per segment: keep, send to a human, hold, or discard.</p>
 
     <h3>2. Borrow from cousin languages</h3>
-    <p>Malagasy is Austronesian. Indonesian, Malay, Tagalog, Cebuano &mdash; same family, way more text data. So I train a small language model on all of them together, and use it as a soft prior during decoding. It nudges the system toward transcripts that &ldquo;sound like&rdquo; an Austronesian language should sound, even when the Malagasy&#8209;only model has never seen the word before.</p>
+    <p>Malagasy is Austronesian. Indonesian, Malay, Tagalog and Cebuano have far more text. I train a small language model on all of them and use it as a soft prior during decoding &mdash; it nudges the system toward transcripts that look Austronesian even when the Malagasy&#8209;only LM has never seen the word.</p>
 
     <h3>3. Pseudo&#8209;label, but carefully</h3>
-    <p>The classic trick with unlabeled audio is: have your model transcribe it, then train on its own transcripts. The problem is the model gets cocky and the errors snowball. I do the same loop, but I refuse to add a transcript unless it passes four checks &mdash; calibrated confidence is high enough, two out of three teachers agree, the typological prior likes it, and the model isn&rsquo;t drifting too fast iteration to iteration. That&rsquo;s the &ldquo;constrained EM&rdquo; in the long version.</p>
+    <p>I let the model transcribe unlabeled audio and retrain on its own transcripts, but I refuse any transcript that doesn&rsquo;t pass four checks: calibrated confidence high enough, at least two of three teachers agree, the typological prior accepts it, and the model isn&rsquo;t drifting too fast iteration to iteration. That keeps the loop from collapsing.</p>
 
-    <h3>4. Treat dialect, register, and code&#8209;switching as part of the model</h3>
-    <p>Malagasy isn&rsquo;t one thing. Merina, Betsimisaraka, Sakalava, Antandroy &mdash; different sounds, different vocab. And people switch into French mid&#8209;sentence all the time. Instead of pretending it&rsquo;s one homogeneous language, the model jointly figures out the dialect, the register (read, broadcast, conversational, ceremonial), and which bits are French &mdash; alongside the transcript itself. Each one helps the others.</p>
+    <h3>4. Dialect, register, and code&#8209;switching are part of the model</h3>
+    <p>Merina, Betsimisaraka, Sakalava, Antandroy &mdash; different sounds, different vocab. People also switch into French mid&#8209;sentence. The model jointly infers dialect, register, and which segments are French, alongside the transcript. Each helps the others.</p>
 
-    <h3>5. Make sure the confidence numbers mean something</h3>
-    <p>ASR models always say they&rsquo;re 95% sure. They&rsquo;re not. So I train a small calibration head on the labelled set, just to map the raw scores to honest probabilities. Once those numbers are trustworthy, every other piece &mdash; the routing, the pseudo&#8209;label filter &mdash; actually works.</p>
+    <h3>5. Make the confidence numbers honest</h3>
+    <p>ASR models always claim 95% confidence. A small calibration head, trained on the labelled set, maps raw scores to real probabilities. Once those numbers are trustworthy, the routing and the pseudo&#8209;label filter actually work.</p>
   </section>
 
   <section>
-    <div class="part-label">What makes it new</div>
-    <h2 class="part">Why this is different</h2>
-    <p>None of the individual ingredients are brand new. People have used foundation models, pseudo&#8209;labeling, typological priors, calibration. What I&rsquo;m claiming is the <em>combination</em>: the five pieces aren&rsquo;t a checklist, they feed each other. The calibrator feeds the router and the EM constraints. The typological prior feeds one of the constraints. The teacher agreement feeds another. The latent dialect/register/code&#8209;switching adapters get used by all the other components. Pull one out and the rest get weaker.</p>
-    <p>The other thing is that I&rsquo;m being explicit about <em>when it can fail</em>. Pseudo&#8209;labeling collapses if you&rsquo;re not careful &mdash; I write down the four conditions under which mine provably doesn&rsquo;t. Most papers just say &ldquo;and then we iterated three times and it worked.&rdquo;</p>
+    <p>None of the ingredients are new on their own. The claim is the combination: the five pieces feed each other &mdash; the calibrator feeds the router and the EM constraints, the typological prior and the teacher agreement each feed a constraint, the latent adapters are used by everything else. Pull one out and the rest get weaker.</p>
+    <p>I also write down the four conditions under which the pseudo&#8209;label loop provably doesn&rsquo;t collapse, rather than just reporting that it happened to work.</p>
   </section>
 
   <section>
-    <div class="part-label">What I&rsquo;m not claiming</div>
-    <h2 class="part">Honest limits</h2>
-    <p>It&rsquo;s not magic. If you have zero labelled Malagasy, this doesn&rsquo;t bootstrap from nothing &mdash; the calibrator and the routing classifier both need the small supervised set. It&rsquo;s also compute&#8209;heavy: running three foundation models on a big unlabeled pool is the part that dominates the budget. And until I actually run the experiments in Chapter IV, the numbers are expected results, not measured ones.</p>
-  </section>
-
-  <section>
-    <div class="part-label">If you want the long version</div>
-    <h2 class="part">Where to read more</h2>
-    <p>The full derivation &mdash; graphical model, ELBO, the four constraints written out, pseudocode for each component, complexity analysis, training stages &mdash; is in <a href="../chapters/03-methodology.html">Chapter III</a>. This page is just the elevator pitch.</p>
+    <p>It isn&rsquo;t magic. The calibrator and the router both need the small supervised set, so it doesn&rsquo;t bootstrap from zero. Running three foundation models on a large unlabeled pool dominates the compute budget. And until the experiments in Chapter IV are run, the numbers are expected, not measured.</p>
+    <p>Full derivation, pseudocode, and complexity analysis are in <a href="../chapters/03-methodology.html">Chapter III</a>.</p>
   </section>
 
   <footer>
     PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
-    Casual note &middot; Doctoral School 3D, University of Toamasina.
+    Doctoral School 3D, University of Toamasina.
   </footer>
 
 </div>
