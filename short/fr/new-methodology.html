@@ -2,7 +2,7 @@
 <html lang="fr">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>PROVA&#8209;MG &mdash; La nouvelle m&eacute;thodologie (r&eacute;sum&eacute; court, FR)</title>
+<title>PROVA&#8209;MG &mdash; La nouvelle m&eacute;thodologie (essentiel, FR)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -14,125 +14,66 @@
   <a class="nav-back" href="../../index.html">&larr; Vue d&rsquo;ensemble PROVA&#8209;MG</a>
 
   <header class="masthead">
-    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; R&eacute;sum&eacute; court &middot; FR</div>
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; L&rsquo;essentiel &middot; FR</div>
     <h1 class="title">La <em>nouvelle m&eacute;thodologie</em>, en bref</h1>
-    <p class="standfirst">Toutes les math&eacute;matiques du Chapitre III, expliqu&eacute;es en une page pour un lecteur non sp&eacute;cialiste de la reconnaissance automatique de la parole (ASR).</p>
+    <p class="standfirst">L&rsquo;id&eacute;e centrale et les math&eacute;matiques strictement n&eacute;cessaires.</p>
   </header>
 
   <section>
-    <div class="part-label">L&rsquo;id&eacute;e en une phrase</div>
-    <p class="lead">On ne fait <em>pas</em> qu&rsquo;entra&icirc;ner un mod&egrave;le&nbsp;: on construit un <strong>syst&egrave;me probabiliste</strong> qui combine plusieurs sources de preuves (trois mod&egrave;les enseignants, une connaissance linguistique, une mesure de confiance calibr&eacute;e) sous des <strong>contraintes explicites</strong> qui emp&ecirc;chent le syst&egrave;me de d&eacute;river vers de fausses certitudes.</p>
-    <p>Le malgache &eacute;tant peu dot&eacute; en donn&eacute;es, on traite la transcription <em>y</em> comme une variable cach&eacute;e accompagn&eacute;e de trois autres variables cach&eacute;es&nbsp;: le dialecte <em>d</em>, le registre <em>r</em> (lu, radio, conversationnel, c&eacute;r&eacute;moniel) et l&rsquo;identit&eacute; de <em>code-switching</em> <em>c</em> (malgache, fran&ccedil;ais, m&eacute;lang&eacute;).</p>
+    <div class="part-label">L&rsquo;id&eacute;e</div>
+    <p class="lead">On combine trois mod&egrave;les ASR existants (Whisper, MMS, Wav2Vec2&#8209;BERT), une connaissance des langues cousines du malgache, et une mesure honn&ecirc;te de la confiance, sous quatre <strong>garde-fous</strong> qui emp&ecirc;chent le syst&egrave;me de s&rsquo;auto&#8209;persuader d&rsquo;erreurs.</p>
+    <p><em>Comparaison&nbsp;:</em> comme un jury de trois m&eacute;decins qui ne valident un diagnostic que si (a)&nbsp;ils sont s&ucirc;rs d&rsquo;eux pour de bonnes raisons, (b)&nbsp;ils ne changent pas d&rsquo;avis du jour au lendemain, (c)&nbsp;au moins deux sont d&rsquo;accord, et (d)&nbsp;le diagnostic est plausible m&eacute;dicalement.</p>
   </section>
 
   <section>
-    <div class="part-label">1. Le mod&egrave;le g&eacute;n&eacute;ratif</div>
-    <p>Comment le signal sonore <em>x</em> et la transcription <em>y</em> sont suppos&eacute;s &ecirc;tre produits&nbsp;:</p>
+    <div class="part-label">Le mod&egrave;le</div>
+    <p>Le signal <em>x</em> et la transcription <em>y</em> sont engendr&eacute;s avec trois variables cach&eacute;es&nbsp;: dialecte <em>d</em>, registre <em>r</em>, code&#8209;switching <em>c</em>.</p>
     <div class="formula">p(x, y, d, r, c) = p(d) p(r) p(c | r, d) p(y | d, r, c) p(x | y, d, r)</div>
-    <p><em>Lecture&nbsp;:</em> dialecte et registre sont ind&eacute;pendants (un Merina peut lire ou converser)&nbsp;; le code-switching d&eacute;pend du registre et du dialecte (c&rsquo;est socialement structur&eacute;)&nbsp;; le son d&eacute;pend de ce qui est dit, du dialecte et du registre.</p>
+    <p><em>Comparaison&nbsp;:</em> comme un sous&#8209;titrage qui devine <em>en m&ecirc;me temps</em> ce qui est dit, dans quel accent, dans quel contexte (radio&nbsp;? conversation&nbsp;?), et si la phrase m&eacute;lange fran&ccedil;ais et malgache.</p>
   </section>
 
   <section>
-    <div class="part-label">2. L&rsquo;approximation variationnelle</div>
-    <p>Calculer la vraie probabilit&eacute; des variables cach&eacute;es est trop co&ucirc;teux. On l&rsquo;approche par un produit de facteurs simples (un r&eacute;seau de neurones par facteur)&nbsp;:</p>
-    <div class="formula">q(y, d, r, c | x) = q_y(y|x) q_d(d|x) q_r(r|x) q_c(c|x,y)</div>
-  </section>
-
-  <section>
-    <div class="part-label">3. L&rsquo;objectif d&rsquo;apprentissage (ELBO)</div>
-    <p>Borne inf&eacute;rieure standard sur la log-vraisemblance &mdash; on la maximise&nbsp;:</p>
-    <div class="formula">log p(x, y) &ge; L_ELBO(&theta;, &phi;)
-            = E_q[ log p_&theta;(x, y, d, r, c) ] &minus; E_q[ log q_&phi;(y, d, r, c | x) ]
-            = E_q[ log p_&theta;(x|y,d,r) p_&theta;(y|d,r,c) ] &minus; KL( q_&phi; &Vert; p )</div>
-    <p><em>Lecture&nbsp;:</em> bien reconstruire le signal et la transcription, sans trop s&rsquo;&eacute;loigner de l&rsquo;a&nbsp;priori (terme KL).</p>
-  </section>
-
-  <section>
-    <div class="part-label">4. EM variationnel contraint</div>
-    <p>On alterne deux pas&nbsp;: estimer les variables cach&eacute;es (E), puis ajuster les param&egrave;tres (M). La nouveaut&eacute; est de <strong>contraindre</strong> le pas E &agrave; rester dans un ensemble admissible <em>C</em>.</p>
+    <div class="part-label">L&rsquo;apprentissage</div>
+    <p>On alterne deux pas (algorithme EM). Le pas E estime les variables cach&eacute;es <em>sous contraintes</em>&nbsp;; le pas M ajuste les param&egrave;tres.</p>
     <div class="formula">E&#8209;step :  q* = argmin_{q &isin; C}  KL( q &Vert; p_&theta;(&middot; | x) )
-M&#8209;step :  &theta; &larr; argmax_&theta;  E_{q*}[ log p_&theta;(x, y, d, r, c) ] + &lambda; R(&theta;)</div>
+M&#8209;step :  &theta; &larr; argmax_&theta;  E_{q*}[ log p_&theta;(x, y, d, r, c) ]</div>
+    <p><em>Comparaison&nbsp;:</em> comme un &eacute;l&egrave;ve qui corrige ses devoirs lui-m&ecirc;me pour progresser &mdash; mais soumis &agrave; des r&egrave;gles qui l&rsquo;emp&ecirc;chent d&rsquo;inventer ses propres r&eacute;ponses.</p>
   </section>
 
   <section>
-    <div class="part-label">5. Les quatre contraintes (le c&oelig;ur de la m&eacute;thode)</div>
-    <p>Sans garde-fous, un syst&egrave;me qui s&rsquo;auto-entra&icirc;ne sur ses propres pr&eacute;dictions <em>s&rsquo;effondre</em>&nbsp;: il devient de plus en plus s&ucirc;r de plus en plus de mauvaises r&eacute;ponses. Chaque contrainte ferme une porte de sortie de cet effondrement.</p>
+    <div class="part-label">Les quatre garde-fous (le c&oelig;ur de la contribution)</div>
+    <p>Sans contraintes, l&rsquo;auto&#8209;entra&icirc;nement <em>s&rsquo;effondre</em>&nbsp;: le mod&egrave;le devient de plus en plus s&ucirc;r de plus en plus de mauvaises r&eacute;ponses. Chaque r&egrave;gle ferme une porte de sortie.</p>
     <ul class="plain">
-      <li><strong>C1 &mdash; plancher de confiance.</strong> N&rsquo;accepter que les transcriptions au-dessus d&rsquo;un seuil <em>&tau;</em> de confiance <em>calibr&eacute;e</em> (la confiance ne ment pas).
-        <div class="formula">supp(q*) &sub; { y : conf_cal(y, x) &ge; &tau; }</div></li>
-      <li><strong>C2 &mdash; borne de d&eacute;rive KL.</strong> D&rsquo;une it&eacute;ration &agrave; l&rsquo;autre, le mod&egrave;le ne peut pas bouger trop vite.
-        <div class="formula">E_x[ KL( q^(n+1)(&middot;|x) &Vert; q^(n)(&middot;|x) ) ] &le; &epsilon;</div></li>
-      <li><strong>C3 &mdash; accord des enseignants.</strong> La transcription retenue doit appara&icirc;tre dans la liste des hypoth&egrave;ses d&rsquo;au moins deux des trois enseignants (Whisper, MMS, Wav2Vec2&#8209;BERT).
-        <div class="formula">supp(q*) &cap; ( n&#8209;best_W &cup; n&#8209;best_M &cup; n&#8209;best_B ) &ne; &empty;</div></li>
-      <li><strong>C4 &mdash; coh&eacute;rence typologique.</strong> Les transcriptions impossibles au regard de la phonotactique austron&eacute;sienne sont &eacute;cart&eacute;es.
-        <div class="formula">E_{q*}[ log P_typ(y) ] &ge; &minus;&eta;</div></li>
+      <li><strong>C1 &mdash; seuil de confiance calibr&eacute;e.</strong> N&rsquo;accepter que les transcriptions dont la confiance est r&eacute;ellement justifi&eacute;e.
+        <div class="formula">supp(q*) &sub; { y : conf_cal(y, x) &ge; &tau; }</div>
+        <em>Comparaison&nbsp;:</em> on ignore un &eacute;l&egrave;ve qui dit &laquo;&nbsp;je suis s&ucirc;r &agrave; 99&nbsp;%&nbsp;&raquo; mais qui se trompe une fois sur deux.</li>
+      <li><strong>C2 &mdash; vitesse limit&eacute;e.</strong> D&rsquo;une it&eacute;ration &agrave; la suivante, le mod&egrave;le ne peut pas changer radicalement d&rsquo;avis.
+        <div class="formula">E_x[ KL( q^(n+1) &Vert; q^(n) ) ] &le; &epsilon;</div>
+        <em>Comparaison&nbsp;:</em> un m&eacute;decin r&eacute;vise un diagnostic graduellement, pas brutalement.</li>
+      <li><strong>C3 &mdash; accord des enseignants.</strong> La r&eacute;ponse retenue doit appara&icirc;tre dans la liste de plusieurs des trois mod&egrave;les enseignants.
+        <div class="formula">supp(q*) &cap; ( n&#8209;best_W &cup; n&#8209;best_M &cup; n&#8209;best_B ) &ne; &empty;</div>
+        <em>Comparaison&nbsp;:</em> on ne retient que ce sur quoi au moins deux experts ind&eacute;pendants tombent d&rsquo;accord.</li>
+      <li><strong>C4 &mdash; plausibilit&eacute; linguistique.</strong> Les transcriptions impossibles au regard des langues austron&eacute;siennes sont rejet&eacute;es.
+        <div class="formula">E_{q*}[ log P_typ(y) ] &ge; &minus;&eta;</div>
+        <em>Comparaison&nbsp;:</em> un correcteur orthographique qui &eacute;limine les mots qui n&rsquo;existent dans aucune langue cousine.</li>
     </ul>
   </section>
 
   <section>
-    <div class="part-label">6. Les cinq composants en formules</div>
-
-    <div class="component">
-      <div class="cnum">Composant 3.1</div>
-      <h3>Co&#8209;inf&eacute;rence des trois enseignants</h3>
-      <p>Whisper, MMS et W2V2&#8209;BERT donnent chacun une distribution sur les transcriptions possibles. Un <em>routeur</em> appris d&eacute;cide quoi faire de chaque segment selon leur accord&nbsp;:</p>
-      <div class="formula">r : ( q_W(y|x), q_M(y|x), q_B(y|x) ) &rarr; { entra&icirc;ner_haute_confiance , router_vers_humain , garder_en_r&eacute;serve , rejeter }</div>
-    </div>
-
-    <div class="component">
-      <div class="cnum">Composant 3.2</div>
-      <h3>A&nbsp;priori typologique austron&eacute;sien</h3>
-      <p>On entra&icirc;ne un mod&egrave;le de langue sur les langues cousines (indon&eacute;sien, malais, cebuano, tagalog) et on l&rsquo;ajoute au d&eacute;codage en m&eacute;lange log&#8209;lin&eacute;aire&nbsp;:</p>
-      <div class="formula">log P(y | x) &prop; log P_acoustique(x | y) + &alpha; log P_LM_MG(y) + &beta; log P_typ(y)</div>
-    </div>
-
-    <div class="component">
-      <div class="cnum">Composant 3.3</div>
-      <h3>EM contraint pour pseudo&#8209;&eacute;tiquetage it&eacute;ratif</h3>
-      <p>La boucle EM ci-dessus, appliqu&eacute;e sur l&rsquo;union des donn&eacute;es supervis&eacute;es et non supervis&eacute;es, sous les quatre contraintes C1&ndash;C4. C&rsquo;est ici qu&rsquo;est emp&ecirc;ch&eacute; l&rsquo;effondrement.</p>
-    </div>
-
-    <div class="component">
-      <div class="cnum">Composant 3.4</div>
-      <h3>D&eacute;composition latente&nbsp;: dialecte, registre, code&#8209;switching</h3>
-      <p>Inf&eacute;rence par mises &agrave; jour coordonn&eacute;es (champ moyen)&nbsp;: chaque facteur est r&eacute;estim&eacute; en gelant les autres, puis on red&eacute;code la transcription avec les adaptateurs attendus.</p>
-      <div class="formula">q_d &larr; softmax( log p(d)     + E_{q_r,q_c,q_y}[ log p(x,y,d,r,c) ] )
-q_r &larr; softmax( log p(r)     + E_{q_d,q_c,q_y}[ log p(x,y,d,r,c) ] )
-q_c &larr; softmax( log p(c|r,d) + E_{q_d,q_r,q_y}[ log p(y,c) ] )
-q_y &larr; decode( E_{q_d}[adapter_d], E_{q_r}[adapter_r], x )</div>
-    </div>
-
-    <div class="component">
-      <div class="cnum">Composant 3.5</div>
-      <h3>Calibration de la confiance</h3>
-      <p>Les mod&egrave;les ASR se croient trop souvent corrects. On apprend une fonction <em>g_&phi;</em> qui transforme un score brut en probabilit&eacute; r&eacute;elle d&rsquo;&ecirc;tre correct&nbsp;:</p>
-      <div class="formula">p_cal(correct | features) = g_&phi;(features)</div>
-      <p>Entra&icirc;n&eacute;e en minimisant la log&#8209;vraisemblance n&eacute;gative avec p&eacute;nalit&eacute; de douceur&nbsp;:</p>
-      <div class="formula">L_cal(&phi;) = &minus; &Sigma;_{(x,y) &isin; D_sup} log g_&phi;( features(x), 1[ &ycirc;(x) = y ] ) + &mu; &Vert;g_&phi;&Vert;&sup2;</div>
-      <p>&Eacute;valu&eacute;e par l&rsquo;<em>Expected Calibration Error</em> &mdash; &eacute;cart moyen entre confiance d&eacute;clar&eacute;e et pr&eacute;cision r&eacute;elle&nbsp;:</p>
-      <div class="formula">ECE_n = &Sigma;_b ( |B_b| / N ) &middot; | acc(B_b) &minus; conf(B_b) |</div>
-    </div>
-  </section>
-
-  <section>
-    <div class="part-label">7. Co&ucirc;ts (qui paie quoi)</div>
-    <ul class="plain">
-      <li><strong>Co&#8209;inf&eacute;rence&nbsp;:</strong> <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;">O(n T (d_W + d_M + d_B)) + O(n B&sup2;)</span> &mdash; trois passes des grands mod&egrave;les sur <em>n</em> segments.</li>
-      <li><strong>A&nbsp;priori typologique&nbsp;:</strong> <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;">O(B T |V|)</span> &mdash; ajout&eacute; au d&eacute;codage en faisceau, amorti par cache.</li>
-      <li><strong>EM contraint&nbsp;:</strong> <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;">O(N &middot; (|D_unsup|&middot;d&eacute;codage + |D|&middot;epochs))</span>, avec <em>N</em> &asymp; 3&ndash;6 it&eacute;rations.</li>
-      <li><strong>Champ moyen&nbsp;:</strong> <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;">O(I T (encoder + decoder))</span>, <em>I</em> &asymp; 2&ndash;3 passes.</li>
-      <li><strong>Calibration&nbsp;:</strong> <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;">O(|D_sup|)</span> &agrave; l&rsquo;entra&icirc;nement, <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;">O(1)</span> par segment ensuite.</li>
-    </ul>
+    <div class="part-label">D&eacute;codage avec a&nbsp;priori typologique</div>
+    <p>On utilise les langues cousines du malgache (indon&eacute;sien, malais, cebuano, tagalog) pour combler le manque de donn&eacute;es&nbsp;:</p>
+    <div class="formula">log P(y | x) &prop; log P_acoustique(x | y) + &alpha; log P_LM_MG(y) + &beta; log P_typ(y)</div>
+    <p><em>Comparaison&nbsp;:</em> apprendre l&rsquo;italien plus vite en s&rsquo;aidant de l&rsquo;espagnol et du portugais.</p>
   </section>
 
   <div class="callout">
-    <span class="tag">Affirmation unificatrice</span>
-    Les cinq composants ne sont pas une liste de techniques juxtapos&eacute;es&nbsp;: la calibration (3.5) alimente le routage (3.1) et la contrainte C1&nbsp;; l&rsquo;a&nbsp;priori typologique (3.2) alimente C4&nbsp;; l&rsquo;accord des enseignants (3.1) alimente C3&nbsp;; la d&eacute;composition latente (3.4) fournit les adaptateurs utilis&eacute;s partout. Le tout forme un syst&egrave;me dont les pi&egrave;ces se renforcent mutuellement &mdash; et dont l&rsquo;intersection C1&nbsp;&cap;&nbsp;C2&nbsp;&cap;&nbsp;C3&nbsp;&cap;&nbsp;C4 garantit la non&#8209;d&eacute;rive de la boucle d&rsquo;auto&#8209;entra&icirc;nement.
+    <span class="tag">En une ligne</span>
+    Trois enseignants&nbsp;+ a&nbsp;priori cousins&nbsp;+ confiance calibr&eacute;e, combin&eacute;s par un EM variationnel sous quatre contraintes qui rendent la boucle d&rsquo;auto&#8209;entra&icirc;nement <em>prouvablement</em> non&#8209;d&eacute;rivante.
   </div>
 
   <footer>
     PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
-    R&eacute;sum&eacute; court (FR) du Chapitre III &middot; &Eacute;cole Doctorale 3D, Universit&eacute; de Toamasina.
+    L&rsquo;essentiel (FR) du Chapitre III &middot; &Eacute;cole Doctorale 3D, Universit&eacute; de Toamasina.
   </footer>
 
 </div>
