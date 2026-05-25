@@ -53,9 +53,9 @@ M&#8209;step :  &theta; &larr; argmax_&theta;  E_{q*}[ log p_&theta;(x, y, d, r,
       <li><strong>C3 &mdash; accord des enseignants.</strong> La r&eacute;ponse retenue doit appara&icirc;tre dans la liste de plusieurs des trois mod&egrave;les enseignants.
         <div class="formula">supp(q*) &cap; ( n&#8209;best_W &cup; n&#8209;best_M &cup; n&#8209;best_B ) &ne; &empty;</div>
         <em>Comparaison&nbsp;:</em> on ne retient que ce sur quoi au moins deux experts ind&eacute;pendants tombent d&rsquo;accord.</li>
-      <li><strong>C4 &mdash; plausibilit&eacute; linguistique.</strong> Les transcriptions impossibles au regard des langues austron&eacute;siennes sont rejet&eacute;es.
+      <li><strong>C4 &mdash; plausibilit&eacute; linguistique.</strong> Les transcriptions dont la <em>forme</em> (encha&icirc;nements de sons, sch&eacute;mas d&rsquo;affixes) ne ressemble &agrave; aucune langue austron&eacute;sienne sont rejet&eacute;es. Il ne s&rsquo;agit pas de v&eacute;rifier qu&rsquo;un mot existe ailleurs &mdash; le malgache a quantit&eacute; de mots qui lui sont propres &mdash; mais qu&rsquo;il <em>aurait pu</em> exister vu la structure de la famille.
         <div class="formula">E_{q*}[ log P_typ(y) ] &ge; &minus;&eta;</div>
-        <em>Comparaison&nbsp;:</em> un correcteur orthographique qui &eacute;limine les mots qui n&rsquo;existent dans aucune langue cousine.</li>
+        <em>Comparaison&nbsp;:</em> un francophone sent que &laquo;&nbsp;travu&nbsp;&raquo; pourrait &ecirc;tre un mot fran&ccedil;ais alors que &laquo;&nbsp;tlbvk&nbsp;&raquo; ne le pourrait pas &mdash; m&ecirc;me sans l&rsquo;avoir jamais vu. On &eacute;carte les transcriptions de type &laquo;&nbsp;tlbvk&nbsp;&raquo;.</li>
     </ul>
   </section>
 
