@@ -9,6 +9,12 @@
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="stylesheet" href="../assets/style.css">
 
+<!-- KaTeX: render LaTeX mathematics -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']});"></script>
+
 <div class="wrap">
 
   <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
@@ -22,9 +28,9 @@
   <section>
     <div class="part-label">Chapter Introduction</div>
     <h2 class="part">From acoustics to text: the probabilistic substrate</h2>
-    <p>Automatic Speech Recognition is, in its modern formulation, the inversion of a noisy generative channel. Let <em>X</em> denote the observed acoustic feature sequence and <em>W</em> the underlying word sequence. The Bayesian decomposition</p>
-    <div class="formula">P(W|X) = P(X|W) P(W) / P(X)</div>
-    <p>has organized the discipline since Jelinek and Bahl (1976) and remains, in spirit if not always in letter, the structuring principle of every paradigm reviewed below. The acoustic term <em>P(X|W)</em> describes how a word sequence generates a feature stream; the language&#8209;model term <em>P(W)</em> describes the prior plausibility of a sequence; the marginal <em>P(X)</em> serves only as a normalizing constant in the argmax. ASR has evolved by progressively replacing each of the three terms by learned components while retaining the formal architecture of the decomposition.</p>
+    <p>Automatic Speech Recognition is, in its modern formulation, the inversion of a noisy generative channel. Let \(X\) denote the observed acoustic feature sequence and \(W\) the underlying word sequence. The Bayesian decomposition</p>
+    <div class="formula">$$P(W \mid X) = \frac{P(X \mid W)\,P(W)}{P(X)}$$</div>
+    <p>has organized the discipline since Jelinek and Bahl (1976) and remains, in spirit if not always in letter, the structuring principle of every paradigm reviewed below. The acoustic term \(P(X \mid W)\) describes how a word sequence generates a feature stream; the language&#8209;model term \(P(W)\) describes the prior plausibility of a sequence; the marginal \(P(X)\) serves only as a normalizing constant in the argmax. ASR has evolved by progressively replacing each of the three terms by learned components while retaining the formal architecture of the decomposition.</p>
     <p>Four broadly successive paradigms structure the field. The <em>classical HMM&#8209;GMM</em> paradigm modelled both the acoustic emission and the temporal dynamics by hand&#8209;crafted, generatively trained probabilistic components. The <em>hybrid DNN&#8209;HMM</em> paradigm retained the temporal HMM scaffolding and replaced the Gaussian emission by a discriminatively trained neural network. The <em>end&#8209;to&#8209;end neural</em> paradigm collapsed the modular pipeline into a single network mapping acoustics to text. The <em>self&#8209;supervised representation</em> paradigm shifted the bottleneck from supervision to representation by pre&#8209;training large encoders on unlabeled audio. Each paradigm absorbed rather than discarded its predecessor: a contemporary system, in particular the systems on which the present thesis is built, exhibits traces of all four. The chapter that follows develops each paradigm in turn, with attention to the mathematics that bears on the methodology of Chapter III.</p>
   </section>
 
@@ -34,19 +40,19 @@
     <p>The classical and hybrid paradigms share the modular architecture inherited from Bahl, Jelinek, and Mercer: an acoustic model, a pronunciation lexicon, a language model, and a decoder. Their successive variants differ in how the acoustic model is parameterized and trained.</p>
 
     <h3>I.1.1 The classical paradigm: HMM-GMM</h3>
-    <p>The hidden Markov model with Gaussian&#8209;mixture emissions (HMM&#8209;GMM) modelled speech as a hidden discrete Markov chain whose states emit, at each time step, observations drawn from a Gaussian mixture density over short&#8209;frame features (MFCC, PLP). For a state sequence <em>s = (s_1, ..., s_T)</em> and a feature sequence <em>X = (x_1, ..., x_T)</em>, the joint likelihood factorizes as</p>
-    <div class="formula">P(X, s | W) = prod_t  a(s_{t-1}, s_t) &middot; b_{s_t}(x_t)</div>
-    <p>where <em>a(.,.)</em> are transition probabilities and <em>b_s(.)</em> are state&#8209;dependent emission densities, each itself a Gaussian mixture. Parameters were estimated by the Baum&#8209;Welch algorithm, an instance of Expectation&#8209;Maximization (EM) whose E&#8209;step computes occupation probabilities via the forward&#8209;backward recursion and whose M&#8209;step re&#8209;estimates means, covariances, and mixture weights in closed form.</p>
-    <p>Three features of HMM&#8209;GMM deserve mention because they recur in subsequent paradigms. First, the noisy&#8209;channel decomposition was operationalized through the explicit composition of acoustic, lexical, and language&#8209;model components. Second, decoding was formalized as a shortest&#8209;path search over a Weighted Finite&#8209;State Transducer (WFST) obtained by composing the HMM transducer <em>H</em>, the context&#8209;dependency transducer <em>C</em>, the lexicon transducer <em>L</em>, and the language&#8209;model transducer <em>G</em>:</p>
-    <div class="formula">Decoding graph:&nbsp; D = H &deg; C &deg; L &deg; G</div>
+    <p>The hidden Markov model with Gaussian&#8209;mixture emissions (HMM&#8209;GMM) modelled speech as a hidden discrete Markov chain whose states emit, at each time step, observations drawn from a Gaussian mixture density over short&#8209;frame features (MFCC, PLP). For a state sequence \(s = (s_1, \ldots, s_T)\) and a feature sequence \(X = (x_1, \ldots, x_T)\), the joint likelihood factorizes as</p>
+    <div class="formula">$$P(X, s \mid W) = \prod_t a(s_{t-1}, s_t)\, b_{s_t}(x_t)$$</div>
+    <p>where \(a(\cdot,\cdot)\) are transition probabilities and \(b_s(\cdot)\) are state&#8209;dependent emission densities, each itself a Gaussian mixture. Parameters were estimated by the Baum&#8209;Welch algorithm, an instance of Expectation&#8209;Maximization (EM) whose E&#8209;step computes occupation probabilities via the forward&#8209;backward recursion and whose M&#8209;step re&#8209;estimates means, covariances, and mixture weights in closed form.</p>
+    <p>Three features of HMM&#8209;GMM deserve mention because they recur in subsequent paradigms. First, the noisy&#8209;channel decomposition was operationalized through the explicit composition of acoustic, lexical, and language&#8209;model components. Second, decoding was formalized as a shortest&#8209;path search over a Weighted Finite&#8209;State Transducer (WFST) obtained by composing the HMM transducer \(H\), the context&#8209;dependency transducer \(C\), the lexicon transducer \(L\), and the language&#8209;model transducer \(G\):</p>
+    <div class="formula">$$\text{Decoding graph:}\quad D = H \circ C \circ L \circ G$$</div>
     <p>That composition remains, in form, the formal substrate of contemporary beam search. Third, EM as the parameter estimation procedure introduced a vocabulary &mdash; latent variables, posterior responsibilities, the contrast between observed and complete&#8209;data likelihood &mdash; which the methodology of Chapter III inherits in its variational form.</p>
 
     <h3>I.1.2 The hybrid paradigm: DNN-HMM, TDNN-F, LF-MMI</h3>
-    <p>Beginning with the work of Hinton, Deng, and Yu around 2009 and continuing through Kaldi&#8209;era systems, deep neural networks replaced the Gaussian mixture as the emission model while the decoder, the lexicon, and the language model remained external. Architecturally, this consisted in training a neural network to predict the posterior <em>P(s | x_t)</em> of an HMM state given the acoustic frame, then converting the posterior to a scaled likelihood through Bayes' rule:</p>
-    <div class="formula">b_{s_t}(x_t) &prop; P(s | x_t) / P(s)</div>
-    <p>where <em>P(s)</em> is the state prior estimated from the training alignments. The training of the network required an initial alignment, typically produced by an HMM&#8209;GMM system, and proceeded by minimization of the frame&#8209;level cross&#8209;entropy.</p>
+    <p>Beginning with the work of Hinton, Deng, and Yu around 2009 and continuing through Kaldi&#8209;era systems, deep neural networks replaced the Gaussian mixture as the emission model while the decoder, the lexicon, and the language model remained external. Architecturally, this consisted in training a neural network to predict the posterior \(P(s \mid x_t)\) of an HMM state given the acoustic frame, then converting the posterior to a scaled likelihood through Bayes' rule:</p>
+    <div class="formula">$$b_{s_t}(x_t) \propto \frac{P(s \mid x_t)}{P(s)}$$</div>
+    <p>where \(P(s)\) is the state prior estimated from the training alignments. The training of the network required an initial alignment, typically produced by an HMM&#8209;GMM system, and proceeded by minimization of the frame&#8209;level cross&#8209;entropy.</p>
     <p>Three refinements have proven enduring. The <em>time&#8209;delay neural network</em> (TDNN) introduced by Peddinti, Povey, and Khudanpur (2015) replaced the dense feed&#8209;forward layers by sub&#8209;sampled, dilated convolutions over time, giving access to long contextual windows at moderate cost. The <em>factorized</em> variant TDNN&#8209;F, by inserting a low&#8209;rank linear bottleneck between successive TDNN layers, controlled over&#8209;fitting in low&#8209;data regimes. <em>Lattice&#8209;free Maximum Mutual Information</em> (LF&#8209;MMI), introduced by Povey and colleagues (2016), replaced the frame cross&#8209;entropy by a sequence&#8209;discriminative criterion computed without lattices, on a denominator graph that approximates the language&#8209;model marginal:</p>
-    <div class="formula">F_MMI(theta) = sum_u  log [ P_theta(X_u | W_u) P(W_u) / Z_theta(X_u) ]</div>
+    <div class="formula">$$F_{\mathrm{MMI}}(\theta) = \sum_u \log \frac{P_\theta(X_u \mid W_u)\,P(W_u)}{Z_\theta(X_u)}$$</div>
     <p>Hybrid systems remain competitive on small supervised sets, particularly when phonetic resources (pronunciation dictionaries, decision trees) are already available. They are engineering&#8209;intensive: each stage of the pipeline must be tuned and the dependency chain is long. They do not, on their own, address the multilingual or low&#8209;resource extension.</p>
 
     <h3>I.1.3 Decoding: WFST search and the lexicon</h3>
@@ -59,36 +65,40 @@
     <p>The second part of the chapter addresses the two paradigms in which the modular pipeline of the classical and hybrid systems is replaced or relegated to a pre&#8209;training stage. End&#8209;to&#8209;end models collapse the pipeline into a single trainable network; self&#8209;supervised models shift the bottleneck from supervision to representation.</p>
 
     <h3>I.2.1 End-to-end objectives: CTC, attention, RNN-T</h3>
-    <p>Three training objectives still structure the end&#8209;to&#8209;end family. They differ in how they relate the unaligned target sequence <em>y = (y_1, ..., y_U)</em> to the frame sequence <em>X = (x_1, ..., x_T)</em>, with <em>T &gg; U</em>.</p>
+    <p>Three training objectives still structure the end&#8209;to&#8209;end family. They differ in how they relate the unaligned target sequence \(y = (y_1, \ldots, y_U)\) to the frame sequence \(X = (x_1, \ldots, x_T)\), with \(T \gg U\).</p>
 
-    <p><em>Connectionist Temporal Classification</em> (CTC, Graves et al. 2006) introduces an additional blank symbol and marginalizes over all monotonic, many&#8209;to&#8209;one alignments <em>pi : {1,...,T} &rarr; Y &cup; {blank}</em> that collapse to <em>y</em>:</p>
-    <div class="formula">L_CTC(theta) = - log  sum_{pi : B(pi)=y}  prod_t  P_theta(pi_t | x_t)</div>
+    <p><em>Connectionist Temporal Classification</em> (CTC, Graves et al. 2006) introduces an additional blank symbol and marginalizes over all monotonic, many&#8209;to&#8209;one alignments \(\pi : \{1,\ldots,T\} \to \mathcal{Y} \cup \{\text{blank}\}\) that collapse to \(y\):</p>
+    <div class="formula">$$\mathcal{L}_{\mathrm{CTC}}(\theta) = -\log \sum_{\pi\,:\,\mathcal{B}(\pi)=y}\ \prod_t P_\theta(\pi_t \mid x_t)$$</div>
     <p>The forward&#8209;backward recursion over the alignment lattice makes the gradient tractable. CTC converges rapidly, has few hyperparameters, and tolerates small supervised sets &mdash; properties that make it the dominant choice in low&#8209;resource ASR pipelines.</p>
 
-    <p><em>Attention&#8209;based encoder&#8209;decoder</em> models (Listen, Attend and Spell; Chan et al. 2016) drop the monotonic assumption. An encoder produces a hidden sequence <em>h = (h_1, ..., h_T)</em>; an autoregressive decoder generates <em>y</em> token by token, attending at each step to a context <em>c_u</em>:</p>
-    <div class="formula">c_u = sum_t  alpha_{u,t} h_t,&nbsp;  alpha_{u,t} = softmax_t( e(s_u, h_t) )
-P(y_u | y_{&lt;u}, X) = decoder(s_u, c_u, y_{u-1})</div>
+    <p><em>Attention&#8209;based encoder&#8209;decoder</em> models (Listen, Attend and Spell; Chan et al. 2016) drop the monotonic assumption. An encoder produces a hidden sequence \(h = (h_1, \ldots, h_T)\); an autoregressive decoder generates \(y\) token by token, attending at each step to a context \(c_u\):</p>
+    <div class="formula">$$\begin{aligned}
+c_u &= \sum_t \alpha_{u,t}\, h_t, \qquad \alpha_{u,t} = \operatorname*{softmax}_t\big( e(s_u, h_t) \big) \\
+P(y_u \mid y_{&lt;u}, X) &= \operatorname{decoder}(s_u, c_u, y_{u-1})
+\end{aligned}$$</div>
     <p>The loss is the cross&#8209;entropy of the target tokens. Attention models are more expressive than CTC but more data&#8209;hungry; they require regularization mechanisms (label smoothing, scheduled sampling, joint CTC&#8209;attention training) to remain stable on small supervised sets.</p>
 
     <p><em>RNN Transducer</em> (Graves 2012, Battenberg et al. 2017) re&#8209;introduces a monotonic alignment through an internal predictor network. A joint network combines the encoder state and the predictor state to produce</p>
-    <div class="formula">P(y_u | y_{&lt;u}, x_{1:t}) = softmax( W_z &middot; phi( h_t , p_u ) )</div>
+    <div class="formula">$$P(y_u \mid y_{&lt;u}, x_{1:t}) = \operatorname{softmax}\big( W_z\, \phi( h_t , p_u ) \big)$$</div>
     <p>The lattice over (<em>t</em>, <em>u</em>) admits an efficient forward&#8209;backward recursion and a streaming&#8209;compatible decoder. RNN&#8209;T is the production choice for low&#8209;latency recognition.</p>
 
     <h3>I.2.2 The Conformer encoder</h3>
     <p>The encoder of choice in contemporary end&#8209;to&#8209;end systems is the Conformer (Gulati et al. 2020), which combines convolution and self&#8209;attention in a single block. Each Conformer block applies, in order: a macaron feed&#8209;forward sub&#8209;layer; multi&#8209;head self&#8209;attention with relative positional encoding; a depthwise&#8209;separable convolution module; a second macaron feed&#8209;forward sub&#8209;layer; layer normalization. The block&#8209;level update may be written as</p>
-    <div class="formula">x &larr; x + 0.5 FFN(x)
-x &larr; x + MHSA(x)
-x &larr; x + Conv(x)
-x &larr; x + 0.5 FFN(x)
-x &larr; LayerNorm(x)</div>
+    <div class="formula">$$\begin{aligned}
+x &\leftarrow x + \tfrac{1}{2}\,\operatorname{FFN}(x) \\
+x &\leftarrow x + \operatorname{MHSA}(x) \\
+x &\leftarrow x + \operatorname{Conv}(x) \\
+x &\leftarrow x + \tfrac{1}{2}\,\operatorname{FFN}(x) \\
+x &\leftarrow \operatorname{LayerNorm}(x)
+\end{aligned}$$</div>
     <p>Self&#8209;attention captures long&#8209;range dependencies while the convolution module captures local patterns over a few tens of frames. The Conformer encoder underlies most of the foundation models reviewed in Chapter II and, in particular, the Wav2Vec2&#8209;BERT model that serves as one of the three teachers in the methodology of Chapter III.</p>
 
     <h3>I.2.3 Self-supervised representations: Wav2Vec 2.0, HuBERT, WavLM, data2vec</h3>
-    <p>Self&#8209;supervised pre&#8209;training on unlabeled audio shifted the bottleneck from supervision to representation. The contrastive objective of <em>Wav2Vec 2.0</em> (Baevski et al. 2020) masks a fraction of the convolutional features and asks the Transformer to identify, among a set of distractors <em>q_k</em>, the quantized target <em>q_t</em> aligned with the masked position:</p>
-    <div class="formula">L_W2V2 = - log [ exp(sim(c_t, q_t)/tau) / sum_k exp(sim(c_t, q_k)/tau) ]</div>
-    <p>where <em>c_t</em> is the contextual representation at the masked position, <em>sim</em> is cosine similarity, and <em>tau</em> is a temperature.</p>
+    <p>Self&#8209;supervised pre&#8209;training on unlabeled audio shifted the bottleneck from supervision to representation. The contrastive objective of <em>Wav2Vec 2.0</em> (Baevski et al. 2020) masks a fraction of the convolutional features and asks the Transformer to identify, among a set of distractors \(q_k\), the quantized target \(q_t\) aligned with the masked position:</p>
+    <div class="formula">$$\mathcal{L}_{\mathrm{W2V2}} = -\log \frac{\exp\!\big(\operatorname{sim}(c_t, q_t)/\tau\big)}{\sum_k \exp\!\big(\operatorname{sim}(c_t, q_k)/\tau\big)}$$</div>
+    <p>where \(c_t\) is the contextual representation at the masked position, \(\operatorname{sim}\) is cosine similarity, and \(\tau\) is a temperature.</p>
     <p>HuBERT (Hsu et al. 2021) replaced the contrastive term by masked prediction over discretized targets obtained by iterative k&#8209;means clustering of MFCCs (first iteration) or of the model's own intermediate representations (subsequent iterations). The objective becomes a standard cross&#8209;entropy over a finite codebook:</p>
-    <div class="formula">L_HuBERT = - sum_{t in M}  log P_theta( z_t | c_t )</div>
+    <div class="formula">$$\mathcal{L}_{\mathrm{HuBERT}} = -\sum_{t \in M} \log P_\theta( z_t \mid c_t )$$</div>
     <p>WavLM (Chen et al. 2022) added a denoising pre&#8209;training signal by overlapping the input with noise and asking the model to predict the targets of the clean stream. data2vec (Baevski et al. 2022) replaced both discrete and contrastive targets by self&#8209;distilled latent representations of the unmasked input, computed by an exponential moving average of the student.</p>
     <p>The practical value of these models for low&#8209;resource ASR is that fine&#8209;tuning a small CTC head on a few hours of supervised audio often matches the performance of a system trained from scratch on substantially larger supervised corpora. The four models listed above are nominally usable for Malagasy; Wav2Vec2&#8209;BERT, the cross&#8209;lingual variant pre&#8209;trained on Wav2Vec 2.0 plus BERT&#8209;style masked language modelling, serves as one of the three teachers retained in Chapter III.</p>
   </section>

@@ -109,6 +109,10 @@ em{font-style:italic;}
   font-family:'IBM Plex Mono',monospace;font-size:14px;line-height:1.7;
   padding:14px 18px;margin:18px 0;border-radius:0 4px 4px 0;overflow-x:auto;
 }
+/* KaTeX-rendered display equations sit flush inside the .formula card */
+.formula .katex-display{margin:0;}
+.formula .katex{font-size:1.15em;}
+.katex{font-size:1.05em;}
 .callout{
   background:var(--accent-soft);border-radius:4px;padding:16px 20px;margin:20px 0;
   font-size:16px;
