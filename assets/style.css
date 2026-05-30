@@ -119,6 +119,15 @@ em{font-style:italic;}
 }
 ul.plain{margin:12px 0;padding-left:22px;}
 ul.plain li{margin:7px 0;}
+a.ref-link{
+  color:var(--accent);text-decoration:none;
+  border-bottom:1px solid var(--accent-soft);
+  white-space:nowrap;font-style:normal;
+}
+a.ref-link:hover{border-bottom-color:var(--accent);}
+/* inline source links (DOIs, arXiv, repositories) may wrap */
+ul.plain li a.ref-link[href*="doi.org"],
+ul.plain li a.ref-link[href*="github.com"]{white-space:normal;word-break:break-word;}
 
 /* component cards */
 .component{
