@@ -9,6 +9,12 @@
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="stylesheet" href="../assets/style.css">
 
+<!-- KaTeX: render LaTeX mathematics -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']});"></script>
+
 <div class="wrap">
 
   <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
@@ -104,35 +110,35 @@
     <table>
       <thead><tr><th>Symbol</th><th>Meaning</th></tr></thead>
       <tbody>
-        <tr><td>x</td><td>Acoustic input (waveform or feature sequence)</td></tr>
-        <tr><td>y</td><td>Transcript (sequence of characters, sub-words or tokens)</td></tr>
-        <tr><td>W</td><td>Word sequence (classical notation)</td></tr>
-        <tr><td>X</td><td>Acoustic feature sequence (classical notation)</td></tr>
-        <tr><td>P(W|X)</td><td>Posterior probability of word sequence given acoustic features</td></tr>
-        <tr><td>P(X|W)</td><td>Acoustic likelihood</td></tr>
-        <tr><td>P(W)</td><td>Language-model prior over word sequences</td></tr>
-        <tr><td>q(y|x)</td><td>Variational approximate posterior</td></tr>
-        <tr><td>q_W, q_M, q_B</td><td>Posteriors of the three teachers (Whisper, MMS, Wav2Vec2-BERT)</td></tr>
-        <tr><td>p_theta</td><td>Model with parameters theta</td></tr>
-        <tr><td>theta</td><td>Model parameters</td></tr>
-        <tr><td>alpha, beta</td><td>Mixture weights (language-model and typological prior)</td></tr>
-        <tr><td>lambda</td><td>Regularization weight</td></tr>
-        <tr><td>P_typ(y)</td><td>Typological (Austronesian family) prior over transcripts</td></tr>
-        <tr><td>d, r, c</td><td>Latent dialect, register, and code-switching variables</td></tr>
-        <tr><td>D_sup, D_unsup</td><td>Supervised and unsupervised data subsets</td></tr>
-        <tr><td>KL(q || p)</td><td>Kullback-Leibler divergence from p to q</td></tr>
-        <tr><td>JS(p, q)</td><td>Jensen-Shannon divergence</td></tr>
-        <tr><td>E_q[.]</td><td>Expectation under distribution q</td></tr>
-        <tr><td>L_CTC</td><td>Connectionist Temporal Classification loss</td></tr>
-        <tr><td>L_RNNT</td><td>RNN-Transducer loss</td></tr>
-        <tr><td>L_att</td><td>Attention-based cross-entropy loss</td></tr>
-        <tr><td>L_ELBO</td><td>Evidence Lower Bound objective</td></tr>
-        <tr><td>r(.)</td><td>Routing function (Component 3.1)</td></tr>
-        <tr><td>C</td><td>Constraint set of the constrained variational EM</td></tr>
-        <tr><td>R(theta)</td><td>Regularization term on parameters</td></tr>
-        <tr><td>T</td><td>Temperature parameter in calibration / softmax</td></tr>
-        <tr><td>ECE_n</td><td>Expected Calibration Error with n confidence bins</td></tr>
-        <tr><td>H(p)</td><td>Shannon entropy of distribution p</td></tr>
+        <tr><td>\(x\)</td><td>Acoustic input (waveform or feature sequence)</td></tr>
+        <tr><td>\(y\)</td><td>Transcript (sequence of characters, sub-words or tokens)</td></tr>
+        <tr><td>\(W\)</td><td>Word sequence (classical notation)</td></tr>
+        <tr><td>\(X\)</td><td>Acoustic feature sequence (classical notation)</td></tr>
+        <tr><td>\(P(W \mid X)\)</td><td>Posterior probability of word sequence given acoustic features</td></tr>
+        <tr><td>\(P(X \mid W)\)</td><td>Acoustic likelihood</td></tr>
+        <tr><td>\(P(W)\)</td><td>Language-model prior over word sequences</td></tr>
+        <tr><td>\(q(y \mid x)\)</td><td>Variational approximate posterior</td></tr>
+        <tr><td>\(q_W,\ q_M,\ q_B\)</td><td>Posteriors of the three teachers (Whisper, MMS, Wav2Vec2-BERT)</td></tr>
+        <tr><td>\(p_\theta\)</td><td>Model with parameters \(\theta\)</td></tr>
+        <tr><td>\(\theta\)</td><td>Model parameters</td></tr>
+        <tr><td>\(\alpha,\ \beta\)</td><td>Mixture weights (language-model and typological prior)</td></tr>
+        <tr><td>\(\lambda\)</td><td>Regularization weight</td></tr>
+        <tr><td>\(P_{\mathrm{typ}}(y)\)</td><td>Typological (Austronesian family) prior over transcripts</td></tr>
+        <tr><td>\(d,\ r,\ c\)</td><td>Latent dialect, register, and code-switching variables</td></tr>
+        <tr><td>\(D_{\mathrm{sup}},\ D_{\mathrm{unsup}}\)</td><td>Supervised and unsupervised data subsets</td></tr>
+        <tr><td>\(\mathrm{KL}(q \,\|\, p)\)</td><td>Kullback-Leibler divergence from p to q</td></tr>
+        <tr><td>\(\mathrm{JS}(p, q)\)</td><td>Jensen-Shannon divergence</td></tr>
+        <tr><td>\(\mathbb{E}_q[\,\cdot\,]\)</td><td>Expectation under distribution q</td></tr>
+        <tr><td>\(\mathcal{L}_{\mathrm{CTC}}\)</td><td>Connectionist Temporal Classification loss</td></tr>
+        <tr><td>\(\mathcal{L}_{\mathrm{RNNT}}\)</td><td>RNN-Transducer loss</td></tr>
+        <tr><td>\(\mathcal{L}_{\mathrm{att}}\)</td><td>Attention-based cross-entropy loss</td></tr>
+        <tr><td>\(\mathcal{L}_{\mathrm{ELBO}}\)</td><td>Evidence Lower Bound objective</td></tr>
+        <tr><td>\(r(\cdot)\)</td><td>Routing function (Component 3.1)</td></tr>
+        <tr><td>\(C\)</td><td>Constraint set of the constrained variational EM</td></tr>
+        <tr><td>\(R(\theta)\)</td><td>Regularization term on parameters</td></tr>
+        <tr><td>\(T\)</td><td>Temperature parameter in calibration / softmax</td></tr>
+        <tr><td>\(\mathrm{ECE}_n\)</td><td>Expected Calibration Error with \(n\) confidence bins</td></tr>
+        <tr><td>\(H(p)\)</td><td>Shannon entropy of distribution p</td></tr>
       </tbody>
     </table>
   </section>

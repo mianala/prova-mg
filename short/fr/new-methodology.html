@@ -8,6 +8,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="stylesheet" href="../../assets/style.css">
+
+<!-- KaTeX: render LaTeX mathematics -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']});"></script>
 <style>
   .print-btn{
     font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;
@@ -44,15 +50,17 @@
   <section>
     <div class="part-label">Le mod&egrave;le</div>
     <p>Le signal <em>x</em> et la transcription <em>y</em> sont engendr&eacute;s avec trois variables cach&eacute;es&nbsp;: dialecte <em>d</em>, registre <em>r</em>, code&#8209;switching <em>c</em>.</p>
-    <div class="formula">p(x, y, d, r, c) = p(d) p(r) p(c | r, d) p(y | d, r, c) p(x | y, d, r)</div>
+    <div class="formula">$$p(x, y, d, r, c) = p(d)\,p(r)\,p(c \mid r, d)\,p(y \mid d, r, c)\,p(x \mid y, d, r)$$</div>
     <p><em>Comparaison&nbsp;:</em> comme un sous&#8209;titrage qui devine <em>en m&ecirc;me temps</em> ce qui est dit, dans quel accent, dans quel contexte (radio&nbsp;? conversation&nbsp;?), et si la phrase m&eacute;lange fran&ccedil;ais et malgache.</p>
   </section>
 
   <section>
     <div class="part-label">L&rsquo;apprentissage</div>
     <p>On alterne deux pas (algorithme EM). Le pas E estime les variables cach&eacute;es <em>sous contraintes</em>&nbsp;; le pas M ajuste les param&egrave;tres.</p>
-    <div class="formula">E&#8209;step :  q* = argmin_{q &isin; C}  KL( q &Vert; p_&theta;(&middot; | x) )
-M&#8209;step :  &theta; &larr; argmax_&theta;  E_{q*}[ log p_&theta;(x, y, d, r, c) ]</div>
+    <div class="formula">$$\begin{aligned}
+\textbf{E-step :}\quad & q^* = \operatorname*{argmin}_{q \,\in\, C}\ \mathrm{KL}\big( q \,\|\, p_\theta(\,\cdot \mid x) \big) \\
+\textbf{M-step :}\quad & \theta \leftarrow \operatorname*{argmax}_{\theta}\ \mathbb{E}_{q^*}\big[ \log p_\theta(x, y, d, r, c) \big]
+\end{aligned}$$</div>
     <p><em>Comparaison&nbsp;:</em> comme un &eacute;l&egrave;ve qui corrige ses devoirs lui-m&ecirc;me pour progresser &mdash; mais soumis &agrave; des r&egrave;gles qui l&rsquo;emp&ecirc;chent d&rsquo;inventer ses propres r&eacute;ponses.</p>
   </section>
 
@@ -61,16 +69,16 @@ M&#8209;step :  &theta; &larr; argmax_&theta;  E_{q*}[ log p_&theta;(x, y, d, r,
     <p>Sans contraintes, l&rsquo;auto&#8209;entra&icirc;nement <em>s&rsquo;effondre</em>&nbsp;: le mod&egrave;le devient de plus en plus s&ucirc;r de plus en plus de mauvaises r&eacute;ponses. Chaque r&egrave;gle ferme une porte de sortie.</p>
     <ul class="plain">
       <li><strong>C1 &mdash; seuil de confiance calibr&eacute;e.</strong> N&rsquo;accepter que les transcriptions dont la confiance est r&eacute;ellement justifi&eacute;e.
-        <div class="formula">supp(q*) &sub; { y : conf_cal(y, x) &ge; &tau; }</div>
+        <div class="formula">$$\operatorname{supp}(q^*) \subset \{\, y : \operatorname{conf}_{\mathrm{cal}}(y, x) \ge \tau \,\}$$</div>
         <em>Comparaison&nbsp;:</em> on ignore un &eacute;l&egrave;ve qui dit &laquo;&nbsp;je suis s&ucirc;r &agrave; 99&nbsp;%&nbsp;&raquo; mais qui se trompe une fois sur deux.</li>
       <li><strong>C2 &mdash; vitesse limit&eacute;e.</strong> D&rsquo;une it&eacute;ration &agrave; la suivante, le mod&egrave;le ne peut pas changer radicalement d&rsquo;avis.
-        <div class="formula">E_x[ KL( q^(n+1) &Vert; q^(n) ) ] &le; &epsilon;</div>
+        <div class="formula">$$\mathbb{E}_x\big[\, \mathrm{KL}\big( q^{(n+1)} \,\|\, q^{(n)} \big) \,\big] \le \epsilon$$</div>
         <em>Comparaison&nbsp;:</em> un m&eacute;decin r&eacute;vise un diagnostic graduellement, pas brutalement.</li>
       <li><strong>C3 &mdash; accord des enseignants.</strong> La r&eacute;ponse retenue doit appara&icirc;tre dans la liste de plusieurs des trois mod&egrave;les enseignants.
-        <div class="formula">supp(q*) &cap; ( n&#8209;best_W &cup; n&#8209;best_M &cup; n&#8209;best_B ) &ne; &empty;</div>
+        <div class="formula">$$\operatorname{supp}(q^*) \,\cap\, \big( \text{n-best}_W \cup \text{n-best}_M \cup \text{n-best}_B \big) \ne \emptyset$$</div>
         <em>Comparaison&nbsp;:</em> on ne retient que ce sur quoi au moins deux experts ind&eacute;pendants tombent d&rsquo;accord.</li>
       <li><strong>C4 &mdash; plausibilit&eacute; linguistique.</strong> Les transcriptions dont la <em>forme</em> (encha&icirc;nements de sons, sch&eacute;mas d&rsquo;affixes) ne ressemble &agrave; aucune langue austron&eacute;sienne sont rejet&eacute;es. Il ne s&rsquo;agit pas de v&eacute;rifier qu&rsquo;un mot existe ailleurs &mdash; le malgache a quantit&eacute; de mots qui lui sont propres &mdash; mais qu&rsquo;il <em>aurait pu</em> exister vu la structure de la famille.
-        <div class="formula">E_{q*}[ log P_typ(y) ] &ge; &minus;&eta;</div>
+        <div class="formula">$$\mathbb{E}_{q^*}\big[ \log P_{\mathrm{typ}}(y) \big] \ge -\eta$$</div>
         <em>Comparaison&nbsp;:</em> un francophone sent que &laquo;&nbsp;travu&nbsp;&raquo; pourrait &ecirc;tre un mot fran&ccedil;ais alors que &laquo;&nbsp;tlbvk&nbsp;&raquo; ne le pourrait pas &mdash; m&ecirc;me sans l&rsquo;avoir jamais vu. On &eacute;carte les transcriptions de type &laquo;&nbsp;tlbvk&nbsp;&raquo;.</li>
     </ul>
   </section>
@@ -78,7 +86,7 @@ M&#8209;step :  &theta; &larr; argmax_&theta;  E_{q*}[ log p_&theta;(x, y, d, r,
   <section>
     <div class="part-label">D&eacute;codage avec a&nbsp;priori typologique</div>
     <p>On utilise les langues cousines du malgache (indon&eacute;sien, malais, cebuano, tagalog) pour combler le manque de donn&eacute;es&nbsp;:</p>
-    <div class="formula">log P(y | x) &prop; log P_acoustique(x | y) + &alpha; log P_LM_MG(y) + &beta; log P_typ(y)</div>
+    <div class="formula">$$\log P(y \mid x) \propto \log P_{\mathrm{acoustique}}(x \mid y) + \alpha \log P_{\mathrm{LM\text{-}MG}}(y) + \beta \log P_{\mathrm{typ}}(y)$$</div>
     <p><em>Comparaison&nbsp;:</em> apprendre l&rsquo;italien plus vite en s&rsquo;aidant de l&rsquo;espagnol et du portugais.</p>
   </section>
 

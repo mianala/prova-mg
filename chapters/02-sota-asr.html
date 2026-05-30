@@ -9,6 +9,12 @@
 <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
 <link rel="stylesheet" href="../assets/style.css">
 
+<!-- KaTeX: render LaTeX mathematics -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']});"></script>
+
 <div class="wrap">
 
   <a class="nav-back" href="../index.html">&larr; PROVA&#8209;MG overview</a>
@@ -49,9 +55,9 @@
     <p>The second part of the chapter addresses the three families of methods that adapt or supplement a pre&#8209;trained model with target&#8209;language resources, and presents the data substrate constructed for the present thesis.</p>
 
     <h3>II.2.1 Parameter-efficient adaptation: LoRA, adapters, prompts</h3>
-    <p>Full fine&#8209;tuning of a foundation model with several hundred million parameters on a few hundred hours of Malagasy audio is computationally expensive and risks over&#8209;fitting. Parameter&#8209;efficient adaptation methods address both concerns. <em>Low&#8209;Rank Adaptation</em> (LoRA, Hu et al. 2022) inserts a trainable low&#8209;rank update <em>&Delta;W = B A</em> alongside the frozen weight matrix <em>W</em>:</p>
-    <div class="formula">y = W x + B A x</div>
-    <p>where <em>A</em> and <em>B</em> have rank <em>r</em> much smaller than the model dimension. <em>Adapter</em> layers (Houlsby et al. 2019) insert small bottleneck residual modules after each Transformer sub&#8209;layer. <em>BitFit</em> trains only the biases. <em>Prompt tuning</em> learns soft prefixes prepended to the input. For low&#8209;resource ASR these methods reduce both GPU cost and over&#8209;fitting risk, and they admit composition: language&#8209;specific LoRA adapters can be combined with dialect&#8209;specific adapters, which is the route taken in Component 3.4 of Chapter III.</p>
+    <p>Full fine&#8209;tuning of a foundation model with several hundred million parameters on a few hundred hours of Malagasy audio is computationally expensive and risks over&#8209;fitting. Parameter&#8209;efficient adaptation methods address both concerns. <em>Low&#8209;Rank Adaptation</em> (LoRA, Hu et al. 2022) inserts a trainable low&#8209;rank update \(\Delta W = B A\) alongside the frozen weight matrix \(W\):</p>
+    <div class="formula">$$y = W x + B A x$$</div>
+    <p>where \(A\) and \(B\) have rank \(r\) much smaller than the model dimension. <em>Adapter</em> layers (Houlsby et al. 2019) insert small bottleneck residual modules after each Transformer sub&#8209;layer. <em>BitFit</em> trains only the biases. <em>Prompt tuning</em> learns soft prefixes prepended to the input. For low&#8209;resource ASR these methods reduce both GPU cost and over&#8209;fitting risk, and they admit composition: language&#8209;specific LoRA adapters can be combined with dialect&#8209;specific adapters, which is the route taken in Component 3.4 of Chapter III.</p>
 
     <h3>II.2.2 Semi-supervised learning, pseudo-labeling, and self-training</h3>
     <p>Iterative pseudo&#8209;labeling (ITP) and its variants &mdash; slimIPL (Likhomanenko et al. 2021), Kaizen (Manohar et al. 2021), Noisy Student (Park et al. 2020), momentum pseudo&#8209;labeling (Khurana et al. 2022), the massively multilingual pseudo&#8209;labeling regime of Hsu et al. (2022) &mdash; share a common procedure. A seed model is trained on the supervised set, transcribes the unlabeled pool, filters the resulting pseudo&#8209;labels by confidence, and is retrained on the union of supervised and filtered pseudo&#8209;labeled data. Variations concern the filtering criterion (raw confidence, posterior entropy, agreement between augmented versions), the teacher&#8209;update rule (replacement at each iteration, exponential moving average, fixed teacher), and the prevention of collapse (confidence thresholds, KL drift bounds, noise injection on the student). Recent extensions to foundation models include uDistil&#8209;Whisper (Park, Berrebbi et al. 2024), STAR for unsupervised adaptation of speech foundation models (Hu et al. 2024), and large&#8209;scale pseudo&#8209;labeling for low&#8209;resource Indic ASR (Bhogale et al. 2024). The empirical collapse phenomenon &mdash; rising confidence accompanied by accuracy degradation &mdash; is documented systematically by Likhomanenko, Lugosch &amp; Collobert (2023) for continuous soft pseudo&#8209;labels, and is the empirical motivation for the constraints introduced in Chapter III.</p>
