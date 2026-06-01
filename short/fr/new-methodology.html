@@ -56,7 +56,7 @@
 
   <section>
     <div class="part-label">L&rsquo;apprentissage</div>
-    <p>On alterne deux pas (algorithme EM). Le pas E estime les variables cach&eacute;es <em>sous contraintes</em>&nbsp;; le pas M ajuste les param&egrave;tres.</p>
+    <p>On alterne deux &eacute;tapes (algorithme EM). L&rsquo;&eacute;tape E estime les variables cach&eacute;es <em>sous contraintes</em>&nbsp;; l&rsquo;&eacute;tape M ajuste les param&egrave;tres.</p>
     <div class="formula">$$\begin{aligned}
 \textbf{E-step :}\quad & q^* = \operatorname*{argmin}_{q \,\in\, C}\ \mathrm{KL}\big( q \,\|\, p_\theta(\,\cdot \mid x) \big) \\
 \textbf{M-step :}\quad & \theta \leftarrow \operatorname*{argmax}_{\theta}\ \mathbb{E}_{q^*}\big[ \log p_\theta(x, y, d, r, c) \big]
