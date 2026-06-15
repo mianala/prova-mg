@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Understanding PROVA-MG from basic algebra — PROVA-MG</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="stylesheet" href="assets/style.css">
+
+<!-- KaTeX: render LaTeX mathematics -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/contrib/auto-render.min.js" crossorigin="anonymous"
+  onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false,ignoredTags:['script','noscript','style','textarea','pre','code']});"></script>
+
+<style>
+  /* A few teaching-only helpers, built on the existing palette. */
+  .step-num{
+    font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--accent);font-weight:500;
+    display:block;margin-bottom:2px;
+  }
+  .plain-eng{
+    background:var(--paper-2);border:1px dashed var(--rule);border-radius:4px;
+    padding:12px 16px;margin:14px 0;font-size:16px;
+  }
+  .plain-eng .lbl{
+    font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent);display:block;margin-bottom:4px;
+  }
+  .legend{margin:14px 0;}
+  .legend table{margin:8px 0;}
+  .legend td:first-child{font-family:'IBM Plex Mono',monospace;white-space:nowrap;width:1%;}
+  .build-bar{
+    font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);
+    border:1px solid var(--rule);border-radius:4px;background:var(--paper-2);
+    padding:10px 14px;margin:18px 0;line-height:1.9;
+  }
+  .build-bar b{color:var(--accent);font-weight:500;}
+  @media print{ .nav-back, footer{display:none !important;} .wrap{padding:0;max-width:none;} }
+</style>
+
+<div class="wrap">
+
+  <a class="nav-back" href="index.html">&larr; PROVA&#8209;MG overview</a>
+
+  <header class="masthead">
+    <div class="kicker">PROVA&#8209;MG &nbsp;/&nbsp; A guided climb from basic algebra</div>
+    <h1 class="title">Understanding PROVA&#8209;MG, <em>one symbol at a time</em></h1>
+    <p class="standfirst">If you can read &ldquo;<em>x</em>&nbsp;+&nbsp;2&nbsp;=&nbsp;5, so <em>x</em>&nbsp;=&nbsp;3&rdquo;, you already know enough to start. This page adds exactly one new idea at a time until the final, novel formula at the bottom is something you can read out loud and actually mean.</p>
+  </header>
+
+  <section>
+    <div class="part-label">How to read this page</div>
+    <p class="lead">Every formula in the thesis is built from a handful of small ideas stacked on top of each other. We will introduce those ideas in order. Nothing below assumes more than school algebra.</p>
+    <p>Each step has three parts: the <strong>new idea</strong> in words, the <strong>symbol</strong> that stands for it, and a <strong>plain-English reading</strong> of the formula so you never have to decode it alone. A running &ldquo;what we can read so far&rdquo; bar tracks your progress.</p>
+    <div class="callout">
+      <span class="tag">The destination</span>
+      The goal of the whole project: teach a computer to turn Malagasy <em>speech</em> into <em>written text</em>, even though almost no labelled Malagasy audio exists. The final formula is the rule the system follows so it can teach <em>itself</em> from unlabelled audio <em>without fooling itself</em>.
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 0</div>
+    <h2 class="part">A letter is just a box that holds a value</h2>
+    <p>In algebra, <em>x</em> is a placeholder for a number we don&rsquo;t know yet. That is the only trick, and it never goes away &mdash; it only gets dressed up. In this project the placeholders hold richer things than numbers:</p>
+    <div class="legend">
+      <table>
+        <tr><th>Symbol</th><th>What is in the box</th></tr>
+        <tr><td>x</td><td>the <strong>audio</strong> &mdash; the sound recording (a chunk of speech)</td></tr>
+        <tr><td>y</td><td>the <strong>text</strong> &mdash; the transcription of what was said</td></tr>
+        <tr><td>d</td><td>the <strong>dialect</strong> (Merina, Betsimisaraka, Sakalava, &hellip;)</td></tr>
+        <tr><td>r</td><td>the <strong>register</strong> (read aloud, broadcast, conversation, ceremony)</td></tr>
+        <tr><td>c</td><td>the <strong>code&#8209;switching</strong> tag (Malagasy, French, or mixed)</td></tr>
+      </table>
+    </div>
+    <p>Whenever you see one of these letters, just say its plain name in your head: &ldquo;<em>x</em>&rdquo; → &ldquo;the audio&rdquo;, &ldquo;<em>y</em>&rdquo; → &ldquo;the text&rdquo;. The maths stays the same; only the contents of the boxes are bigger than a single number.</p>
+    <div class="build-bar">So far we can read: <b>x</b>, <b>y</b>, <b>d</b>, <b>r</b>, <b>c</b> &mdash; five labelled boxes.</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 1</div>
+    <h2 class="part">A function is a machine: put something in, get something out</h2>
+    <p>You already met functions as <em>f(x)</em> &mdash; &ldquo;f of x&rdquo; &mdash; a machine that takes <em>x</em> and returns a value. Read the parentheses as <em>&ldquo;applied to&rdquo;</em>. That is all <em>g(features)</em> later will mean: a machine applied to some inputs.</p>
+    <div class="formula">$$f(x) = 2x + 1$$</div>
+    <div class="plain-eng"><span class="lbl">In words</span> &ldquo;Take the box <em>x</em>, double it, add one.&rdquo; Put in 3, get out 7. A function is a promise: same input, same output.</div>
+    <div class="build-bar">So far we can read: boxes, and <b>f( &middot; )</b> = a machine applied to whatever sits in the parentheses.</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 2</div>
+    <h2 class="part">Probability: a number between 0 and 1 for &ldquo;how likely&rdquo;</h2>
+    <p>We write <em>p(&middot;)</em> for &ldquo;the probability of&rdquo;. It is just a function whose output is always between 0 (impossible) and 1 (certain). 0.5 means &ldquo;coin&#8209;flip&rdquo;.</p>
+    <div class="formula">$$p(y) \quad\text{means}\quad \text{&ldquo;how likely is the text } y \text{?&rdquo;}$$</div>
+    <p>Two short extensions you must recognise, both ordinary algebra:</p>
+    <ul class="plain">
+      <li><strong>Joint</strong> &mdash; <em>p(x,&nbsp;y)</em>: &ldquo;how likely is it that <em>this</em> audio <em>and this</em> text happen together?&rdquo; The comma means &ldquo;and&rdquo;.</li>
+      <li><strong>Conditional</strong> &mdash; <em>p(y&nbsp;|&nbsp;x)</em>: &ldquo;given that we already have the audio <em>x</em>, how likely is the text <em>y</em>?&rdquo; The bar &ldquo;|&rdquo; means <em>&ldquo;given&rdquo;</em> or &ldquo;assuming we already know&rdquo;.</li>
+    </ul>
+    <div class="plain-eng"><span class="lbl">Read it out loud</span> <em>p(y&nbsp;|&nbsp;x)</em> = &ldquo;the chance the text is <em>y</em>, given the recording <em>x</em>.&rdquo; This single object &mdash; chance of the text given the sound &mdash; is what an ASR system is ultimately trying to compute.</div>
+    <div class="build-bar">So far we can read: <b>p(y)</b> a chance, <b>p(x,y)</b> chance of both, <b>p(y|x)</b> chance of <b>y</b> given <b>x</b>.</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 3</div>
+    <h2 class="part">Multiplying chances = a chain of &ldquo;and&rdquo;s &mdash; the generative model</h2>
+    <p>When several independent-ish things all have to happen, you <em>multiply</em> their chances (two coins both landing heads: 0.5&nbsp;&times;&nbsp;0.5&nbsp;=&nbsp;0.25). The thesis imagines how a recording is &ldquo;born&rdquo;, one factor at a time, and multiplies them. This is the first real formula from the paper:</p>
+    <div class="formula">$$p(x, y, d, r, c) = p(d)\,p(r)\,p(c \mid r, d)\,p(y \mid d, r, c)\,p(x \mid y, d, r)$$</div>
+    <div class="plain-eng"><span class="lbl">Reading it left to right (the comma is &ldquo;and&rdquo;, the bar is &ldquo;given&rdquo;)</span>
+      &ldquo;The chance of this whole situation = pick a <em>dialect</em> &times; pick a <em>register</em> &times; decide the <em>language mix</em> given dialect&amp;register &times; produce the <em>text</em> given all that &times; finally produce the <em>sound</em> given the text, dialect and register.&rdquo;</div>
+    <p><em>Plain comparison:</em> it is like subtitling that simultaneously guesses what was said, in which accent, in which setting (radio? chat?), and whether the sentence mixes French and Malagasy. Each guess feeds the next, and we multiply how likely each guess is.</p>
+    <div class="build-bar">So far we can read: a <b>product of chances</b> describing how audio+text is generated. One full paper formula down.</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 4</div>
+    <h2 class="part">Logarithms: turn hard multiplication into easy addition</h2>
+    <p>Multiplying many tiny probabilities gives absurdly small numbers that computers handle badly. The fix is the <strong>logarithm</strong>, written <em>log</em>. Its one magic property is all you need:</p>
+    <div class="formula">$$\log(A \times B) = \log A + \log B$$</div>
+    <div class="plain-eng"><span class="lbl">Why we bother</span> &ldquo;log of a product = sum of the logs.&rdquo; So every messy multiplication from Step 3 becomes a tidy <em>addition</em>. That is the only reason &ldquo;log&rdquo; appears everywhere below &mdash; it is a convenience, not a new concept.</div>
+    <p>One side note: probabilities are below 1, so their logs are <em>negative</em>. &ldquo;Bigger&rdquo; (closer to 0) still means &ldquo;more likely&rdquo;. Don&rsquo;t let the minus signs scare you.</p>
+    <div class="build-bar">So far we can read: <b>log</b> turns &times; into +, so &ldquo;most likely&rdquo; becomes &ldquo;biggest sum&rdquo;.</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 5</div>
+    <h2 class="part">Decoding: add up the evidence and keep the best text</h2>
+    <p>Now combine Steps 2&ndash;4. To transcribe, the system scores each candidate text by <em>adding</em> three kinds of evidence (thanks to log, these are sums). This is the project&rsquo;s decoding rule:</p>
+    <div class="formula">$$\log P(y \mid x) \;\propto\; \log P_{\mathrm{acoustic}}(x \mid y) \;+\; \alpha \log P_{\mathrm{LM\text{-}MG}}(y) \;+\; \beta \log P_{\mathrm{typ}}(y)$$</div>
+    <div class="legend">
+      <table>
+        <tr><th>Piece</th><th>Plain meaning</th></tr>
+        <tr><td>P<sub>acoustic</sub>(x|y)</td><td>&ldquo;does the <strong>sound</strong> match this text?&rdquo;</td></tr>
+        <tr><td>P<sub>LM-MG</sub>(y)</td><td>&ldquo;is this <strong>good Malagasy</strong> on its own?&rdquo;</td></tr>
+        <tr><td>P<sub>typ</sub>(y)</td><td>&ldquo;does it fit the <strong>cousin languages</strong> (Indonesian, Malay, Tagalog&hellip;)?&rdquo;</td></tr>
+        <tr><td>&alpha;, &beta;</td><td>plain dials (just numbers) saying how much to trust the last two clues</td></tr>
+        <tr><td>&prop;</td><td>&ldquo;proportional to&rdquo; &mdash; equal up to a constant we don&rsquo;t care about</td></tr>
+      </table>
+    </div>
+    <div class="plain-eng"><span class="lbl">In words</span> &ldquo;A text&rsquo;s score = how well it matches the sound + (a little) how Malagasy it sounds + (a little) how Austronesian its shape is.&rdquo; The &alpha; and &beta; dials just balance the three voices. <em>Comparison:</em> learning Italian faster by leaning on Spanish and Portuguese.</div>
+    <div class="build-bar">So far we can read: a <b>weighted sum of log-evidence</b> that ranks candidate transcriptions.</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 6</div>
+    <h2 class="part">argmax and argmin: &ldquo;which choice wins?&rdquo;</h2>
+    <p>Two pieces of notation that look intimidating but mean something everyday.</p>
+    <ul class="plain">
+      <li><strong>argmax</strong> &mdash; &ldquo;the input that makes this <em>biggest</em>.&rdquo; Not the biggest value, but <em>which choice</em> produces it. (&ldquo;Who scored the most points?&rdquo; → the <em>person</em>, not the score.)</li>
+      <li><strong>argmin</strong> &mdash; the same, but the input that makes it <em>smallest</em>.</li>
+    </ul>
+    <div class="formula">$$\hat{y} = \operatorname*{argmax}_{y}\ \big[\text{score of } y\big]$$</div>
+    <div class="plain-eng"><span class="lbl">In words</span> &ldquo;Out of all possible texts <em>y</em>, hand me the one with the highest score.&rdquo; The little <em>y</em> under the word means &ldquo;we are choosing among the <em>y</em>&rsquo;s.&rdquo; That is decoding: <em>argmax</em> over the rule from Step 5.</div>
+    <div class="build-bar">So far we can read: <b>argmax</b> = the choice that wins; <b>argmin</b> = the choice that loses-least.</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 7</div>
+    <h2 class="part">The average machine: &ldquo;E&rdquo; (expected value)</h2>
+    <p>The symbol <em>&Eopf;</em> (a fancy E) means <strong>average</strong> &mdash; the typical outcome if you weight every possibility by how likely it is. Plain algebra: it is a weighted sum, value &times; chance, added up.</p>
+    <div class="formula">$$\mathbb{E}_{q}\big[ \text{something} \big] \quad=\quad \text{the average of &ldquo;something&rdquo;, weighted by the chances } q$$</div>
+    <div class="plain-eng"><span class="lbl">In words</span> &ldquo;If you tried this many times following the odds <em>q</em>, what would you get <em>on average</em>?&rdquo; The little <em>q</em> under <em>&Eopf;</em> just says which set of odds to average with.</div>
+    <div class="build-bar">So far we can read: <b>&Eopf;<sub>q</sub>[ &middot; ]</b> = the average of something under the odds <b>q</b>.</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 8</div>
+    <h2 class="part">KL: a number for &ldquo;how different are two opinions?&rdquo;</h2>
+    <p>Often we have two sets of odds &mdash; the model&rsquo;s guess <em>q</em> and the &ldquo;true&rdquo; odds <em>p</em> &mdash; and want to know how far apart they are. The <strong>KL divergence</strong>, written <em>KL(q&nbsp;&Vert;&nbsp;p)</em>, is that gap as a single number: <strong>0 means identical</strong>, bigger means more disagreement.</p>
+    <div class="formula">$$\mathrm{KL}\big( q \,\|\, p \big) \;\ge\; 0$$</div>
+    <div class="plain-eng"><span class="lbl">In words</span> &ldquo;How surprised would you be if you trusted <em>q</em> but reality followed <em>p</em>?&rdquo; You don&rsquo;t need its formula &mdash; only that it is a <em>distance between two probability opinions</em>, never negative.</div>
+    <div class="build-bar">So far we can read: <b>KL(q&Vert;p)</b> = how far guess <b>q</b> is from target <b>p</b> (0 = perfect match).</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 9</div>
+    <h2 class="part">EM: guess the hidden parts, then improve &mdash; repeat</h2>
+    <p>Here is the engine. We have audio but, for most of it, <em>no</em> human transcription &mdash; and we never directly see the dialect, register or language-mix. Those are <strong>hidden</strong>. The <strong>EM algorithm</strong> handles &ldquo;learn from data with missing pieces&rdquo; by alternating two moves until things settle:</p>
+    <ul class="plain">
+      <li><strong>E&#8209;step</strong> (Estimate): with the current model, <em>guess</em> the hidden pieces &mdash; the best transcript, dialect, register, mix. Using Step 8&rsquo;s tool: pick the guess&#8209;odds <em>q</em> that are <em>closest</em> (smallest KL) to what the model believes.</li>
+      <li><strong>M&#8209;step</strong> (Maximize): now treat those guesses as if they were true labels, and <em>adjust the model</em> to fit them as well as possible (argmax of the average log&#8209;likelihood from Step 7).</li>
+    </ul>
+    <div class="formula">$$\begin{aligned}
+\textbf{E-step:}\quad & q^* = \operatorname*{argmin}_{q}\ \mathrm{KL}\big( q \,\|\, p_\theta(\,\cdot \mid x) \big) \\
+\textbf{M-step:}\quad & \theta \leftarrow \operatorname*{argmax}_{\theta}\ \mathbb{E}_{q^*}\big[ \log p_\theta(x, y, d, r, c) \big]
+\end{aligned}$$</div>
+    <div class="legend">
+      <table>
+        <tr><td>&theta;</td><td>(&ldquo;theta&rdquo;) all the <strong>knobs of the model</strong> &mdash; the things learning adjusts</td></tr>
+        <tr><td>q*</td><td>the <strong>best current guess</strong> of the hidden pieces (the star = &ldquo;the winning one&rdquo;)</td></tr>
+        <tr><td>&larr;</td><td>&ldquo;becomes&rdquo; &mdash; update the knobs to this new value</td></tr>
+      </table>
+    </div>
+    <div class="plain-eng"><span class="lbl">In words</span> E&#8209;step: &ldquo;with today&rsquo;s knobs, make the best guess of the missing answers.&rdquo; M&#8209;step: &ldquo;turn the knobs so those guesses become as likely as possible.&rdquo; Loop. <em>Comparison:</em> a student grading their own homework to improve &mdash; each round a little better.</div>
+    <div class="build-bar">So far we can read the <b>whole EM loop</b>: guess hidden answers (E), then retune knobs <b>&theta;</b> to fit them (M), repeat.</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 10</div>
+    <h2 class="part">The danger that makes this hard: self&#8209;delusion</h2>
+    <p>A student who grades their own homework can drift into confidently marking wrong answers right, then studying from them &mdash; getting <em>surer</em> and <em>worse</em> at the same time. In machine learning this is called <strong>collapse</strong>, and it is exactly what kills naive self&#8209;training. The novel contribution of PROVA&#8209;MG is to bolt <strong>four guard&#8209;rails</strong> onto the E&#8209;step so the loop <em>cannot</em> fool itself.</p>
+    <div class="callout">
+      <span class="tag">The whole idea in one line</span>
+      Keep EM&rsquo;s self&#8209;teaching power, but only let it learn from guesses that are <em>(C1)</em> honestly confident, <em>(C2)</em> not a wild swing from last round, <em>(C3)</em> backed by other models, and <em>(C4)</em> shaped like a real Austronesian word.
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 11</div>
+    <h2 class="part">The four guard&#8209;rails, each a small inequality</h2>
+    <p>Each guard&#8209;rail is just an algebra <em>inequality</em> (&ldquo;must be at least&rdquo; / &ldquo;must be no more than&rdquo;). They define a set of <em>allowed</em> guesses, written <em>C</em>. Read each one slowly &mdash; you already know every symbol.</p>
+
+    <ul class="plain">
+      <li><strong>C1 &mdash; honest confidence.</strong> Only keep a transcript if its <em>calibrated</em> confidence clears a bar <em>&tau;</em> (&ldquo;tau&rdquo;, just a threshold number).
+        <div class="formula">$$\operatorname{conf}_{\mathrm{cal}}(y, x) \;\ge\; \tau$$</div>
+        <div class="plain-eng"><span class="lbl">In words</span> &ldquo;Confidence in <em>y</em> must be at least <em>&tau;</em> &mdash; and confidence that has been reality&#8209;checked, not just bravado.&rdquo; We ignore the student who says &ldquo;99% sure&rdquo; but is wrong half the time.</div>
+      </li>
+
+      <li><strong>C2 &mdash; no whiplash.</strong> From one round <em>n</em> to the next <em>n+1</em>, the guesses may only drift a little &mdash; the average KL gap (Step 8) stays under a small <em>&epsilon;</em> (&ldquo;epsilon&rdquo; = a tiny number).
+        <div class="formula">$$\mathbb{E}_x\big[\, \mathrm{KL}\big( q^{(n+1)} \,\|\, q^{(n)} \big) \,\big] \;\le\; \epsilon$$</div>
+        <div class="plain-eng"><span class="lbl">In words</span> &ldquo;On average, this round&rsquo;s opinion must stay close to last round&rsquo;s.&rdquo; A doctor revises a diagnosis gradually, not overnight.</div>
+      </li>
+
+      <li><strong>C3 &mdash; second opinions.</strong> The kept answer must also appear in the short&#8209;lists (&ldquo;n&#8209;best&rdquo;) of the independent teacher models &mdash; Whisper, MMS, Wav2Vec2&#8209;BERT.
+        <div class="formula">$$\operatorname{supp}(q^*) \,\cap\, \big( \text{n-best}_W \cup \text{n-best}_M \cup \text{n-best}_B \big) \;\ne\; \emptyset$$</div>
+        <div class="legend">
+          <table>
+            <tr><td>supp(q*)</td><td>the answers our guess actually considers (&ldquo;support&rdquo;)</td></tr>
+            <tr><td>&cap;</td><td>&ldquo;overlap with&rdquo; (intersection)</td></tr>
+            <tr><td>&cup;</td><td>&ldquo;pooled together&rdquo; (union)</td></tr>
+            <tr><td>&ne; &empty;</td><td>&ldquo;is not empty&rdquo; &mdash; i.e. there <em>is</em> overlap</td></tr>
+          </table>
+        </div>
+        <div class="plain-eng"><span class="lbl">In words</span> &ldquo;Our chosen text must show up on at least one other expert&rsquo;s short&#8209;list.&rdquo; Keep only what independent experts also propose.</div>
+      </li>
+
+      <li><strong>C4 &mdash; it must look like a real word.</strong> On average, the typological score (&ldquo;does this fit Austronesian sound&#8209;patterns?&rdquo;) must stay above a floor <em>&minus;&eta;</em> (&ldquo;eta&rdquo;).
+        <div class="formula">$$\mathbb{E}_{q^*}\big[ \log P_{\mathrm{typ}}(y) \big] \;\ge\; -\eta$$</div>
+        <div class="plain-eng"><span class="lbl">In words</span> &ldquo;The kept transcripts must, on average, be phonetically plausible for the language family.&rdquo; A French speaker feels &ldquo;travu&rdquo; <em>could</em> be French while &ldquo;tlbvk&rdquo; could not &mdash; even never having seen either. We throw out the &ldquo;tlbvk&rdquo; cases. (Not about whether a word exists elsewhere &mdash; Malagasy has plenty of its own words &mdash; but whether its <em>shape</em> is possible.)</div>
+      </li>
+    </ul>
+    <p>Bundle all four into one name: <em>C</em> = &ldquo;the set of guesses that pass C1 and C2 and C3 and C4.&rdquo;</p>
+    <div class="build-bar">So far we can read: four plain inequalities <b>C1&ndash;C4</b>, and the allowed&#8209;guess set <b>C</b> = all four at once.</div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">Step 12 &mdash; The summit</div>
+    <h2 class="part">The final, novel formula &mdash; read it like a sentence</h2>
+    <p>Everything you have learned now snaps together. Take the EM loop from Step 9, and in the E&#8209;step add three little words under the <em>argmin</em>: <strong>&ldquo;<em>q</em> &isin; <em>C</em>&rdquo;</strong> &mdash; &ldquo;choose only among guesses that obey the four guard&#8209;rails.&rdquo; That single restriction <em>is</em> the contribution.</p>
+
+    <div class="formula">$$\begin{aligned}
+\textbf{E-step:}\quad & q^* = \operatorname*{argmin}_{q \,\in\, C}\ \mathrm{KL}\big( q \,\|\, p_\theta(\,\cdot \mid x) \big) \\
+\textbf{M-step:}\quad & \theta \leftarrow \operatorname*{argmax}_{\theta}\ \mathbb{E}_{q^*}\big[ \log p_\theta(x, y, d, r, c) \big] + \lambda\, R(\theta)
+\end{aligned}$$</div>
+
+    <div class="plain-eng"><span class="lbl">Now read the whole thing in plain English</span>
+      <strong>E&#8209;step:</strong> &ldquo;Among only the guesses that are honestly confident, not a wild swing, backed by other models, and shaped like a real word <em>(q&nbsp;&isin;&nbsp;C)</em>, pick the one <em>(argmin)</em> closest <em>(smallest KL)</em> to what the model currently believes about the audio.&rdquo;<br><br>
+      <strong>M&#8209;step:</strong> &ldquo;Then turn the model&rsquo;s knobs <em>&theta;</em> <em>(argmax)</em> so those trusted guesses become as likely <em>(highest average log&#8209;chance)</em> as possible &mdash; plus a tidiness term <em>&lambda;R(&theta;)</em> that stops the knobs from going to extremes.&rdquo;<br><br>
+      Then loop. Because of <em>q&nbsp;&isin;&nbsp;C</em>, every round can only learn from trustworthy guesses, so it gets <em>better</em> without the self&#8209;delusion of Step 10.</div>
+
+    <div class="legend">
+      <table>
+        <tr><th>Last two new symbols</th><th>Plain meaning</th></tr>
+        <tr><td>q &isin; C</td><td><strong>the novel part:</strong> &ldquo;<em>q</em> must be <em>inside</em> the allowed&#8209;guess set <em>C</em>&rdquo; &mdash; obey all four guard&#8209;rails</td></tr>
+        <tr><td>&lambda; R(&theta;)</td><td>a gentle &ldquo;don&rsquo;t overdo it&rdquo; penalty (&lambda; = how strict, R = a tidiness score)</td></tr>
+      </table>
+    </div>
+
+    <div class="callout">
+      <span class="tag">What makes it novel</span>
+      Plain EM has been known for decades. The contribution is the two characters <em>&ldquo;&isin;&nbsp;C&rdquo;</em>: forcing the self&#8209;teaching loop to draw <em>only</em> from guesses that pass four independent sanity checks &mdash; calibrated confidence, bounded drift, cross&#8209;model agreement, and typological plausibility. That turns a loop that usually collapses into one that is <em>provably</em> stable for low&#8209;resource Malagasy.
+    </div>
+
+    <div class="build-bar" style="line-height:2.1;">
+      <b>You can now read the final formula end to end:</b><br>
+      boxes (x,y,d,r,c) &rarr; functions f(&middot;) &rarr; chances p(&middot;) &rarr; products of chances &rarr; logs turn &times; into + &rarr; weighted&#8209;sum decoding &rarr; argmax/argmin pick the winner &rarr; &Eopf; averages &rarr; KL measures disagreement &rarr; EM guesses-then-improves &rarr; <b>four guard&#8209;rails C</b> &rarr; <b>constrained variational EM</b>.
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <section>
+    <div class="part-label">One&#8209;line summary</div>
+    <p class="lead">Three teacher models + cousin&#8209;language hints + honest confidence, combined by an EM loop that may only learn from guesses passing four guard&#8209;rails &mdash; which is what makes its self&#8209;training <em>provably</em> non&#8209;collapsing.</p>
+    <div class="callout">
+      <span class="tag">Where to go next</span>
+      Ready for the full treatment? See <a class="ref-link" href="chapters/03-methodology.html">Chapter III &mdash; The PROVA&#8209;MG Methodology</a> for the complete derivation, or the <a class="ref-link" href="short/fr/new-methodology.html">essential FR summary</a> for the same ideas in French.
+    </div>
+  </section>
+
+  <footer>
+    PROVA&#8209;MG &mdash; Probabilistic Routing Of Variational Alignments for Malagasy.<br>
+    A plain&#8209;algebra walkthrough &middot; Doctoral School 3D, University of Toamasina.
+  </footer>
+
+</div>
